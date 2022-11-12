@@ -24,6 +24,10 @@
           </a>
         </div>
       </div>
+      <span *ngIf="showLogout" class="navbar-text clickable" (click)="logout()">
+        Logout
+        <i class="bi bi-box-arrow-right"></i>
+      </span>
     </div>
   </nav>
 

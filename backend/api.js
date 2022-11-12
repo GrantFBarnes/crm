@@ -50,17 +50,23 @@ function returnPromiseResponse(response, promise) {
 ////////////////////////////////////////////////////////////////////////////////
 // Users
 
-// Validate login
+// User login
 router.post("/api/crm/login", (request, response) => {
   main
     .getUserId(request.body)
     .then((user_id) => {
       authentication.setAuthentication(response, userCookieName, user_id);
-      returnSuccess(response, user_id);
+      returnSuccess(response);
     })
     .catch(() => {
       rejectUnauthenticated(response, userCookieName);
     });
+});
+
+// User logout
+router.post("/api/crm/logout", (request, response) => {
+  authentication.removeAuthentication(response, userCookieName);
+  returnSuccess(response);
 });
 
 ////////////////////////////////////////////////////////////////////////////////
