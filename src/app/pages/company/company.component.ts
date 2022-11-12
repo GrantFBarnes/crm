@@ -12,6 +12,7 @@ import { Company } from 'src/app/shared/interfaces/company';
 export class CompanyComponent implements OnInit {
   loading: boolean = true;
   company: Company = { id: '', name: '', city: '', state: '', zip: '' };
+  contactInfo: { [type: string]: string[] } = {};
 
   constructor(private httpService: HttpService) {}
 
@@ -35,6 +36,20 @@ export class CompanyComponent implements OnInit {
         this.company.city = data.city;
         this.company.state = data.state;
         this.company.zip = data.zip;
+        this.getCompanyContactInfo();
+      });
+  }
+
+  getCompanyContactInfo(): void {
+    this.httpService
+      .get('/api/crm/company/' + this.company.id + '/contact')
+      .subscribe((data: any) => {
+        for (let i in data) {
+          if (!this.contactInfo[data[i].type]) {
+            this.contactInfo[data[i].type] = [];
+          }
+          this.contactInfo[data[i].type].push(data[i].value);
+        }
         this.loading = false;
       });
   }

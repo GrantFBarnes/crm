@@ -9,4 +9,21 @@
       {{ company.city }}, {{ company.state }} {{ company.zip }}
     </div>
   </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6 col-lg-4 col-xl-3 center mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Contact Info</h5>
+          <br />
+          <ng-container *ngFor="let item of contactInfo | keyvalue">
+            <h6 class="card-subtitle mb-2 text-muted">{{ item.key }}</h6>
+            <ng-container *ngFor="let val of contactInfo[item.key]">
+              <p class="card-text">{{ val }}</p>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

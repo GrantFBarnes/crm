@@ -95,6 +95,19 @@ router.get("/api/crm/company/:id", (request, response) => {
   }
 });
 
+// Get company contact info by id
+router.get("/api/crm/company/:id/contact", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getCompanyContactInfoById(user_id, request.params.id)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
