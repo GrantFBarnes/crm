@@ -9,7 +9,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  loading: boolean = false;
+  loading: boolean = true;
 
   username: string = '';
   password: string = '';
@@ -25,6 +25,15 @@ export class LoginComponent implements OnInit {
         );
       }
     }
+
+    this.httpService.get('/api/authentication/user').subscribe({
+      next: () => {
+        window.location.href = '/crm/home';
+      },
+      error: () => {
+        this.loading = false;
+      },
+    });
   }
 
   submit(): void {
