@@ -31,10 +31,10 @@ function getIdFromData(data, field) {
 ////////////////////////////////////////////////////////////////////////////////
 // Users
 
-function validateLogin(data) {
-  return new Promise((resolve) => {
+function getUserId(data) {
+  return new Promise((resolve, reject) => {
     if (!data || !data.username || !data.password) {
-      resolve({ statusCode: 500, data: "data not valid" });
+      reject("data not valid");
       return;
     }
 
@@ -46,14 +46,14 @@ function validateLogin(data) {
       )
       .then((result) => {
         if (result.length) {
-          resolve({ statusCode: 200, data: result[0].id });
+          resolve(result[0].id);
           return;
         }
-        resolve({ statusCode: 401, data: "invalid credentials" });
+        reject("invalid credentials");
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to validate login" });
+        reject("failed to validate login");
         return;
       });
   });
@@ -88,6 +88,6 @@ function getCompanies(user_id) {
 
 ////////////////////////////////////////////////////////////////////////////////
 
-module.exports.validateLogin = validateLogin;
+module.exports.getUserId = getUserId;
 
 module.exports.getCompanies = getCompanies;

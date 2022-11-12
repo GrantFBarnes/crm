@@ -52,7 +52,15 @@ function returnPromiseResponse(response, promise) {
 
 // Validate login
 router.post("/api/crm/login", (request, response) => {
-  returnPromiseResponse(response, main.validateLogin(request.body));
+  main
+    .getUserId(request.body)
+    .then((user_id) => {
+      authentication.setAuthentication(response, userCookieName, user_id);
+      returnSuccess(response, user_id);
+    })
+    .catch(() => {
+      rejectUnauthenticated(response, userCookieName);
+    });
 });
 
 ////////////////////////////////////////////////////////////////////////////////
