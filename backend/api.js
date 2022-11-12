@@ -108,6 +108,19 @@ router.get("/api/crm/company/:id/contact", (request, response) => {
   }
 });
 
+// Get company notes by id
+router.get("/api/crm/company/:id/notes", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getCompanyNotesById(user_id, request.params.id)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 

@@ -156,6 +156,37 @@ function getCompanyContactInfoById(user_id, company_id) {
   });
 }
 
+function getCompanyNotesById(user_id, company_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(company_id)) {
+      resolve({ statusCode: 500, data: "company id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        SELECT * FROM company_note
+          WHERE user_id = '${user_id}'
+            AND company_id = '${company_id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get company notes" });
+        return;
+      });
+  });
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports.getUserId = getUserId;
@@ -163,3 +194,4 @@ module.exports.getUserId = getUserId;
 module.exports.getCompanies = getCompanies;
 module.exports.getCompanyById = getCompanyById;
 module.exports.getCompanyContactInfoById = getCompanyContactInfoById;
+module.exports.getCompanyNotesById = getCompanyNotesById;

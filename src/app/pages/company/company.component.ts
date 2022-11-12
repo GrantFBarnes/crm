@@ -13,6 +13,7 @@ export class CompanyComponent implements OnInit {
   loading: boolean = true;
   company: Company = { id: '', name: '', city: '', state: '', zip: '' };
   contactInfo: { [type: string]: string[] } = {};
+  notes: string[] = [];
 
   constructor(private httpService: HttpService) {}
 
@@ -37,6 +38,8 @@ export class CompanyComponent implements OnInit {
         this.company.state = data.state;
         this.company.zip = data.zip;
         this.getCompanyContactInfo();
+        this.getCompanyNotes();
+        this.loading = false;
       });
   }
 
@@ -50,7 +53,16 @@ export class CompanyComponent implements OnInit {
           }
           this.contactInfo[data[i].type].push(data[i].value);
         }
-        this.loading = false;
+      });
+  }
+
+  getCompanyNotes(): void {
+    this.httpService
+      .get('/api/crm/company/' + this.company.id + '/notes')
+      .subscribe((data: any) => {
+        for (let i in data) {
+          this.notes.push(data[i].note);
+        }
       });
   }
 }

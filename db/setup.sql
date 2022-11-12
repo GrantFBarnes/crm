@@ -46,7 +46,9 @@ CREATE TABLE company_note (
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE
 );
-INSERT INTO company_note VALUES ('ea122cf8-11aa-4b5b-b95b-53c2b37d700d', '55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'some notes about this company');
+INSERT INTO company_note VALUES ('ea122cf8-11aa-4b5b-b95b-53c2b37d700d', '55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'some notes about this company 1');
+INSERT INTO company_note VALUES ('17732013-8ff6-4369-8875-61ec04fd9532', '55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'some notes about this company 2');
+INSERT INTO company_note VALUES ('b4ee7609-65f8-4459-ac6b-d1ed48a8c501', '55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'some notes about this company 3');
 
 CREATE TABLE person (
     id CHAR(36) NOT NULL,
