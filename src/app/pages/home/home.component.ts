@@ -8,7 +8,6 @@ import { HttpService } from 'src/app/shared/services/http.service';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit {
-  user_id: string = '';
   loading: boolean = true;
 
   constructor(private httpService: HttpService) {}

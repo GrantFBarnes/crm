@@ -9,7 +9,7 @@ CREATE TABLE user (
     PRIMARY KEY (id),
     CONSTRAINT name_unique UNIQUE (name)
 );
-INSERT INTO user VALUES (UUID(), 'grant', 'password');
+INSERT INTO user VALUES ('55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'grant', 'password');
 
 CREATE TABLE company (
     id CHAR(36) NOT NULL,
@@ -21,6 +21,7 @@ CREATE TABLE company (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
+INSERT INTO company VALUES ('b3973f12-7b2a-4729-b102-47bf24a49e5c', '55d23ad2-62ae-11ed-8d81-8b356765c5ac', 'Company 1', 'Rochester', 'Minnesota', '55901');
 
 CREATE TABLE company_contact_info (
     id CHAR(36) NOT NULL,
@@ -30,6 +31,8 @@ CREATE TABLE company_contact_info (
     PRIMARY KEY (id),
     FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE
 );
+INSERT INTO company_contact_info VALUES ('7d7ddf76-f76c-4c20-ba94-6e6f0dc1c62d', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'phone', '555-555-1234');
+INSERT INTO company_contact_info VALUES ('0f4af91c-0d0e-41f5-b96e-dbe2428ae6f1', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'email', 'email@company.com');
 
 CREATE TABLE company_note (
     id CHAR(36) NOT NULL,

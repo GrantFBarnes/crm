@@ -60,5 +60,34 @@ function validateLogin(data) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Companies
+
+function getCompanies(user_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        SELECT * FROM company WHERE user_id = '${user_id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get companies" });
+        return;
+      });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 module.exports.validateLogin = validateLogin;
+
+module.exports.getCompanies = getCompanies;

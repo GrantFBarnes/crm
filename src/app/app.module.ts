@@ -11,6 +11,7 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
 
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
+import { CompaniesComponent } from './pages/companies/companies.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { LoginComponent } from './pages/login/login.component';
     LoadingComponent,
     HomeComponent,
     LoginComponent,
+    CompaniesComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

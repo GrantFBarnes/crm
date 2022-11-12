@@ -3,6 +3,9 @@ const express = require("express");
 const authentication = require("../../home-page/backend/authentication.js");
 const main = require("./main.js");
 
+const managerCookieName = "gfb_manager_token";
+const userCookieName = "gfb_user_token";
+
 const router = express.Router();
 
 function returnSuccess(response) {
@@ -11,10 +14,10 @@ function returnSuccess(response) {
   response.end();
 }
 
-function rejectUnauthorized(response) {
-  authentication.removeTokenCookie(response);
+function rejectUnauthenticated(response, cookieName) {
+  authentication.removeAuthentication(response, cookieName);
   response.writeHead(401, { "Content-Type": "application/json" });
-  response.write(JSON.stringify({ status: "unauthorized" }));
+  response.write(JSON.stringify({ status: "not authenticated" }));
   response.end();
 }
 
@@ -45,11 +48,24 @@ function returnPromiseResponse(response, promise) {
 // APIs defined here
 
 ////////////////////////////////////////////////////////////////////////////////
-// User
+// Users
 
 // Validate login
 router.post("/api/crm/login", (request, response) => {
   returnPromiseResponse(response, main.validateLogin(request.body));
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// Companies
+
+// Get all companies
+router.get("/api/crm/companies", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.getCompanies(user_id));
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
 });
 
 ////////////////////////////////////////////////////////////////////////////////
