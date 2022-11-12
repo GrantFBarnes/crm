@@ -82,39 +82,99 @@ router.get("/api/crm/companies", (request, response) => {
   }
 });
 
-// Get company by id
-router.get("/api/crm/company/:id", (request, response) => {
+// Get company
+router.get("/api/crm/company/:company_id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getCompanyById(user_id, request.params.id)
+      main.getCompany(user_id, request.params.company_id)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }
 });
 
-// Get company contact info by id
-router.get("/api/crm/company/:id/contact", (request, response) => {
+////////////////////////////////////////////////////////////////////////////////
+// Company Contact Info
+
+// Get company contact info
+router.get("/api/crm/company/:company_id/contact", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getCompanyContactInfoById(user_id, request.params.id)
+      main.getCompanyContactInfo(user_id, request.params.company_id)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }
 });
 
-// Get company notes by id
-router.get("/api/crm/company/:id/notes", (request, response) => {
+// Update company contact info
+router.put("/api/crm/company/:company_id/contact", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getCompanyNotesById(user_id, request.params.id)
+      main.updateCompanyContactInfo(
+        user_id,
+        request.params.company_id,
+        request.body
+      )
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Create company contact info
+router.post("/api/crm/company/:company_id/contact", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.createCompanyContactInfo(
+        user_id,
+        request.params.company_id,
+        request.body
+      )
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Delete company contact info
+router.delete(
+  "/api/crm/company/:company_id/contact/:id",
+  (request, response) => {
+    const user_id = authentication.getAuthentication(request, userCookieName);
+    if (user_id) {
+      returnPromiseResponse(
+        response,
+        main.deleteCompanyContactInfo(
+          user_id,
+          request.params.company_id,
+          request.params.id
+        )
+      );
+    } else {
+      rejectUnauthenticated(response, userCookieName);
+    }
+  }
+);
+
+////////////////////////////////////////////////////////////////////////////////
+// Company Notes
+
+// Get company notes
+router.get("/api/crm/company/:company_id/notes", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getCompanyNotes(user_id, request.params.company_id)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);

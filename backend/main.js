@@ -18,6 +18,29 @@ function dataIsValid(table, data) {
     return false;
   }
 
+  let columns = [];
+  switch (table) {
+    case "company_contact_info":
+      columns = ["id", "user_id", "company_id", "type", "value"];
+      break;
+
+    default:
+      return false;
+  }
+
+  for (let field in data) {
+    if (columns.indexOf(field) < 0) {
+      return false;
+    }
+  }
+
+  const keys = Object.keys(data);
+  for (let column of columns) {
+    if (keys.indexOf(column) < 0) {
+      return false;
+    }
+  }
+
   return true;
 }
 
@@ -41,7 +64,9 @@ function getUserId(data) {
     database
       .run(
         `
-        SELECT id FROM user WHERE name = '${data.username}' AND password = '${data.password}';
+        SELECT id FROM user
+        WHERE name = '${data.username}'
+          AND password = '${data.password}';
         `
       )
       .then((result) => {
@@ -73,7 +98,7 @@ function getCompanies(user_id) {
       .run(
         `
         SELECT * FROM company
-          WHERE user_id = '${user_id}';
+        WHERE user_id = '${user_id}';
         `
       )
       .then((result) => {
@@ -87,7 +112,7 @@ function getCompanies(user_id) {
   });
 }
 
-function getCompanyById(user_id, company_id) {
+function getCompany(user_id, company_id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
@@ -103,8 +128,8 @@ function getCompanyById(user_id, company_id) {
       .run(
         `
         SELECT * FROM company
-          WHERE user_id = '${user_id}'
-            AND id = '${company_id}';
+        WHERE user_id = '${user_id}'
+          AND id = '${company_id}';
         `
       )
       .then((result) => {
@@ -122,7 +147,10 @@ function getCompanyById(user_id, company_id) {
   });
 }
 
-function getCompanyContactInfoById(user_id, company_id) {
+////////////////////////////////////////////////////////////////////////////////
+// Company Contact Info
+
+function getCompanyContactInfo(user_id, company_id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
@@ -138,8 +166,8 @@ function getCompanyContactInfoById(user_id, company_id) {
       .run(
         `
         SELECT * FROM company_contact_info
-          WHERE user_id = '${user_id}'
-            AND company_id = '${company_id}';
+        WHERE user_id = '${user_id}'
+          AND company_id = '${company_id}';
         `
       )
       .then((result) => {
@@ -156,7 +184,138 @@ function getCompanyContactInfoById(user_id, company_id) {
   });
 }
 
-function getCompanyNotesById(user_id, company_id) {
+function updateCompanyContactInfo(user_id, company_id, data) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(company_id)) {
+      resolve({ statusCode: 500, data: "company id not valid" });
+      return;
+    }
+
+    if (!dataIsValid("company_contact_info", data)) {
+      resolve({ statusCode: 500, data: "data not valid" });
+      return;
+    }
+
+    if (user_id != data.user_id) {
+      resolve({ statusCode: 401, data: "user id does not match" });
+      return;
+    }
+
+    if (company_id != data.company_id) {
+      resolve({ statusCode: 500, data: "company id does not match" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        UPDATE company_contact_info
+        SET
+          type = '${data.type}',
+          value = '${data.value}'
+        WHERE user_id = '${user_id}'
+          AND company_id = '${company_id}'
+          AND id = '${data.id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({
+          statusCode: 400,
+          data: "failed to update company contact info",
+        });
+        return;
+      });
+  });
+}
+
+function createCompanyContactInfo(user_id, company_id, data) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(company_id)) {
+      resolve({ statusCode: 500, data: "company id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        INSERT INTO company_contact_info
+        (id, user_id, company_id, type, value)
+        VALUES
+        (UUID(), '${user_id}', '${company_id}', '', '')
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({
+          statusCode: 400,
+          data: "failed to create company contact info",
+        });
+        return;
+      });
+  });
+}
+
+function deleteCompanyContactInfo(user_id, company_id, id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(company_id)) {
+      resolve({ statusCode: 500, data: "company id not valid" });
+      return;
+    }
+
+    if (!idIsValid(id)) {
+      resolve({ statusCode: 500, data: "id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        DELETE FROM company_contact_info
+        WHERE user_id = '${user_id}'
+          AND company_id = '${company_id}'
+          AND id = '${id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({
+          statusCode: 400,
+          data: "failed to delete company contact info",
+        });
+        return;
+      });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Company Notes
+
+function getCompanyNotes(user_id, company_id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
@@ -172,8 +331,8 @@ function getCompanyNotesById(user_id, company_id) {
       .run(
         `
         SELECT * FROM company_note
-          WHERE user_id = '${user_id}'
-            AND company_id = '${company_id}';
+        WHERE user_id = '${user_id}'
+          AND company_id = '${company_id}';
         `
       )
       .then((result) => {
@@ -192,6 +351,11 @@ function getCompanyNotesById(user_id, company_id) {
 module.exports.getUserId = getUserId;
 
 module.exports.getCompanies = getCompanies;
-module.exports.getCompanyById = getCompanyById;
-module.exports.getCompanyContactInfoById = getCompanyContactInfoById;
-module.exports.getCompanyNotesById = getCompanyNotesById;
+module.exports.getCompany = getCompany;
+
+module.exports.getCompanyContactInfo = getCompanyContactInfo;
+module.exports.updateCompanyContactInfo = updateCompanyContactInfo;
+module.exports.createCompanyContactInfo = createCompanyContactInfo;
+module.exports.deleteCompanyContactInfo = deleteCompanyContactInfo;
+
+module.exports.getCompanyNotes = getCompanyNotes;
