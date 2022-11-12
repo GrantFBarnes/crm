@@ -31,8 +31,18 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     const body = { username: this.username, password: this.password };
     this.httpService.post('/api/crm/login', body).subscribe({
-      next: () => {
-        this.loading = false;
+      next: (user_id: any) => {
+        this.httpService
+          .post('/api/authentication/user', { user_id: user_id })
+          .subscribe({
+            next: () => {
+              window.location.href = '/crm/home';
+            },
+            error: () => {
+              this.loading = false;
+              alert('Login Error!');
+            },
+          });
       },
       error: () => {
         this.loading = false;

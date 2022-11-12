@@ -46,10 +46,10 @@ function validateLogin(data) {
       )
       .then((result) => {
         if (result.length) {
-          resolve({ statusCode: 200, data: true });
+          resolve({ statusCode: 200, data: result[0].id });
           return;
         }
-        resolve({ statusCode: 401, data: false });
+        resolve({ statusCode: 401, data: "invalid credentials" });
         return;
       })
       .catch(() => {
