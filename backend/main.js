@@ -1,5 +1,3 @@
-const { v4: uuidv4 } = require("uuid");
-
 const database = require("./database.js");
 
 const id_regex =
@@ -31,5 +29,36 @@ function getIdFromData(data, field) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Users
+
+function validateLogin(data) {
+  return new Promise((resolve) => {
+    if (!data || !data.username || !data.password) {
+      resolve({ statusCode: 500, data: "data not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        SELECT id FROM user WHERE name = '${data.username}' AND password = '${data.password}';
+        `
+      )
+      .then((result) => {
+        if (result.length) {
+          resolve({ statusCode: 200, data: true });
+          return;
+        }
+        resolve({ statusCode: 401, data: false });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to validate login" });
+        return;
+      });
+  });
+}
 
 ////////////////////////////////////////////////////////////////////////////////
+
+module.exports.validateLogin = validateLogin;

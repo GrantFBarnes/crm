@@ -1,0 +1,37 @@
+<app-loading *ngIf="loading"></app-loading>
+<div [ngClass]="loading ? 'container blur' : 'container'">
+  <div class="mainTitle">
+    <h1>Login</h1>
+  </div>
+
+  <div class="row center mb-3">
+    <div class="col-12">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Username</span>
+        </div>
+        <input type="text" class="form-control" [(ngModel)]="username" />
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Password</span>
+        </div>
+        <input
+          type="password"
+          class="form-control"
+          [(ngModel)]="password"
+          (keyup.enter)="submit()"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="row center mb-3">
+    <div class="col-12">
+      <button type="submit" class="btn btn-primary" (click)="submit()">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>
