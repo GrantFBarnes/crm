@@ -82,6 +82,19 @@ router.get("/api/crm/companies", (request, response) => {
   }
 });
 
+// Get company by id
+router.get("/api/crm/company/:id", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getCompanyById(user_id, request.params.id)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 

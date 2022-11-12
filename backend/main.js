@@ -72,7 +72,8 @@ function getCompanies(user_id) {
     database
       .run(
         `
-        SELECT * FROM company WHERE user_id = '${user_id}';
+        SELECT * FROM company
+          WHERE user_id = '${user_id}';
         `
       )
       .then((result) => {
@@ -86,8 +87,44 @@ function getCompanies(user_id) {
   });
 }
 
+function getCompanyById(user_id, company_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(company_id)) {
+      resolve({ statusCode: 500, data: "company id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        SELECT * FROM company
+          WHERE user_id = '${user_id}'
+            AND id = '${company_id}';
+        `
+      )
+      .then((result) => {
+        if (result.length) {
+          resolve({ statusCode: 200, data: result[0] });
+          return;
+        }
+        resolve({ statusCode: 400, data: "company not found" });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get company" });
+        return;
+      });
+  });
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports.getUserId = getUserId;
 
 module.exports.getCompanies = getCompanies;
+module.exports.getCompanyById = getCompanyById;

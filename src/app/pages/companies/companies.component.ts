@@ -35,4 +35,8 @@ export class CompaniesComponent implements OnInit {
       this.loading = false;
     });
   }
+
+  openCompany(company_id: string): void {
+    window.location.href = '/crm/company/' + company_id;
+  }
 }

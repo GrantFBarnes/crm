@@ -12,18 +12,18 @@
           <th>City</th>
           <th>State</th>
           <th>Zip</th>
-          <th>Phone</th>
-          <th>Email</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of companies | keyvalue">
+        <tr
+          *ngFor="let item of companies | keyvalue"
+          class="clickable"
+          (click)="openCompany(item.key)"
+        >
           <td>{{ item.value.name }}</td>
           <td>{{ item.value.city }}</td>
           <td>{{ item.value.state }}</td>
           <td>{{ item.value.zip }}</td>
-          <td>{{ item.value.phone }}</td>
-          <td>{{ item.value.email }}</td>
         </tr>
       </tbody>
     </table>
