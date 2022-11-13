@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { KeyValue } from '@angular/common';
 import { HttpService } from 'src/app/shared/services/http.service';
 
 import { Company } from 'src/app/shared/interfaces/company';
@@ -11,6 +12,8 @@ import { Company } from 'src/app/shared/interfaces/company';
 })
 export class CompaniesComponent implements OnInit {
   loading: boolean = true;
+
+  searchText: string = '';
 
   companies: { [id: string]: Company } = {};
 
@@ -36,7 +39,29 @@ export class CompaniesComponent implements OnInit {
     });
   }
 
+  addCompany(): void {
+    this.loading = true;
+    this.httpService.post('/api/crm/company', {}).subscribe((data: any) => {
+      this.openCompany(data);
+    });
+  }
+
   openCompany(company_id: string): void {
     window.location.href = '/crm/company/' + company_id;
+  }
+
+  sortMethod = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
+    const a_val = a.value.name;
+    const b_val = b.value.name;
+    if (a_val < b_val) return -1;
+    if (a_val > b_val) return 1;
+    return 0;
+  };
+
+  searchTextInRow(row: any): boolean {
+    const searchText = this.searchText.trim().toLocaleLowerCase();
+    if (!searchText) return true;
+    if (row.name.toLocaleLowerCase().includes(searchText)) return true;
+    return false;
   }
 }

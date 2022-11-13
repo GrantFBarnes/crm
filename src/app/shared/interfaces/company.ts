@@ -1,7 +1,5 @@
 export interface Company {
   id: string;
+  user_id: string;
   name: string;
-  city: string;
-  state: string;
-  zip: string;
 }

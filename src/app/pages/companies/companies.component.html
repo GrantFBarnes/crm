@@ -4,27 +4,40 @@
     <h1>Companies</h1>
   </div>
 
-  <div class="row">
+  <div class="row mb-3">
+    <div class="center">
+      <button class="btn btn-outline-success btn-sm" (click)="addCompany()">
+        <i class="bi bi-plus"></i>
+        Add Company
+      </button>
+    </div>
+  </div>
+
+  <div class="row mb-3">
     <table class="table table-light table-hover">
       <thead>
         <tr>
           <th>Name</th>
-          <th>City</th>
-          <th>State</th>
-          <th>Zip</th>
         </tr>
       </thead>
       <tbody>
-        <tr
-          *ngFor="let item of companies | keyvalue"
-          class="clickable"
-          (click)="openCompany(item.key)"
-        >
-          <td>{{ item.value.name }}</td>
-          <td>{{ item.value.city }}</td>
-          <td>{{ item.value.state }}</td>
-          <td>{{ item.value.zip }}</td>
+        <tr>
+          <td>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              [(ngModel)]="searchText"
+            />
+          </td>
         </tr>
+        <ng-container *ngFor="let item of companies | keyvalue: sortMethod">
+          <ng-container *ngIf="searchTextInRow(item.value)">
+            <tr class="clickable" (click)="openCompany(item.key)">
+              <td>{{ item.value.name || "(No Name)" }}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
       </tbody>
     </table>
   </div>

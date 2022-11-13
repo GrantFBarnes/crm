@@ -1,40 +1,31 @@
 <app-loading *ngIf="loading"></app-loading>
 <div [ngClass]="loading ? 'container blur' : 'container'">
   <div class="mainTitle">
-    <h1>{{ company.name }}</h1>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-12 center mb-2">
-      {{ company.city }}, {{ company.state }} {{ company.zip }}
-    </div>
-  </div>
-
-  <div class="row mb-3">
-    <div class="col-md-6 col-lg-4 col-xl-3 center mb-2">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Contact Info</h5>
-          <br />
-          <ng-container *ngFor="let item of contactInfo | keyvalue">
-            <h6 class="card-subtitle mb-2 text-muted">{{ item.key }}</h6>
-            <ng-container *ngFor="let val of contactInfo[item.key]">
-              <p class="card-text">{{ val }}</p>
-            </ng-container>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-8 col-xl-9 center mb-2">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Notes</h5>
-          <ng-container *ngFor="let note of notes">
-            <hr />
-            <p class="card-text">{{ note }}</p>
-          </ng-container>
-        </div>
-      </div>
-    </div>
+    <ng-container *ngIf="!editMode">
+      <h1>{{ company.name || "(No Name)" }}</h1>
+      <button class="btn btn-outline-primary btn-sm" (click)="enterEditMode()">
+        <i class="bi bi-pencil"></i>
+        Edit
+      </button>
+    </ng-container>
+    <ng-container *ngIf="editMode">
+      <h1>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Company Name"
+          [(ngModel)]="company_edit.name"
+        />
+      </h1>
+      <button class="btn btn-outline-secondary btn-sm" (click)="exitEditMode()">
+        <i class="bi bi-x"></i>
+        Cancel
+      </button>
+      &nbsp;
+      <button class="btn btn-outline-success btn-sm" (click)="saveChanges()">
+        <i class="bi bi-save"></i>
+        Save
+      </button>
+    </ng-container>
   </div>
 </div>
