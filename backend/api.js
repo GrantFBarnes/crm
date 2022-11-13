@@ -83,12 +83,45 @@ router.get("/api/crm/companies", (request, response) => {
 });
 
 // Get company
-router.get("/api/crm/company/:company_id", (request, response) => {
+router.get("/api/crm/company/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getCompany(user_id, request.params.company_id)
+      main.getCompany(user_id, request.params.id)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Update company
+router.put("/api/crm/company", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.updateCompany(user_id, request.body));
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Create company
+router.post("/api/crm/company", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.createCompany(user_id, request.body));
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Delete company
+router.delete("/api/crm/company/:id", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.deleteCompany(user_id, request.params.id)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);

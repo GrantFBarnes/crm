@@ -20,6 +20,10 @@ function dataIsValid(table, data) {
 
   let columns = [];
   switch (table) {
+    case "company":
+      columns = ["id", "user_id", "name", "city", "state", "zip"];
+      break;
+
     case "company_contact_info":
       columns = ["id", "user_id", "company_id", "type", "value"];
       break;
@@ -142,6 +146,105 @@ function getCompany(user_id, company_id) {
       })
       .catch(() => {
         resolve({ statusCode: 400, data: "failed to get company" });
+        return;
+      });
+  });
+}
+
+function updateCompany(user_id, data) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!dataIsValid("company", data)) {
+      resolve({ statusCode: 500, data: "data not valid" });
+      return;
+    }
+
+    if (user_id != data.user_id) {
+      resolve({ statusCode: 401, data: "user id does not match" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        UPDATE company
+        SET
+          name = '${data.name}',
+          city = '${data.city}',
+          state = '${data.state}',
+          zip = '${data.zip}'
+        WHERE user_id = '${user_id}'
+          AND id = '${data.id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to update company" });
+        return;
+      });
+  });
+}
+
+function createCompany(user_id, data) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        INSERT INTO company
+        (id, user_id, name, city, state, zip)
+        VALUES
+        (UUID(), '${user_id}', '', '', '', '')
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to create company" });
+        return;
+      });
+  });
+}
+
+function deleteCompany(user_id, id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!idIsValid(id)) {
+      resolve({ statusCode: 500, data: "id not valid" });
+      return;
+    }
+
+    database
+      .run(
+        `
+        DELETE FROM company
+        WHERE user_id = '${user_id}'
+          AND id = '${id}';
+        `
+      )
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to delete company" });
         return;
       });
   });
@@ -352,6 +455,9 @@ module.exports.getUserId = getUserId;
 
 module.exports.getCompanies = getCompanies;
 module.exports.getCompany = getCompany;
+module.exports.updateCompany = updateCompany;
+module.exports.createCompany = createCompany;
+module.exports.deleteCompany = deleteCompany;
 
 module.exports.getCompanyContactInfo = getCompanyContactInfo;
 module.exports.updateCompanyContactInfo = updateCompanyContactInfo;
