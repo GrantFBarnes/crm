@@ -13,8 +13,7 @@ import { Address } from 'src/app/shared/interfaces/address';
 export class CompanyComponent implements OnInit {
   loading: boolean = true;
 
-  editMode: boolean = false;
-
+  companyEditMode: boolean = false;
   company: Company = { id: '', user_id: '', name: '' };
   company_edit: Company = JSON.parse(JSON.stringify(this.company));
 
@@ -36,24 +35,35 @@ export class CompanyComponent implements OnInit {
     });
   }
 
-  enterEditMode(): void {
+  enterCompanyEditMode(): void {
     this.company_edit = JSON.parse(JSON.stringify(this.company));
-    this.editMode = true;
+    this.companyEditMode = true;
   }
 
-  exitEditMode(): void {
-    this.editMode = false;
+  exitCompanyEditMode(): void {
+    this.companyEditMode = false;
   }
 
-  saveChanges(): void {
+  saveCompany(): void {
     this.loading = true;
     this.httpService
       .put('/api/crm/company', this.company_edit)
       .subscribe(() => {
         this.company = JSON.parse(JSON.stringify(this.company_edit));
-        this.exitEditMode();
+        this.exitCompanyEditMode();
         this.loading = false;
       });
+  }
+
+  deleteCompany(): void {
+    if (window.confirm('Are you sure you want to delete this company?')) {
+      this.loading = true;
+      this.httpService
+        .delete('/api/crm/company/' + this.company.id)
+        .subscribe(() => {
+          window.location.href = '/crm/companies';
+        });
+    }
   }
 
   getCompany(): void {

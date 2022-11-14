@@ -51,8 +51,8 @@ export class CompaniesComponent implements OnInit {
   }
 
   sortMethod = (a: KeyValue<string, any>, b: KeyValue<string, any>): number => {
-    const a_val = a.value.name;
-    const b_val = b.value.name;
+    const a_val = a.value.name.toLocaleLowerCase();
+    const b_val = b.value.name.toLocaleLowerCase();
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;
     return 0;

@@ -1,31 +1,57 @@
 <app-loading *ngIf="loading"></app-loading>
 <div [ngClass]="loading ? 'container blur' : 'container'">
   <div class="mainTitle">
-    <ng-container *ngIf="!editMode">
+    <ng-container *ngIf="!companyEditMode">
       <h1>{{ company.name || "(No Name)" }}</h1>
-      <button class="btn btn-outline-primary btn-sm" (click)="enterEditMode()">
+      <button
+        class="btn btn-outline-primary btn-sm"
+        (click)="enterCompanyEditMode()"
+      >
         <i class="bi bi-pencil"></i>
         Edit
       </button>
     </ng-container>
-    <ng-container *ngIf="editMode">
-      <h1>
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Company Name"
-          [(ngModel)]="company_edit.name"
-        />
-      </h1>
-      <button class="btn btn-outline-secondary btn-sm" (click)="exitEditMode()">
-        <i class="bi bi-x"></i>
-        Cancel
-      </button>
-      &nbsp;
-      <button class="btn btn-outline-success btn-sm" (click)="saveChanges()">
-        <i class="bi bi-save"></i>
-        Save
-      </button>
+    <ng-container *ngIf="companyEditMode">
+      <div class="row mb-2">
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text">Company Name</span>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="company_edit.name"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-6 left">
+          <button
+            class="btn btn-outline-danger btn-sm"
+            (click)="deleteCompany()"
+          >
+            <i class="bi bi-trash"></i>
+            Delete Company
+          </button>
+        </div>
+        <div class="col-6 right">
+          <button
+            class="btn btn-outline-secondary btn-sm"
+            (click)="exitCompanyEditMode()"
+          >
+            <i class="bi bi-x"></i>
+            Cancel
+          </button>
+          &nbsp;
+          <button
+            class="btn btn-outline-success btn-sm"
+            (click)="saveCompany()"
+          >
+            <i class="bi bi-save"></i>
+            Save
+          </button>
+        </div>
+      </div>
     </ng-container>
   </div>
 </div>
