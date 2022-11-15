@@ -1,9 +1,19 @@
+const mysql = require("mysql");
 const { v4: uuidv4 } = require("uuid");
 
-const database = require("./database.js");
+const connection = mysql.createConnection({
+  host: "localhost",
+  user: "root",
+  password: process.env.SQL_TU_PASSWORD,
+  database: "crm",
+});
 
 const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
+
+const table_columns = {
+  company: ["id", "user_id", "name"],
+};
 
 ////////////////////////////////////////////////////////////////////////////////
 // Common
@@ -15,20 +25,18 @@ function idIsValid(id) {
   return true;
 }
 
+function tableIsValid(table) {
+  if (table_columns[table]) return true;
+  return false;
+}
+
 function dataIsValid(table, data) {
   if (!data || !data.id || !id_regex.test(data.id)) {
     return false;
   }
 
-  let columns = [];
-  switch (table) {
-    case "company":
-      columns = ["id", "user_id", "name"];
-      break;
-
-    default:
-      return false;
-  }
+  let columns = table_columns[table];
+  if (!columns) return false;
 
   for (let field in data) {
     if (columns.indexOf(field) < 0) {
@@ -46,11 +54,16 @@ function dataIsValid(table, data) {
   return true;
 }
 
-function getIdFromData(data, field) {
-  if (data && data[field] && id_regex.test(data[field])) {
-    return data[field];
-  }
-  return "";
+function execute(command) {
+  return new Promise((resolve, reject) => {
+    connection.query(command, (err, res) => {
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(res);
+    });
+  });
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -63,14 +76,11 @@ function getUserId(data) {
       return;
     }
 
-    database
-      .run(
-        `
-        SELECT id FROM user
-        WHERE name = '${data.username}'
-          AND password = '${data.password}';
-        `
-      )
+    execute(`
+      SELECT id FROM user
+      WHERE name = '${data.username}'
+        AND password = '${data.password}';
+        `)
       .then((result) => {
         if (result.length) {
           resolve(result[0].id);
@@ -87,72 +97,44 @@ function getUserId(data) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
-// Companies
+// Generic Tables
 
-function getCompanies(user_id) {
+function getTableRows(user_id, table) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
       return;
     }
 
-    database
-      .run(
-        `
-        SELECT * FROM company
-        WHERE user_id = '${user_id}';
-        `
-      )
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    execute(`
+      SELECT * FROM ${table}
+      WHERE user_id = '${user_id}';
+        `)
       .then((result) => {
         resolve({ statusCode: 200, data: result });
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to get companies" });
+        resolve({ statusCode: 400, data: "failed to get table rows" });
         return;
       });
   });
 }
 
-function getCompany(user_id, company_id) {
+function getTableRow(user_id, table, id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
       return;
     }
 
-    if (!idIsValid(company_id)) {
-      resolve({ statusCode: 500, data: "company id not valid" });
-      return;
-    }
-
-    database
-      .run(
-        `
-        SELECT * FROM company
-        WHERE user_id = '${user_id}'
-          AND id = '${company_id}';
-        `
-      )
-      .then((result) => {
-        if (result.length) {
-          resolve({ statusCode: 200, data: result[0] });
-          return;
-        }
-        resolve({ statusCode: 400, data: "company not found" });
-        return;
-      })
-      .catch(() => {
-        resolve({ statusCode: 400, data: "failed to get company" });
-        return;
-      });
-  });
-}
-
-function deleteCompany(user_id, id) {
-  return new Promise((resolve) => {
-    if (!idIsValid(user_id)) {
-      resolve({ statusCode: 500, data: "user id not valid" });
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
       return;
     }
 
@@ -161,62 +143,121 @@ function deleteCompany(user_id, id) {
       return;
     }
 
-    database
-      .run(
-        `
-        DELETE FROM company
-        WHERE user_id = '${user_id}'
-          AND id = '${id}';
-        `
-      )
+    execute(`
+      SELECT * FROM ${table}
+      WHERE user_id = '${user_id}'
+        AND id = '${id}';
+        `)
+      .then((result) => {
+        if (result.length) {
+          resolve({ statusCode: 200, data: result[0] });
+          return;
+        }
+        resolve({ statusCode: 400, data: "id not found" });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get table row" });
+        return;
+      });
+  });
+}
+
+function deleteTableRow(user_id, table, id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (!idIsValid(id)) {
+      resolve({ statusCode: 500, data: "id not valid" });
+      return;
+    }
+
+    execute(`
+      DELETE FROM ${table}
+      WHERE user_id = '${user_id}'
+        AND id = '${id}';
+        `)
       .then(() => {
         resolve({ statusCode: 200, data: id });
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to delete company" });
+        resolve({ statusCode: 400, data: "failed to delete table row" });
         return;
       });
   });
 }
 
-function createCompany(user_id, data) {
+function createTableRow(user_id, table, data) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
       return;
     }
 
-    const new_id = uuidv4();
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
 
-    database
-      .run(
-        `
-        INSERT INTO company
-        (id, user_id, name)
-        VALUES
-        ('${new_id}', '${user_id}', '')
-        `
-      )
+    const new_id = uuidv4();
+    let sql = `INSERT INTO ${table} (`;
+    for (let column of table_columns[table]) {
+      sql += column + ", ";
+    }
+    sql = sql.slice(0, -2);
+    sql += ") VALUES (";
+    for (let column of table_columns[table]) {
+      switch (column) {
+        case "id":
+          sql += `'${new_id}', `;
+          break;
+
+        case "user_id":
+          sql += `'${user_id}', `;
+          break;
+
+        default:
+          sql += "'', ";
+          break;
+      }
+    }
+    sql = sql.slice(0, -2);
+    sql += ")";
+
+    execute(sql)
       .then(() => {
         resolve({ statusCode: 200, data: new_id });
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to create company" });
+        resolve({ statusCode: 400, data: "failed to create table row" });
         return;
       });
   });
 }
 
-function updateCompany(user_id, data) {
+function updateTableRow(user_id, table, data) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
       return;
     }
 
-    if (!dataIsValid("company", data)) {
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (!dataIsValid(table, data)) {
       resolve({ statusCode: 500, data: "data not valid" });
       return;
     }
@@ -226,22 +267,29 @@ function updateCompany(user_id, data) {
       return;
     }
 
-    database
-      .run(
-        `
-        UPDATE company
-        SET
-          name = '${data.name}'
-        WHERE user_id = '${user_id}'
-          AND id = '${data.id}';
-        `
-      )
+    let sql = `UPDATE ${table} SET `;
+    for (let column of table_columns[table]) {
+      switch (column) {
+        case "id":
+        case "user_id":
+          break;
+
+        default:
+          sql += `${column} = '${data[column]}', `;
+          break;
+      }
+    }
+    sql = sql.slice(0, -2);
+    sql += ` WHERE user_id = '${user_id}'
+              AND id = '${data.id}';`;
+
+    execute(sql)
       .then((result) => {
         resolve({ statusCode: 200, data: result });
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to update company" });
+        resolve({ statusCode: 400, data: "failed to update table row" });
         return;
       });
   });
@@ -251,8 +299,8 @@ function updateCompany(user_id, data) {
 
 module.exports.getUserId = getUserId;
 
-module.exports.getCompanies = getCompanies;
-module.exports.getCompany = getCompany;
-module.exports.deleteCompany = deleteCompany;
-module.exports.createCompany = createCompany;
-module.exports.updateCompany = updateCompany;
+module.exports.getTableRows = getTableRows;
+module.exports.getTableRow = getTableRow;
+module.exports.deleteTableRow = deleteTableRow;
+module.exports.createTableRow = createTableRow;
+module.exports.updateTableRow = updateTableRow;

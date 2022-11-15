@@ -70,59 +70,68 @@ router.post("/api/crm/logout", (request, response) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// Companies
+// Generic Tables
 
-// Get all companies
-router.get("/api/crm/companies", (request, response) => {
-  const user_id = authentication.getAuthentication(request, userCookieName);
-  if (user_id) {
-    returnPromiseResponse(response, main.getCompanies(user_id));
-  } else {
-    rejectUnauthenticated(response, userCookieName);
-  }
-});
-
-// Get company
-router.get("/api/crm/company/:id", (request, response) => {
+// Get all rows from table
+router.get("/api/crm/table/:table", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getCompany(user_id, request.params.id)
+      main.getTableRows(user_id, request.params.table)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }
 });
 
-// Delete company
-router.delete("/api/crm/company/:id", (request, response) => {
+// Get row from table
+router.get("/api/crm/table/:table/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.deleteCompany(user_id, request.params.id)
+      main.getTableRow(user_id, request.params.table, request.params.id)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }
 });
 
-// Create company
-router.post("/api/crm/company", (request, response) => {
+// Delete row from table
+router.delete("/api/crm/table/:table/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
-    returnPromiseResponse(response, main.createCompany(user_id, request.body));
+    returnPromiseResponse(
+      response,
+      main.deleteTableRow(user_id, request.params.table, request.params.id)
+    );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }
 });
 
-// Update company
-router.put("/api/crm/company", (request, response) => {
+// Create row in table
+router.post("/api/crm/table/:table", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
-    returnPromiseResponse(response, main.updateCompany(user_id, request.body));
+    returnPromiseResponse(
+      response,
+      main.createTableRow(user_id, request.params.table, request.body)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Update row in table
+router.put("/api/crm/table/:table", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.updateTableRow(user_id, request.params.table, request.body)
+    );
   } else {
     rejectUnauthenticated(response, userCookieName);
   }

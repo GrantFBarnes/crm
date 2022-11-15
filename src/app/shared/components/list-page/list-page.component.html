@@ -1,0 +1,50 @@
+<app-loading *ngIf="loading"></app-loading>
+<div [ngClass]="loading ? 'container blur' : 'container'">
+  <div class="mainTitle">
+    <h1>{{ title }}</h1>
+  </div>
+
+  <div class="row mb-3">
+    <table class="table table-light table-hover">
+      <thead>
+        <tr>
+          <ng-container *ngFor="let item of columns | keyvalue">
+            <th>{{ item.key }}</th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td colspan="100%">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search..."
+              [(ngModel)]="search_text"
+            />
+          </td>
+        </tr>
+        <ng-container *ngFor="let row of data">
+          <ng-container *ngIf="searchTextInRow(row)">
+            <tr class="clickable" (click)="openRow(row.id)">
+              <ng-container *ngFor="let item of columns | keyvalue">
+                <td>
+                  {{ row[item.value] || "(No " + item.key + ")" }}
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="row mb-3">
+    <div class="center">
+      <button class="btn btn-outline-success btn-sm" (click)="addRow()">
+        <i class="bi bi-plus"></i>
+        Add New
+      </button>
+    </div>
+  </div>
+</div>
