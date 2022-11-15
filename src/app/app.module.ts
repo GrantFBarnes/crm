@@ -15,6 +15,8 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { ListPageComponent } from './shared/components/list-page/list-page.component';
 import { DetailPageComponent } from './shared/components/detail-page/detail-page.component';
+import { PeopleComponent } from './pages/people/people.component';
+import { PersonComponent } from './pages/person/person.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +29,8 @@ import { DetailPageComponent } from './shared/components/detail-page/detail-page
     CompanyComponent,
     ListPageComponent,
     DetailPageComponent,
+    PeopleComponent,
+    PersonComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

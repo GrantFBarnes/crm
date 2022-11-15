@@ -13,6 +13,7 @@ const id_regex =
 
 const table_columns = {
   company: ["id", "user_id", "name"],
+  person: ["id", "user_id", "first_name", "last_name"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////
