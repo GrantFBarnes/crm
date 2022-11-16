@@ -14,10 +14,12 @@ const id_regex =
 const table_columns = {
   company: ["id", "user_id", "name"],
   person: ["id", "user_id", "first_name", "last_name"],
-  company_phone: ["id", "user_id", "parent_id", "value"],
-  person_phone: ["id", "user_id", "parent_id", "value"],
-  company_email: ["id", "user_id", "parent_id", "value"],
-  person_email: ["id", "user_id", "parent_id", "value"],
+  company_phone: ["id", "user_id", "parent_id", "phone"],
+  person_phone: ["id", "user_id", "parent_id", "phone"],
+  company_email: ["id", "user_id", "parent_id", "email"],
+  person_email: ["id", "user_id", "parent_id", "email"],
+  company_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
+  person_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////

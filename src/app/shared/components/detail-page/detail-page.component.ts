@@ -12,8 +12,13 @@ export class DetailPageComponent implements OnInit {
   @Input() list_page: string = '';
   @Input() columns: { [name: string]: string } = {};
 
-  phone_columns: { [name: string]: string } = { Value: 'value' };
-  email_columns: { [name: string]: string } = { Value: 'value' };
+  phone_columns: { [name: string]: string } = { Phone: 'phone' };
+  email_columns: { [name: string]: string } = { Email: 'email' };
+  address_columns: { [name: string]: string } = {
+    City: 'city',
+    State: 'state',
+    Zip: 'zip',
+  };
 
   loading: boolean = true;
 

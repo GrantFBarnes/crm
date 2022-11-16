@@ -1,17 +1,20 @@
-<ng-container *ngFor="let item of columns | keyvalue">
-  <ng-container *ngIf="!edit_mode">
-    {{ data[item.value] || "(No " + item.key + ")" }}
+<div class="mb-2">
+  <ng-container *ngFor="let item of columns | keyvalue">
+    <ng-container *ngIf="!edit_mode">
+      {{ data[item.value] || "(No " + item.key + ")" }}
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      {{ item.key }}
+      <input
+        type="text"
+        class="form-control"
+        [placeholder]="item.key"
+        (keyup)="checkPendingChanges()"
+        [(ngModel)]="data_edit[item.value]"
+      />
+    </ng-container>
   </ng-container>
-  <ng-container *ngIf="edit_mode">
-    <input
-      type="text"
-      class="form-control"
-      (keyup)="checkPendingChanges()"
-      [(ngModel)]="data_edit[item.value]"
-    />
-    <br />
-  </ng-container>
-</ng-container>
+</div>
 <ng-container *ngIf="edit_mode">
   <div class="center">
     <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
@@ -26,4 +29,5 @@
       </button>
     </ng-container>
   </div>
+  <hr />
 </ng-container>

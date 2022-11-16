@@ -3,7 +3,6 @@
   <div class="card-body">
     <h5 class="card-title">{{ title }}</h5>
     <ng-container *ngFor="let row of data">
-      <hr />
       <app-detail-card
         [data]="row"
         [columns]="columns"
@@ -12,8 +11,6 @@
         (emitDeleteData)="deleteData($event)"
       ></app-detail-card>
     </ng-container>
-    <br />
-    <br />
     <div class="center">
       <ng-container *ngIf="!edit_mode">
         <button

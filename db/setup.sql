@@ -75,7 +75,7 @@ CREATE TABLE company_phone (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(255) DEFAULT "",
+    phone VARCHAR(255) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -89,7 +89,7 @@ CREATE TABLE person_phone (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(255) DEFAULT "",
+    phone VARCHAR(255) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -101,7 +101,7 @@ CREATE TABLE company_email (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(255) DEFAULT "",
+    email VARCHAR(255) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -114,7 +114,7 @@ CREATE TABLE person_email (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(255) DEFAULT "",
+    email VARCHAR(255) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -126,7 +126,7 @@ CREATE TABLE company_note (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(10000) DEFAULT "",
+    note VARCHAR(10000) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -141,7 +141,7 @@ CREATE TABLE person_note (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    value VARCHAR(10000) DEFAULT "",
+    note VARCHAR(10000) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
