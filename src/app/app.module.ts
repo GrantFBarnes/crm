@@ -11,10 +11,12 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
-import { CompaniesComponent } from './pages/companies/companies.component';
-import { CompanyComponent } from './pages/company/company.component';
 import { ListPageComponent } from './shared/components/list-page/list-page.component';
 import { DetailPageComponent } from './shared/components/detail-page/detail-page.component';
+import { ListCardComponent } from './shared/components/list-card/list-card.component';
+import { DetailCardComponent } from './shared/components/detail-card/detail-card.component';
+import { CompaniesComponent } from './pages/companies/companies.component';
+import { CompanyComponent } from './pages/company/company.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
 
@@ -25,10 +27,12 @@ import { PersonComponent } from './pages/person/person.component';
     HomeComponent,
     LoginComponent,
     PageNotFoundComponent,
-    CompaniesComponent,
-    CompanyComponent,
     ListPageComponent,
     DetailPageComponent,
+    ListCardComponent,
+    DetailCardComponent,
+    CompaniesComponent,
+    CompanyComponent,
     PeopleComponent,
     PersonComponent,
   ],

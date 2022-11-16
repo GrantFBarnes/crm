@@ -14,6 +14,8 @@ const id_regex =
 const table_columns = {
   company: ["id", "user_id", "name"],
   person: ["id", "user_id", "first_name", "last_name"],
+  company_phone: ["id", "user_id", "parent_id", "value"],
+  person_phone: ["id", "user_id", "parent_id", "value"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -127,6 +129,42 @@ function getTableRows(user_id, table) {
   });
 }
 
+function getTableRowsWithParent(user_id, table, parent_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (!idIsValid(parent_id)) {
+      resolve({ statusCode: 500, data: "parent id not valid" });
+      return;
+    }
+
+    execute(`
+      SELECT * FROM ${table}
+      WHERE user_id = '${user_id}'
+        AND parent_id = '${parent_id}';
+        `)
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({
+          statusCode: 400,
+          data: "failed to get table rows with parent",
+        });
+        return;
+      });
+  });
+}
+
 function getTableRow(user_id, table, id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
@@ -226,6 +264,14 @@ function createTableRow(user_id, table, data) {
           sql += `'${user_id}', `;
           break;
 
+        case "parent_id":
+          if (!idIsValid(data.parent_id)) {
+            resolve({ statusCode: 500, data: "parent id not valid" });
+            return;
+          }
+          sql += `'${data.parent_id}', `;
+          break;
+
         default:
           sql += "'', ";
           break;
@@ -273,6 +319,7 @@ function updateTableRow(user_id, table, data) {
       switch (column) {
         case "id":
         case "user_id":
+        case "parent_id":
           break;
 
         default:
@@ -301,6 +348,7 @@ function updateTableRow(user_id, table, data) {
 module.exports.getUserId = getUserId;
 
 module.exports.getTableRows = getTableRows;
+module.exports.getTableRowsWithParent = getTableRowsWithParent;
 module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;
 module.exports.createTableRow = createTableRow;

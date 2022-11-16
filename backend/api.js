@@ -85,8 +85,25 @@ router.get("/api/crm/table/:table", (request, response) => {
   }
 });
 
+// Get rows from table with given parent
+router.get("/api/crm/table/:table/parent/:parent", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getTableRowsWithParent(
+        user_id,
+        request.params.table,
+        request.params.parent
+      )
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 // Get row from table
-router.get("/api/crm/table/:table/:id", (request, response) => {
+router.get("/api/crm/table/:table/id/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
@@ -99,7 +116,7 @@ router.get("/api/crm/table/:table/:id", (request, response) => {
 });
 
 // Delete row from table
-router.delete("/api/crm/table/:table/:id", (request, response) => {
+router.delete("/api/crm/table/:table/id/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(

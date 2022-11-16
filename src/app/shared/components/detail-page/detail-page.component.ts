@@ -12,9 +12,11 @@ export class DetailPageComponent implements OnInit {
   @Input() list_page: string = '';
   @Input() columns: { [name: string]: string } = {};
 
+  phone_columns: { [name: string]: string } = { Value: 'value' };
+
   loading: boolean = true;
 
-  editMode: boolean = false;
+  edit_mode: boolean = false;
   data: any = {};
   data_edit: any = JSON.parse(JSON.stringify(this.data));
 
@@ -33,11 +35,11 @@ export class DetailPageComponent implements OnInit {
 
   enterEditMode(): void {
     this.data_edit = JSON.parse(JSON.stringify(this.data));
-    this.editMode = true;
+    this.edit_mode = true;
   }
 
   exitEditMode(): void {
-    this.editMode = false;
+    this.edit_mode = false;
   }
 
   saveData(): void {
@@ -55,7 +57,7 @@ export class DetailPageComponent implements OnInit {
     if (window.confirm(`Are you sure you want to delete this ${this.table}?`)) {
       this.loading = true;
       this.httpService
-        .delete('/api/crm/table/' + this.table + '/' + this.data.id)
+        .delete('/api/crm/table/' + this.table + '/id/' + this.data.id)
         .subscribe(() => {
           window.location.href = '/crm/' + this.list_page;
         });
@@ -65,7 +67,7 @@ export class DetailPageComponent implements OnInit {
   getData(): void {
     this.data.id = window.location.pathname.split('/')[3];
     this.httpService
-      .get('/api/crm/table/' + this.table + '/' + this.data.id)
+      .get('/api/crm/table/' + this.table + '/id/' + this.data.id)
       .subscribe((data: any) => {
         this.data = data;
         this.loading = false;
