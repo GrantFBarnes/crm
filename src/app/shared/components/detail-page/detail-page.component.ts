@@ -13,12 +13,14 @@ export class DetailPageComponent implements OnInit {
   @Input() columns: { [name: string]: string } = {};
 
   phone_columns: { [name: string]: string } = { Value: 'value' };
+  email_columns: { [name: string]: string } = { Value: 'value' };
 
   loading: boolean = true;
 
   edit_mode: boolean = false;
   data: any = {};
   data_edit: any = JSON.parse(JSON.stringify(this.data));
+  pending_changes: boolean = false;
 
   constructor(private httpService: HttpService) {}
 
@@ -40,6 +42,11 @@ export class DetailPageComponent implements OnInit {
 
   exitEditMode(): void {
     this.edit_mode = false;
+  }
+
+  checkPendingChanges(): void {
+    this.pending_changes =
+      JSON.stringify(this.data) != JSON.stringify(this.data_edit);
   }
 
   saveData(): void {

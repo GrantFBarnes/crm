@@ -16,6 +16,8 @@ const table_columns = {
   person: ["id", "user_id", "first_name", "last_name"],
   company_phone: ["id", "user_id", "parent_id", "value"],
   person_phone: ["id", "user_id", "parent_id", "value"],
+  company_email: ["id", "user_id", "parent_id", "value"],
+  person_email: ["id", "user_id", "parent_id", "value"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////

@@ -21,6 +21,7 @@
               <input
                 type="text"
                 class="form-control"
+                (keyup)="checkPendingChanges()"
                 [(ngModel)]="data_edit[item.value]"
               />
             </div>
@@ -42,11 +43,13 @@
             <i class="bi bi-x"></i>
             Cancel
           </button>
-          &nbsp;
-          <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
-            <i class="bi bi-save"></i>
-            Save
-          </button>
+          <ng-container *ngIf="pending_changes">
+            &nbsp;
+            <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
+              <i class="bi bi-save"></i>
+              Save
+            </button>
+          </ng-container>
         </div>
       </div>
     </ng-container>
@@ -59,6 +62,14 @@
         [table]="table + '_phone'"
         [parent_id]="data.id"
         [columns]="phone_columns"
+      ></app-list-card>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 col-xl-3">
+      <app-list-card
+        [title]="'Email'"
+        [table]="table + '_email'"
+        [parent_id]="data.id"
+        [columns]="email_columns"
       ></app-list-card>
     </div>
   </div>
