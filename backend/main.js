@@ -20,6 +20,8 @@ const table_columns = {
   person_email: ["id", "user_id", "parent_id", "email"],
   company_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
   person_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
+  company_note: ["id", "user_id", "parent_id", "note"],
+  person_note: ["id", "user_id", "parent_id", "note"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////

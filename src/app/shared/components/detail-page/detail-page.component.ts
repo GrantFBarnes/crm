@@ -19,6 +19,7 @@ export class DetailPageComponent implements OnInit {
     State: 'state',
     Zip: 'zip',
   };
+  note_columns: { [name: string]: string } = { Note: 'note' };
 
   loading: boolean = true;
 

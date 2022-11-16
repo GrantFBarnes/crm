@@ -1,17 +1,39 @@
 <div class="mb-2">
   <ng-container *ngFor="let item of columns | keyvalue">
     <ng-container *ngIf="!edit_mode">
-      {{ data[item.value] || "(No " + item.key + ")" }}
+      <ng-container [ngSwitch]="item.key">
+        <ng-container *ngSwitchCase="'Note'">
+          <p style="white-space: pre-wrap">
+            {{ data[item.value] || "(No " + item.key + ")" }}
+          </p>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          {{ data[item.value] || "(No " + item.key + ")" }}
+        </ng-container>
+      </ng-container>
     </ng-container>
     <ng-container *ngIf="edit_mode">
       {{ item.key }}
-      <input
-        type="text"
-        class="form-control"
-        [placeholder]="item.key"
-        (keyup)="checkPendingChanges()"
-        [(ngModel)]="data_edit[item.value]"
-      />
+      <ng-container [ngSwitch]="item.key">
+        <ng-container *ngSwitchCase="'Note'">
+          <textarea
+            rows="{{ data_edit[item.value].split('\n').length }}"
+            class="form-control"
+            [placeholder]="item.key"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit[item.value]"
+          ></textarea>
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+          <input
+            type="text"
+            class="form-control"
+            [placeholder]="item.key"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit[item.value]"
+          />
+        </ng-container>
+      </ng-container>
     </ng-container>
   </ng-container>
 </div>
