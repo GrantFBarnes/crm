@@ -4,6 +4,7 @@
     <h5 class="card-title">{{ title }}</h5>
     <ng-container *ngFor="let row of data">
       <app-detail-card
+        [title]="title"
         [data]="row"
         [columns]="columns"
         [edit_mode]="edit_mode"

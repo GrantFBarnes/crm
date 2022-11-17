@@ -6,6 +6,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./detail-card.component.css'],
 })
 export class DetailCardComponent implements OnInit {
+  @Input() title: string = '';
   @Input() data: any = {};
   @Input() columns: { [name: string]: string } = {};
   @Input() edit_mode: boolean = false;
@@ -35,5 +36,54 @@ export class DetailCardComponent implements OnInit {
 
   deleteData(): void {
     this.emitDeleteData.emit(this.data.id);
+  }
+
+  getDisplayString(): string {
+    let result = '';
+    switch (this.title) {
+      case 'Phone':
+      case 'Email':
+      case 'Note':
+        const field = this.title.toLocaleLowerCase();
+        result = this.data[field] || '(No ' + this.title + ')';
+        break;
+
+      case 'Address':
+        if (this.data.city) {
+          result += this.data.city;
+          if (this.data.state) {
+            result += ', ';
+          }
+        }
+        if (this.data.state) {
+          result += this.data.state;
+        }
+        if (this.data.zip) {
+          if (result) {
+            result += ' ';
+          }
+          result += this.data.zip;
+        }
+        if (!result) result = '(No Address)';
+        break;
+
+      case 'Contact Log':
+        if (this.data.date) {
+          const dateStr = new Date(this.data.date);
+          result += dateStr.toLocaleString();
+          if (this.data.description) {
+            result += ' - ';
+          }
+        }
+        if (this.data.description) {
+          result += this.data.description;
+        }
+        break;
+
+      default:
+        break;
+    }
+    if (result) return result;
+    return '(No Data)';
   }
 }

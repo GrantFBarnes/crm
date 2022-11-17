@@ -91,6 +91,14 @@
           [columns]="note_columns"
         ></app-list-card>
       </div>
+      <div class="mb-2">
+        <app-list-card
+          [title]="'Contact Log'"
+          [table]="table + '_contact'"
+          [parent_id]="data.id"
+          [columns]="contact_columns"
+        ></app-list-card>
+      </div>
     </div>
   </div>
 </div>

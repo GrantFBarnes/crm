@@ -20,6 +20,10 @@ export class DetailPageComponent implements OnInit {
     Zip: 'zip',
   };
   note_columns: { [name: string]: string } = { Note: 'note' };
+  contact_columns: { [name: string]: string } = {
+    Description: 'description',
+    Date: 'date',
+  };
 
   loading: boolean = true;
 

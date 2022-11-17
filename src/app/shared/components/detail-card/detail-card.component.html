@@ -1,20 +1,33 @@
-<div class="mb-2">
-  <ng-container *ngFor="let item of columns | keyvalue">
-    <ng-container *ngIf="!edit_mode">
-      <ng-container [ngSwitch]="item.key">
-        <ng-container *ngSwitchCase="'Note'">
-          <p style="white-space: pre-wrap">
-            {{ data[item.value] || "(No " + item.key + ")" }}
-          </p>
-        </ng-container>
-        <ng-container *ngSwitchDefault>
-          {{ data[item.value] || "(No " + item.key + ")" }}
-        </ng-container>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="edit_mode">
+<ng-container *ngIf="!edit_mode">
+  <div class="mb-2" style="white-space: pre-wrap">
+    {{ getDisplayString() }}
+  </div>
+</ng-container>
+
+<ng-container *ngIf="edit_mode">
+  <div class="mb-2">
+    <ng-container *ngFor="let item of columns | keyvalue">
       {{ item.key }}
       <ng-container [ngSwitch]="item.key">
+        <ng-container *ngSwitchCase="'Date'">
+          <input
+            type="datetime-local"
+            class="form-control"
+            [placeholder]="item.key"
+            (keyup)="checkPendingChanges()"
+            (change)="checkPendingChanges()"
+            [(ngModel)]="data_edit[item.value]"
+          />
+        </ng-container>
+        <ng-container *ngSwitchCase="'Description'">
+          <textarea
+            rows="{{ data_edit[item.value].split('\n').length }}"
+            class="form-control"
+            [placeholder]="item.key"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit[item.value]"
+          ></textarea>
+        </ng-container>
         <ng-container *ngSwitchCase="'Note'">
           <textarea
             rows="{{ data_edit[item.value].split('\n').length }}"
@@ -35,9 +48,7 @@
         </ng-container>
       </ng-container>
     </ng-container>
-  </ng-container>
-</div>
-<ng-container *ngIf="edit_mode">
+  </div>
   <div class="center">
     <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
       <i class="bi bi-trash"></i>
