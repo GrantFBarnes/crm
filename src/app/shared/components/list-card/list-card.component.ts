@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+import { TableColumn } from 'src/app/shared/interfaces/table-column';
+
 @Component({
   selector: 'app-list-card',
   templateUrl: './list-card.component.html',
@@ -11,7 +13,7 @@ export class ListCardComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
   @Input() parent_id: string = '';
-  @Input() columns: { [name: string]: string } = {};
+  @Input() columns: TableColumn[] = [];
 
   loading: boolean = true;
 
@@ -40,8 +42,8 @@ export class ListCardComponent implements OnInit {
     let a_val = '';
     let b_val = '';
     for (let i in this.columns) {
-      a_val += a[this.columns[i]].toLocaleLowerCase();
-      b_val += b[this.columns[i]].toLocaleLowerCase();
+      a_val += a[this.columns[i].field].toLocaleLowerCase();
+      b_val += b[this.columns[i].field].toLocaleLowerCase();
     }
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;

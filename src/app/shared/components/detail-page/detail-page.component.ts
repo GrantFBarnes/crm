@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+import { TableColumn } from 'src/app/shared/interfaces/table-column';
+
 @Component({
   selector: 'app-detail-page',
   templateUrl: './detail-page.component.html',
@@ -10,21 +12,21 @@ import { HttpService } from 'src/app/shared/services/http.service';
 export class DetailPageComponent implements OnInit {
   @Input() table: string = '';
   @Input() list_page: string = '';
-  @Input() columns: { [name: string]: string } = {};
+  @Input() columns: TableColumn[] = [];
 
-  phone_columns: { [name: string]: string } = { Phone: 'phone' };
-  email_columns: { [name: string]: string } = { Email: 'email' };
-  address_columns: { [name: string]: string } = {
-    City: 'city',
-    State: 'state',
-    Zip: 'zip',
-  };
-  note_columns: { [name: string]: string } = { Note: 'note' };
-  contact_columns: { [name: string]: string } = {
-    Date: 'date',
-    Time: 'time',
-    Description: 'description',
-  };
+  phone_columns: TableColumn[] = [{ field: 'phone', title: 'Phone' }];
+  email_columns: TableColumn[] = [{ field: 'email', title: 'Email' }];
+  address_columns: TableColumn[] = [
+    { field: 'city', title: 'City' },
+    { field: 'state', title: 'State' },
+    { field: 'zip', title: 'Zip' },
+  ];
+  note_columns: TableColumn[] = [{ field: 'note', title: 'Note' }];
+  contact_columns: TableColumn[] = [
+    { field: 'date', title: 'Date' },
+    { field: 'time', title: 'Time' },
+    { field: 'description', title: 'Description' },
+  ];
 
   loading: boolean = true;
 

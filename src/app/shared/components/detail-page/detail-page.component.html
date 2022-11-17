@@ -3,8 +3,8 @@
   <div class="main-title">
     <ng-container *ngIf="!edit_mode">
       <h1>
-        <ng-container *ngFor="let item of columns | keyvalue">
-          {{ data[item.value] || "(No " + item.key + ")" }}
+        <ng-container *ngFor="let column of columns">
+          {{ data[column.field] || "(No " + column.title + ")" }}
         </ng-container>
       </h1>
       <button class="btn btn-outline-primary btn-sm" (click)="enterEditMode()">
@@ -13,16 +13,16 @@
       </button>
     </ng-container>
     <ng-container *ngIf="edit_mode">
-      <ng-container *ngFor="let item of columns | keyvalue">
+      <ng-container *ngFor="let column of columns">
         <div class="row mb-2">
           <div class="col-12">
             <div class="input-group">
-              <span class="input-group-text">{{ item.key }}</span>
+              <span class="input-group-text">{{ column.title }}</span>
               <input
                 type="text"
                 class="form-control"
                 (keyup)="checkPendingChanges()"
-                [(ngModel)]="data_edit[item.value]"
+                [(ngModel)]="data_edit[column.field]"
               />
             </div>
           </div>

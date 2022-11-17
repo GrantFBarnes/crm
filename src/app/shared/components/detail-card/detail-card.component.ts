@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
+import { TableColumn } from 'src/app/shared/interfaces/table-column';
+
 @Component({
   selector: 'app-detail-card',
   templateUrl: './detail-card.component.html',
@@ -8,7 +10,7 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 export class DetailCardComponent implements OnInit {
   @Input() title: string = '';
   @Input() data: any = {};
-  @Input() columns: { [name: string]: string } = {};
+  @Input() columns: TableColumn[] = [];
   @Input() edit_mode: boolean = false;
   @Output() emitSaveData = new EventEmitter<any>();
   @Output() emitDeleteData = new EventEmitter<string>();

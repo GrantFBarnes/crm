@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+import { TableColumn } from 'src/app/shared/interfaces/table-column';
+
 @Component({
   selector: 'app-list-page',
   templateUrl: './list-page.component.html',
@@ -10,7 +12,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
 export class ListPageComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
-  @Input() columns: { [name: string]: string } = {};
+  @Input() columns: TableColumn[] = [];
 
   loading: boolean = true;
 
@@ -56,8 +58,8 @@ export class ListPageComponent implements OnInit {
     let a_val = '';
     let b_val = '';
     for (let i in this.columns) {
-      a_val += a[this.columns[i]].toLocaleLowerCase();
-      b_val += b[this.columns[i]].toLocaleLowerCase();
+      a_val += a[this.columns[i].field].toLocaleLowerCase();
+      b_val += b[this.columns[i].field].toLocaleLowerCase();
     }
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;
@@ -68,7 +70,9 @@ export class ListPageComponent implements OnInit {
     const search_text = this.search_text.trim().toLocaleLowerCase();
     if (!search_text) return true;
     for (let i in this.columns) {
-      if (row[this.columns[i]].toLocaleLowerCase().includes(search_text)) {
+      if (
+        row[this.columns[i].field].toLocaleLowerCase().includes(search_text)
+      ) {
         return true;
       }
     }
