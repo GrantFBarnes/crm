@@ -51,17 +51,13 @@ export class DetailCardComponent implements OnInit {
       case 'Address':
         if (this.data.city) {
           result += this.data.city;
-          if (this.data.state) {
-            result += ', ';
-          }
+          if (this.data.state) result += ', ';
         }
         if (this.data.state) {
           result += this.data.state;
         }
         if (this.data.zip) {
-          if (result) {
-            result += ' ';
-          }
+          if (result) result += ' ';
           result += this.data.zip;
         }
         if (!result) result = '(No Address)';
@@ -69,13 +65,14 @@ export class DetailCardComponent implements OnInit {
 
       case 'Contact Log':
         if (this.data.date) {
-          const dateStr = new Date(this.data.date);
-          result += dateStr.toLocaleString();
-          if (this.data.description) {
-            result += ' - ';
-          }
+          result += new Date(this.data.date).toDateString();
+        }
+        if (this.data.time) {
+          if (result) result += ' - ';
+          result += this.data.time;
         }
         if (this.data.description) {
+          if (result) result += '\n';
           result += this.data.description;
         }
         break;

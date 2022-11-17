@@ -21,8 +21,9 @@ export class DetailPageComponent implements OnInit {
   };
   note_columns: { [name: string]: string } = { Note: 'note' };
   contact_columns: { [name: string]: string } = {
-    Description: 'description',
     Date: 'date',
+    Time: 'time',
+    Description: 'description',
   };
 
   loading: boolean = true;

@@ -22,8 +22,15 @@ const table_columns = {
   person_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
   company_note: ["id", "user_id", "parent_id", "note"],
   person_note: ["id", "user_id", "parent_id", "note"],
-  company_contact: ["id", "user_id", "parent_id", "description", "date"],
-  person_contact: ["id", "user_id", "parent_id", "description", "date"],
+  company_contact: [
+    "id",
+    "user_id",
+    "parent_id",
+    "date",
+    "time",
+    "description",
+  ],
+  person_contact: ["id", "user_id", "parent_id", "date", "time", "description"],
 };
 
 ////////////////////////////////////////////////////////////////////////////////

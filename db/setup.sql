@@ -153,8 +153,9 @@ CREATE TABLE company_contact (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    description VARCHAR(10000) DEFAULT "",
     date VARCHAR(255) DEFAULT "",
+    time VARCHAR(255) DEFAULT "",
+    description VARCHAR(10000) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -166,8 +167,9 @@ CREATE TABLE person_contact (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    description VARCHAR(10000) DEFAULT "",
     date VARCHAR(255) DEFAULT "",
+    time VARCHAR(255) DEFAULT "",
+    description VARCHAR(10000) DEFAULT "",
 
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
@@ -179,10 +181,11 @@ CREATE TABLE company_task (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
+    date VARCHAR(255) DEFAULT "",
+    time VARCHAR(255) DEFAULT "",
     title VARCHAR(255) DEFAULT "",
     description VARCHAR(10000) DEFAULT "",
     complete TINYINT(1) DEFAULT 0,
-    initial_date VARCHAR(255) DEFAULT "",
     frequency_type VARCHAR(255) DEFAULT "",
     frequency_number TINYINT DEFAULT NULL,
 
@@ -196,10 +199,11 @@ CREATE TABLE person_task (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
+    date VARCHAR(255) DEFAULT "",
+    time VARCHAR(255) DEFAULT "",
     title VARCHAR(255) DEFAULT "",
     description VARCHAR(10000) DEFAULT "",
     complete TINYINT(1) DEFAULT 0,
-    initial_date VARCHAR(255) DEFAULT "",
     frequency_type VARCHAR(255) DEFAULT "",
     frequency_number TINYINT DEFAULT NULL,
 
