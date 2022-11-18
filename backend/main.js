@@ -24,6 +24,24 @@ const table_columns = {
   person_note: ["note"],
   company_contact: ["date", "time", "description"],
   person_contact: ["date", "time", "description"],
+  company_task: [
+    "date",
+    "time",
+    "title",
+    "description",
+    "complete",
+    "frequency_number",
+    "frequency_type",
+  ],
+  person_task: [
+    "date",
+    "time",
+    "title",
+    "description",
+    "complete",
+    "frequency_number",
+    "frequency_type",
+  ],
 };
 
 for (let table in table_columns) {
@@ -295,6 +313,14 @@ function createTableRow(user_id, table, data) {
           sql += `CURRENT_DATE(), `;
           break;
 
+        case "complete":
+          sql += "0, ";
+          break;
+
+        case "frequency_number":
+          sql += "NULL, ";
+          break;
+
         default:
           sql += "'', ";
           break;
@@ -348,6 +374,11 @@ function updateTableRow(user_id, table, data) {
 
         case "date_modified":
           sql += `${column} = CURRENT_DATE(), `;
+          break;
+
+        case "complete":
+        case "frequency_number":
+          sql += `${column} = ${data[column]}, `;
           break;
 
         default:

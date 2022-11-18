@@ -58,9 +58,11 @@ export class ListPageComponent implements OnInit {
     let a_val = '';
     let b_val = '';
     for (let i in this.columns) {
-      a_val += a[this.columns[i].field].toLocaleLowerCase();
-      b_val += b[this.columns[i].field].toLocaleLowerCase();
+      a_val += a[this.columns[i].field];
+      b_val += b[this.columns[i].field];
     }
+    a_val = a_val.toLocaleLowerCase();
+    b_val = b_val.toLocaleLowerCase();
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;
     return 0;

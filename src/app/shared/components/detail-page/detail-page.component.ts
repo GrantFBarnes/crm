@@ -27,6 +27,15 @@ export class DetailPageComponent implements OnInit {
     { field: 'time', title: 'Time' },
     { field: 'description', title: 'Description' },
   ];
+  task_columns: TableColumn[] = [
+    { field: 'date', title: 'Date' },
+    { field: 'time', title: 'Time' },
+    { field: 'title', title: 'Title' },
+    { field: 'description', title: 'Description' },
+    { field: 'complete', title: 'Complete' },
+    { field: 'frequency_number', title: 'Frequency Number' },
+    { field: 'frequency_type', title: 'Frequency Type' },
+  ];
 
   loading: boolean = true;
 

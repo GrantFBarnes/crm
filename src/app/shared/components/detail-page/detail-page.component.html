@@ -109,6 +109,14 @@
           [columns]="contact_columns"
         ></app-list-card>
       </div>
+      <div class="mb-2">
+        <app-list-card
+          [title]="'Task'"
+          [table]="table + '_task'"
+          [parent_id]="data.id"
+          [columns]="task_columns"
+        ></app-list-card>
+      </div>
     </div>
   </div>
 </div>

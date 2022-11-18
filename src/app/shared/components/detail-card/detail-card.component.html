@@ -47,6 +47,46 @@
             [(ngModel)]="data_edit[column.field]"
           ></textarea>
         </ng-container>
+        <ng-container *ngSwitchCase="'complete'">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              [id]="'complete-switch-' + data.id"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit[column.field]"
+            />
+            <label
+              class="form-check-label"
+              [for]="'complete-switch-' + data.id"
+            >
+              {{ title + (data_edit[column.field] ? "" : " Not") }} Completed
+            </label>
+          </div>
+        </ng-container>
+        <ng-container *ngSwitchCase="'frequency_number'">
+          <input
+            type="number"
+            min="0"
+            max="30"
+            class="form-control"
+            [placeholder]="column.title"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit[column.field]"
+          />
+        </ng-container>
+        <ng-container *ngSwitchCase="'frequency_type'">
+          <select
+            class="form-control"
+            (change)="checkPendingChanges()"
+            [(ngModel)]="data_edit[column.field]"
+          >
+            <option value="work day">Work Day</option>
+            <option value="week">Week</option>
+            <option value="month">Month</option>
+            <option value="year">Year</option>
+          </select>
+        </ng-container>
         <ng-container *ngSwitchDefault>
           <input
             type="text"

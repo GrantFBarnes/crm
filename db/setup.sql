@@ -212,8 +212,8 @@ CREATE TABLE company_task (
     title VARCHAR(255) DEFAULT "",
     description VARCHAR(10000) DEFAULT "",
     complete TINYINT(1) DEFAULT 0,
-    frequency_type VARCHAR(255) DEFAULT "",
     frequency_number TINYINT DEFAULT NULL,
+    frequency_type VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -232,8 +232,8 @@ CREATE TABLE person_task (
     title VARCHAR(255) DEFAULT "",
     description VARCHAR(10000) DEFAULT "",
     complete TINYINT(1) DEFAULT 0,
-    frequency_type VARCHAR(255) DEFAULT "",
     frequency_number TINYINT DEFAULT NULL,
+    frequency_type VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,

@@ -79,6 +79,37 @@ export class DetailCardComponent implements OnInit {
         }
         break;
 
+      case 'Task':
+        if (this.data.date) {
+          result += new Date(this.data.date).toDateString();
+        }
+        if (this.data.time) {
+          if (result) result += ' - ';
+          result += this.data.time;
+        }
+        if (this.data.title) {
+          if (result) result += '\n';
+          result += this.data.title;
+        }
+        if (this.data.description) {
+          if (result) result += '\n';
+          result += this.data.description;
+        }
+        if (result) result += '\n';
+        result += this.data.complete ? 'Completed' : 'Not Completed';
+        if (this.data.frequency_number) {
+          if (result) result += '\n';
+          result +=
+            'Scheduled Every ' +
+            this.data.frequency_number +
+            ' ' +
+            this.data.frequency_type;
+          if (this.data.frequency_number > 1) {
+            result += 's';
+          }
+        }
+        break;
+
       default:
         break;
     }
