@@ -8,6 +8,8 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
+import { TaskComponent } from './pages/task/task.component';
 
 const routes: Routes = [
   { path: 'crm/home', component: HomeComponent },
@@ -16,6 +18,8 @@ const routes: Routes = [
   { path: 'crm/company/:id', component: CompanyComponent },
   { path: 'crm/people', component: PeopleComponent },
   { path: 'crm/person/:id', component: PersonComponent },
+  { path: 'crm/tasks', component: TasksComponent },
+  { path: 'crm/task/:id', component: TaskComponent },
   { path: 'crm', redirectTo: '/crm/home', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

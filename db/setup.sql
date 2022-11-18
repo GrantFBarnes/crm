@@ -62,7 +62,7 @@ CREATE TABLE task (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Title', 'Description of task', 0, 1, 1, 'day', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Title', 'Description of task', 0, 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
 
 CREATE TABLE company_address (
     id CHAR(36) NOT NULL,

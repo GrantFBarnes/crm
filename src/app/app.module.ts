@@ -19,6 +19,8 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
+import { TasksComponent } from './pages/tasks/tasks.component';
+import { TaskComponent } from './pages/task/task.component';
 
 @NgModule({
   declarations: [
@@ -35,6 +37,8 @@ import { PersonComponent } from './pages/person/person.component';
     CompanyComponent,
     PeopleComponent,
     PersonComponent,
+    TasksComponent,
+    TaskComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],

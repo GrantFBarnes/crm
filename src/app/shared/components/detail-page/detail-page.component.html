@@ -65,50 +65,185 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-md-4 col-xl-3">
-      <div class="mb-2">
-        <app-list-card
-          [title]="'Phone'"
-          [table]="table + '_phone'"
-          [parent_id]="data.id"
-          [columns]="phone_columns"
-        ></app-list-card>
+  <ng-container *ngIf="table == 'task'">
+    <ng-container *ngIf="!edit_mode">
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Completion</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <ng-container *ngIf="data.completed">Completed</ng-container>
+          <ng-container *ngIf="!data.completed">Not Complete</ng-container>
+        </div>
       </div>
-      <div class="mb-2">
-        <app-list-card
-          [title]="'Email'"
-          [table]="table + '_email'"
-          [parent_id]="data.id"
-          [columns]="email_columns"
-        ></app-list-card>
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Date/Time</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p style="white-space: pre-wrap">{{ getDateTimeString() }}</p>
+        </div>
       </div>
-      <div class="mb-2">
-        <app-list-card
-          [title]="'Address'"
-          [table]="table + '_address'"
-          [parent_id]="data.id"
-          [columns]="address_columns"
-        ></app-list-card>
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Description</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p style="white-space: pre-wrap">{{ data.description }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="complete-switch"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.completed"
+            />
+            <label class="form-check-label" for="complete-switch">
+              <ng-container *ngIf="data_edit.completed">
+                Completed
+              </ng-container>
+              <ng-container *ngIf="!data_edit.completed">
+                Not Complete
+              </ng-container>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Date</span>
+            <input
+              type="date"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.date"
+            />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Time</span>
+            <input
+              type="time"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.time"
+            />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="repeat-switch"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.repeating"
+            />
+            <label class="form-check-label" for="repeat-switch">
+              {{ data_edit.repeating ? "" : " Not" }} Repeating
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="data_edit.repeating">
+        <div class="row">
+          <div class="col-12 mb-2">
+            <div class="input-group">
+              <span class="input-group-text">Repeat every</span>
+              <input
+                type="number"
+                min="0"
+                max="127"
+                class="form-control small-form"
+                (keyup)="checkPendingChanges()"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.repeat_count"
+              />
+              <select
+                class="form-control small-from"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.repeat_interval"
+              >
+                <option value="work day">Work Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Description</span>
+            <textarea
+              rows="{{ data_edit.description.split('\n').length }}"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              [(ngModel)]="data_edit.description"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="table == 'company' || table == 'person'">
+    <div class="row">
+      <div class="col-md-4 col-xl-3">
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Phone'"
+            [table]="table + '_phone'"
+            [parent_id]="data.id"
+            [columns]="phone_columns"
+          ></app-list-card>
+        </div>
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Email'"
+            [table]="table + '_email'"
+            [parent_id]="data.id"
+            [columns]="email_columns"
+          ></app-list-card>
+        </div>
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Address'"
+            [table]="table + '_address'"
+            [parent_id]="data.id"
+            [columns]="address_columns"
+          ></app-list-card>
+        </div>
+      </div>
+      <div class="col-md-8 col-xl-9">
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Note'"
+            [table]="table + '_note'"
+            [parent_id]="data.id"
+            [columns]="note_columns"
+          ></app-list-card>
+        </div>
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Contact Log'"
+            [table]="table + '_contact'"
+            [parent_id]="data.id"
+            [columns]="contact_columns"
+          ></app-list-card>
+        </div>
       </div>
     </div>
-    <div class="col-md-8 col-xl-9">
-      <div class="mb-2">
-        <app-list-card
-          [title]="'Note'"
-          [table]="table + '_note'"
-          [parent_id]="data.id"
-          [columns]="note_columns"
-        ></app-list-card>
-      </div>
-      <div class="mb-2">
-        <app-list-card
-          [title]="'Contact Log'"
-          [table]="table + '_contact'"
-          [parent_id]="data.id"
-          [columns]="contact_columns"
-        ></app-list-card>
-      </div>
-    </div>
-  </div>
+  </ng-container>
 </div>
