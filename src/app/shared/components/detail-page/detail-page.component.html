@@ -1,5 +1,5 @@
 <app-loading *ngIf="loading"></app-loading>
-<div [ngClass]="loading ? 'container blur' : 'container'">
+<div [ngClass]="loading ? 'container-fluid blur' : 'container-fluid'">
   <div class="main-title">
     <div class="row">
       <div class="col-11">
@@ -81,7 +81,7 @@
           <h4>Date/Time</h4>
         </div>
         <div class="col-sm-9 mb-2">
-          <p style="white-space: pre-wrap">{{ getDateTimeString() }}</p>
+          <p class="wrap-text">{{ getDateTimeString() }}</p>
         </div>
       </div>
       <div class="row">
@@ -89,7 +89,7 @@
           <h4>Description</h4>
         </div>
         <div class="col-sm-9 mb-2">
-          <p style="white-space: pre-wrap">{{ data.description }}</p>
+          <p class="wrap-text">{{ data.description }}</p>
         </div>
       </div>
     </ng-container>
@@ -200,7 +200,7 @@
   </ng-container>
   <ng-container *ngIf="table == 'company' || table == 'person'">
     <div class="row">
-      <div class="col-md-4 col-xl-3">
+      <div class="col-lg-4">
         <div class="mb-2">
           <app-list-card
             [title]="'Phone'"
@@ -226,7 +226,7 @@
           ></app-list-card>
         </div>
       </div>
-      <div class="col-md-8 col-xl-9">
+      <div class="col-lg-8">
         <div class="mb-2">
           <app-list-card
             [title]="'Note'"

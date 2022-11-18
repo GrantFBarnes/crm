@@ -1,64 +1,89 @@
 <ng-container *ngIf="!edit_mode">
-  <div class="mb-2" style="white-space: pre-wrap">
-    {{ getDisplayString() }}
-  </div>
+  <div class="wrap-text">{{ getDisplayString() }}</div>
 </ng-container>
 
 <ng-container *ngIf="edit_mode">
-  <div class="mb-2">
-    <ng-container *ngFor="let column of columns">
-      {{ column.title }}
-      <ng-container [ngSwitch]="column.field">
-        <ng-container *ngSwitchCase="'date'">
-          <input
-            type="date"
-            class="form-control"
-            [placeholder]="column.title"
-            (keyup)="checkPendingChanges()"
-            (change)="checkPendingChanges()"
-            [(ngModel)]="data_edit[column.field]"
-          />
-        </ng-container>
-        <ng-container *ngSwitchCase="'time'">
-          <input
-            type="time"
-            class="form-control"
-            [placeholder]="column.title"
-            (keyup)="checkPendingChanges()"
-            (change)="checkPendingChanges()"
-            [(ngModel)]="data_edit[column.field]"
-          />
-        </ng-container>
-        <ng-container *ngSwitchCase="'description'">
-          <textarea
-            rows="{{ data_edit[column.field].split('\n').length }}"
-            class="form-control"
-            [placeholder]="column.title"
-            (keyup)="checkPendingChanges()"
-            [(ngModel)]="data_edit[column.field]"
-          ></textarea>
-        </ng-container>
-        <ng-container *ngSwitchCase="'note'">
-          <textarea
-            rows="{{ data_edit[column.field].split('\n').length }}"
-            class="form-control"
-            [placeholder]="column.title"
-            (keyup)="checkPendingChanges()"
-            [(ngModel)]="data_edit[column.field]"
-          ></textarea>
-        </ng-container>
-        <ng-container *ngSwitchDefault>
-          <input
-            type="text"
-            class="form-control"
-            [placeholder]="column.title"
-            (keyup)="checkPendingChanges()"
-            [(ngModel)]="data_edit[column.field]"
-          />
-        </ng-container>
+  <ng-container *ngFor="let column of columns">
+    <ng-container [ngSwitch]="column.field">
+      <ng-container *ngSwitchCase="'date'">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <div class="input-group">
+              <span class="input-group-text">Date</span>
+              <input
+                type="date"
+                class="form-control"
+                (keyup)="checkPendingChanges()"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.date"
+              />
+            </div>
+          </div>
+          <div class="col-sm-6">
+            <div class="input-group">
+              <span class="input-group-text">Time</span>
+              <input
+                type="time"
+                class="form-control"
+                (keyup)="checkPendingChanges()"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.time"
+              />
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'time'"></ng-container>
+      <ng-container *ngSwitchCase="'description'">
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <span class="input-group-text">{{ column.title }}</span>
+              <textarea
+                rows="{{ data_edit[column.field].split('\n').length }}"
+                class="form-control"
+                [placeholder]="column.title"
+                (keyup)="checkPendingChanges()"
+                [(ngModel)]="data_edit[column.field]"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="'note'">
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <span class="input-group-text">{{ column.title }}</span>
+              <textarea
+                rows="{{ data_edit[column.field].split('\n').length }}"
+                class="form-control"
+                [placeholder]="column.title"
+                (keyup)="checkPendingChanges()"
+                [(ngModel)]="data_edit[column.field]"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchDefault>
+        <div class="row mb-2">
+          <div class="col-12">
+            <div class="input-group">
+              <span class="input-group-text">{{ column.title }}</span>
+              <input
+                type="text"
+                class="form-control"
+                [placeholder]="column.title"
+                (keyup)="checkPendingChanges()"
+                [(ngModel)]="data_edit[column.field]"
+              />
+            </div>
+          </div>
+        </div>
       </ng-container>
     </ng-container>
-  </div>
+  </ng-container>
   <div class="row">
     <div class="col-6 left">
       <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">

@@ -26,6 +26,10 @@
   cursor: pointer;
 }
 
+.wrap-text {
+  white-space: pre-wrap;
+}
+
 .blur {
   -webkit-filter: blur(5px);
   -moz-filter: blur(5px);
@@ -38,10 +42,6 @@
   padding-top: 20px;
   padding-bottom: 20px;
   text-align: center;
-}
-
-.input-group-text {
-  width: 8em;
 }
 
 .table,

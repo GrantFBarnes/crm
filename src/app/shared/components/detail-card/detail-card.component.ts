@@ -67,10 +67,10 @@ export class DetailCardComponent implements OnInit {
 
       case 'Contact Log':
         if (this.data.date) {
-          result += new Date(this.data.date).toDateString();
+          result += this.data.date;
         }
         if (this.data.time) {
-          if (result) result += ' - ';
+          if (result) result += ', ';
           result += this.data.time;
         }
         if (this.data.description) {
