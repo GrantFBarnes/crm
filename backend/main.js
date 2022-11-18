@@ -12,26 +12,29 @@ const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const table_columns = {
-  company: ["id", "user_id", "name"],
-  person: ["id", "user_id", "first_name", "last_name"],
-  company_phone: ["id", "user_id", "parent_id", "phone"],
-  person_phone: ["id", "user_id", "parent_id", "phone"],
-  company_email: ["id", "user_id", "parent_id", "email"],
-  person_email: ["id", "user_id", "parent_id", "email"],
-  company_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
-  person_address: ["id", "user_id", "parent_id", "city", "state", "zip"],
-  company_note: ["id", "user_id", "parent_id", "note"],
-  person_note: ["id", "user_id", "parent_id", "note"],
-  company_contact: [
-    "id",
-    "user_id",
-    "parent_id",
-    "date",
-    "time",
-    "description",
-  ],
-  person_contact: ["id", "user_id", "parent_id", "date", "time", "description"],
+  company: ["name"],
+  person: ["first_name", "last_name"],
+  company_phone: ["phone"],
+  person_phone: ["phone"],
+  company_email: ["email"],
+  person_email: ["email"],
+  company_address: ["city", "state", "zip"],
+  person_address: ["city", "state", "zip"],
+  company_note: ["note"],
+  person_note: ["note"],
+  company_contact: ["date", "time", "description"],
+  person_contact: ["date", "time", "description"],
 };
+
+for (let table in table_columns) {
+  if (table != "company" && table != "person") {
+    table_columns[table].unshift("parent_id");
+  }
+  table_columns[table].unshift("user_id");
+  table_columns[table].unshift("id");
+  table_columns[table].push("date_added");
+  table_columns[table].push("date_modified");
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Common
@@ -287,6 +290,11 @@ function createTableRow(user_id, table, data) {
           sql += `'${data.parent_id}', `;
           break;
 
+        case "date_added":
+        case "date_modified":
+          sql += `CURRENT_DATE(), `;
+          break;
+
         default:
           sql += "'', ";
           break;
@@ -335,6 +343,11 @@ function updateTableRow(user_id, table, data) {
         case "id":
         case "user_id":
         case "parent_id":
+        case "date_added":
+          break;
+
+        case "date_modified":
+          sql += `CURRENT_DATE(), `;
           break;
 
         default:
