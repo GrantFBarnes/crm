@@ -1,58 +1,68 @@
 <app-loading *ngIf="loading"></app-loading>
 <div [ngClass]="loading ? 'container blur' : 'container'">
   <div class="main-title">
-    <ng-container *ngIf="!edit_mode">
-      <h1>
-        <ng-container *ngFor="let column of columns">
-          {{ data[column.field] || "(No " + column.title + ")" }}
+    <div class="row">
+      <div class="col-11">
+        <ng-container *ngIf="!edit_mode">
+          <h1>
+            <ng-container *ngFor="let column of columns">
+              {{ data[column.field] || "(No " + column.title + ")" }}
+            </ng-container>
+          </h1>
         </ng-container>
-      </h1>
-      <button class="btn btn-outline-primary btn-sm" (click)="enterEditMode()">
-        <i class="bi bi-pencil"></i>
-        Edit
-      </button>
-    </ng-container>
-    <ng-container *ngIf="edit_mode">
-      <ng-container *ngFor="let column of columns">
-        <div class="row mb-2">
-          <div class="col-12">
-            <div class="input-group">
-              <span class="input-group-text">{{ column.title }}</span>
-              <input
-                type="text"
-                class="form-control"
-                (keyup)="checkPendingChanges()"
-                [(ngModel)]="data_edit[column.field]"
-              />
+        <ng-container *ngIf="edit_mode">
+          <ng-container *ngFor="let column of columns">
+            <div class="row mb-2">
+              <div class="col-12">
+                <div class="input-group">
+                  <span class="input-group-text">{{ column.title }}</span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    (keyup)="checkPendingChanges()"
+                    [(ngModel)]="data_edit[column.field]"
+                  />
+                </div>
+              </div>
+            </div>
+          </ng-container>
+          <div class="row">
+            <div class="col-6 left">
+              <button
+                class="btn btn-outline-danger btn-sm"
+                (click)="deleteData()"
+              >
+                Delete
+                <i class="bi bi-trash"></i>
+              </button>
+            </div>
+            <div class="col-6 right">
+              <ng-container *ngIf="pending_changes">
+                <button
+                  class="btn btn-outline-primary btn-sm"
+                  (click)="saveData()"
+                >
+                  Save
+                  <i class="bi bi-save"></i>
+                </button>
+              </ng-container>
             </div>
           </div>
-        </div>
-      </ng-container>
-      <div class="row mb-2">
-        <div class="col-6 left">
-          <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
-            <i class="bi bi-trash"></i>
-            Delete
+        </ng-container>
+      </div>
+      <div class="col-1">
+        <ng-container *ngIf="!edit_mode">
+          <button class="btn btn-link btn-sm" (click)="enterEditMode()">
+            Edit
           </button>
-        </div>
-        <div class="col-6 right">
-          <button
-            class="btn btn-outline-secondary btn-sm"
-            (click)="exitEditMode()"
-          >
-            <i class="bi bi-check"></i>
+        </ng-container>
+        <ng-container *ngIf="edit_mode">
+          <button class="btn btn-link btn-sm" (click)="exitEditMode()">
             Done
           </button>
-          <ng-container *ngIf="pending_changes">
-            &nbsp;
-            <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
-              <i class="bi bi-save"></i>
-              Save
-            </button>
-          </ng-container>
-        </div>
+        </ng-container>
       </div>
-    </ng-container>
+    </div>
   </div>
 
   <div class="row">

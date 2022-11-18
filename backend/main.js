@@ -347,7 +347,7 @@ function updateTableRow(user_id, table, data) {
           break;
 
         case "date_modified":
-          sql += `CURRENT_DATE(), `;
+          sql += `${column} = CURRENT_DATE(), `;
           break;
 
         default:

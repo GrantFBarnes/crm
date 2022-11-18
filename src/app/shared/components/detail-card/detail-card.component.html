@@ -59,18 +59,21 @@
       </ng-container>
     </ng-container>
   </div>
-  <div class="center">
-    <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
-      <i class="bi bi-trash"></i>
-      Delete
-    </button>
-    <ng-container *ngIf="pending_changes">
-      &nbsp;
-      <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
-        <i class="bi bi-save"></i>
-        Save
+  <div class="row">
+    <div class="col-6 left">
+      <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
+        Delete
+        <i class="bi bi-trash"></i>
       </button>
-    </ng-container>
+    </div>
+    <div class="col-6 right">
+      <ng-container *ngIf="pending_changes">
+        <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
+          Save
+          <i class="bi bi-save"></i>
+        </button>
+      </ng-container>
+    </div>
   </div>
   <hr />
 </ng-container>

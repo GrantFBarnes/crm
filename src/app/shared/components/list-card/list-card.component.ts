@@ -82,6 +82,7 @@ export class ListCardComponent implements OnInit {
       .post('/api/crm/table/' + this.table, { parent_id: this.parent_id })
       .subscribe(() => {
         this.getData();
+        this.enterEditMode();
       });
   }
 }

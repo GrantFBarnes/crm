@@ -30,7 +30,7 @@ export class DetailPageComponent implements OnInit {
 
   loading: boolean = true;
 
-  edit_mode: boolean = false;
+  edit_mode: boolean = true;
   data: any = {};
   data_edit: any = JSON.parse(JSON.stringify(this.data));
   pending_changes: boolean = false;
@@ -90,6 +90,12 @@ export class DetailPageComponent implements OnInit {
       .get('/api/crm/table/' + this.table + '/id/' + this.data.id)
       .subscribe((data: any) => {
         this.data = data;
+        for (let column of this.columns) {
+          if (this.data[column.field]) {
+            this.exitEditMode();
+            break;
+          }
+        }
         this.loading = false;
       });
   }
