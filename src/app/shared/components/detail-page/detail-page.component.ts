@@ -27,19 +27,10 @@ export class DetailPageComponent implements OnInit {
     { field: 'time', title: 'Time' },
     { field: 'description', title: 'Description' },
   ];
-  task_columns: TableColumn[] = [
-    { field: 'date', title: 'Date' },
-    { field: 'time', title: 'Time' },
-    { field: 'title', title: 'Title' },
-    { field: 'description', title: 'Description' },
-    { field: 'complete', title: 'Complete' },
-    { field: 'frequency_number', title: 'Frequency Number' },
-    { field: 'frequency_type', title: 'Frequency Type' },
-  ];
 
   loading: boolean = true;
 
-  edit_mode: boolean = true;
+  edit_mode: boolean = false;
   data: any = {};
   data_edit: any = JSON.parse(JSON.stringify(this.data));
   pending_changes: boolean = false;
@@ -99,11 +90,15 @@ export class DetailPageComponent implements OnInit {
       .get('/api/crm/table/' + this.table + '/id/' + this.data.id)
       .subscribe((data: any) => {
         this.data = data;
+        let has_data = false;
         for (let column of this.columns) {
           if (this.data[column.field]) {
-            this.exitEditMode();
+            has_data = true;
             break;
           }
+        }
+        if (!has_data) {
+          this.enterEditMode();
         }
         this.loading = false;
       });

@@ -14,6 +14,16 @@ const id_regex =
 const table_columns = {
   company: ["name"],
   person: ["first_name", "last_name"],
+  task: [
+    "date",
+    "time",
+    "title",
+    "description",
+    "completed",
+    "repeating",
+    "repeat_count",
+    "repeat_interval",
+  ],
   company_phone: ["phone"],
   person_phone: ["phone"],
   company_email: ["email"],
@@ -24,28 +34,10 @@ const table_columns = {
   person_note: ["note"],
   company_contact: ["date", "time", "description"],
   person_contact: ["date", "time", "description"],
-  company_task: [
-    "date",
-    "time",
-    "title",
-    "description",
-    "complete",
-    "frequency_number",
-    "frequency_type",
-  ],
-  person_task: [
-    "date",
-    "time",
-    "title",
-    "description",
-    "complete",
-    "frequency_number",
-    "frequency_type",
-  ],
 };
 
 for (let table in table_columns) {
-  if (table != "company" && table != "person") {
+  if (table.startsWith("company_") || table.startsWith("person_")) {
     table_columns[table].unshift("parent_id");
   }
   table_columns[table].unshift("user_id");
@@ -313,11 +305,12 @@ function createTableRow(user_id, table, data) {
           sql += `CURRENT_DATE(), `;
           break;
 
-        case "complete":
+        case "completed":
+        case "repeating":
           sql += "0, ";
           break;
 
-        case "frequency_number":
+        case "repeat_count":
           sql += "NULL, ";
           break;
 
@@ -376,8 +369,9 @@ function updateTableRow(user_id, table, data) {
           sql += `${column} = CURRENT_DATE(), `;
           break;
 
-        case "complete":
-        case "frequency_number":
+        case "completed":
+        case "repeating":
+        case "repeat_count":
           sql += `${column} = ${data[column]}, `;
           break;
 
