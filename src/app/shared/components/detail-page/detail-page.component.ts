@@ -32,6 +32,7 @@ export class DetailPageComponent implements OnInit {
     { field: 'company_id', title: 'Company' },
     { field: 'person_id', title: 'Person' },
   ];
+  task_columns: TableColumn[] = [{ field: 'task_id', title: 'Task' }];
 
   loading: boolean = true;
 

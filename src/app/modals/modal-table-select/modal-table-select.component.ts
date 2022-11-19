@@ -25,7 +25,9 @@ export class ModalTableSelectComponent implements OnInit {
   selectId(): void {
     this.emitSelectId.emit(this.id);
     this.id = '';
-    document.getElementById('modal-close-button')?.click();
+    document
+      .getElementById('app-modal-table-select-' + this.table + '-close-button')
+      ?.click();
   }
 
   getData(): void {

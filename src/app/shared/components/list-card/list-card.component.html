@@ -31,26 +31,26 @@
       ></app-detail-card>
     </ng-container>
     <ng-container *ngIf="edit_mode || !data.length">
-      <ng-container *ngIf="table != 'job'">
+      <ng-container *ngIf="!link_table">
         <button class="btn btn-link btn-sm" (click)="addRow(null)">Add</button>
       </ng-container>
-      <ng-container *ngIf="table == 'job'">
+      <ng-container *ngIf="link_table">
         <button
           type="button"
           class="btn btn-link btn-sm"
           data-bs-toggle="modal"
-          data-bs-target="#app-modal-table-select"
+          [attr.data-bs-target]="'#app-modal-table-select-' + link_table"
         >
-          Add
+          Add Link
         </button>
       </ng-container>
     </ng-container>
   </div>
 </div>
 
-<ng-container *ngIf="table == 'job'">
+<ng-container *ngIf="link_table">
   <app-modal-table-select
-    [table]="parent_table == 'company' ? 'person' : 'company'"
-    (emitSelectId)="addJob($event)"
+    [table]="link_table"
+    (emitSelectId)="addLink($event)"
   ></app-modal-table-select>
 </ng-container>

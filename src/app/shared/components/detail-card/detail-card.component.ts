@@ -48,22 +48,26 @@ export class DetailCardComponent implements OnInit {
   }
 
   getLinkedData(): void {
+    this.linked_table = '';
+
     if (this.table == 'job') {
-      let api = '/api/crm/table/';
-
       if (this.parent_table == 'company') {
-        if (!this.data.person_id) return;
         this.linked_table = 'person';
-        api += this.linked_table + '/id/' + this.data.person_id;
       } else {
-        if (!this.data.company_id) return;
         this.linked_table = 'company';
-        api += this.linked_table + '/id/' + this.data.company_id;
       }
+    } else if (this.table.includes('task')) {
+      this.linked_table = 'task';
+    }
 
-      this.httpService.get(api).subscribe((data: any) => {
-        this.linked_data = data;
-      });
+    if (this.linked_table) {
+      const id = this.data[this.linked_table + '_id'];
+      if (!id) return;
+      this.httpService
+        .get('/api/crm/table/' + this.linked_table + '/id/' + id)
+        .subscribe((data: any) => {
+          this.linked_data = data;
+        });
     }
   }
 

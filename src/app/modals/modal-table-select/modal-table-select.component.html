@@ -1,10 +1,10 @@
-<div id="app-modal-table-select" class="modal fade">
+<div [id]="'app-modal-table-select-' + table" class="modal fade">
   <div class="modal-dialog modal-dialog-centered modal-lg">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title">Select a {{ table }}</h5>
         <button
-          id="modal-close-button"
+          [id]="'app-modal-table-select-' + table + '-close-button'"
           type="button"
           class="btn-close"
           data-bs-dismiss="modal"

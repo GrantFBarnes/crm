@@ -21,12 +21,20 @@ export class ListCardComponent implements OnInit {
 
   edit_mode: boolean = false;
   data: any[] = [];
+  link_table: string = '';
 
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(): void {
+    if (this.table === 'job') {
+      this.link_table = this.parent_table === 'company' ? 'person' : 'company';
+    } else if (this.table.includes('task')) {
+      this.link_table = 'task';
+    } else {
+      this.link_table = '';
+    }
     this.getData();
   }
 
@@ -103,15 +111,19 @@ export class ListCardComponent implements OnInit {
       });
   }
 
-  addJob(id: string): void {
-    let body = { company_id: '', person_id: '' };
-    if (this.parent_field == 'company_id') {
-      body.company_id = this.parent_id;
-      body.person_id = id;
-    } else {
-      body.company_id = id;
-      body.person_id = this.parent_id;
+  addLink(id: string): void {
+    if (this.table === 'job') {
+      let body = { company_id: '', person_id: '' };
+      if (this.parent_field == 'company_id') {
+        body.company_id = this.parent_id;
+        body.person_id = id;
+      } else {
+        body.company_id = id;
+        body.person_id = this.parent_id;
+      }
+      this.addRow(body);
+    } else if (this.table.includes('task')) {
+      this.addRow({ parent_id: this.parent_id, task_id: id });
     }
-    this.addRow(body);
   }
 }

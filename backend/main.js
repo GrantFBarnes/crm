@@ -11,7 +11,7 @@ const connection = mysql.createConnection({
 const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
-const table_fks = new Set(["parent_id", "company_id", "person_id"]);
+const table_fks = new Set(["parent_id", "company_id", "person_id", "task_id"]);
 
 const table_columns = {
   company: ["name"],
@@ -36,6 +36,8 @@ const table_columns = {
   person_note: ["details"],
   company_contact: ["date", "time", "details"],
   person_contact: ["date", "time", "details"],
+  company_task: ["task_id"],
+  person_task: ["task_id"],
   job: ["company_id", "person_id", "name"],
 };
 
@@ -307,6 +309,7 @@ function createTableRow(user_id, table, data) {
         case "parent_id":
         case "company_id":
         case "person_id":
+        case "task_id":
           if (!idIsValid(data[column])) {
             resolve({ statusCode: 500, data: "foreign key id not valid" });
             return;
@@ -378,6 +381,7 @@ function updateTableRow(user_id, table, data) {
         case "parent_id":
         case "company_id":
         case "person_id":
+        case "task_id":
         case "date_added":
           break;
 
