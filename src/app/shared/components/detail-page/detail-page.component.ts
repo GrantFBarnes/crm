@@ -27,7 +27,11 @@ export class DetailPageComponent implements OnInit {
     { field: 'time', title: 'Time' },
     { field: 'description', title: 'Description' },
   ];
-  job_columns: TableColumn[] = [{ field: 'name', title: 'Name' }];
+  job_columns: TableColumn[] = [
+    { field: 'name', title: 'Name' },
+    { field: 'company_id', title: 'Company' },
+    { field: 'person_id', title: 'Person' },
+  ];
 
   loading: boolean = true;
 

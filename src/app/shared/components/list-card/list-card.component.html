@@ -21,7 +21,9 @@
     <ng-container *ngFor="let row of data">
       <app-detail-card
         [title]="title"
+        [table]="table"
         [data]="row"
+        [parent_table]="parent_table"
         [columns]="columns"
         [edit_mode]="edit_mode"
         (emitSaveData)="saveData($event)"
@@ -48,7 +50,7 @@
 
 <ng-container *ngIf="table == 'job'">
   <app-modal-table-select
-    [table]="parent_field == 'company_id' ? 'person' : 'company'"
+    [table]="parent_table == 'company' ? 'person' : 'company'"
     (emitSelectId)="addJob($event)"
   ></app-modal-table-select>
 </ng-container>

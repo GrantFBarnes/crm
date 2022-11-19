@@ -12,6 +12,7 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 export class ListCardComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
+  @Input() parent_table: string = '';
   @Input() parent_field: string = '';
   @Input() parent_id: string = '';
   @Input() columns: TableColumn[] = [];

@@ -1,15 +1,19 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { HttpService } from 'src/app/shared/services/http.service';
 
 import { TableColumn } from 'src/app/shared/interfaces/table-column';
 
 @Component({
   selector: 'app-detail-card',
   templateUrl: './detail-card.component.html',
+  providers: [HttpService],
   styleUrls: ['./detail-card.component.css'],
 })
 export class DetailCardComponent implements OnInit {
   @Input() title: string = '';
+  @Input() table: string = '';
   @Input() data: any = {};
+  @Input() parent_table: string = '';
   @Input() columns: TableColumn[] = [];
   @Input() edit_mode: boolean = false;
   @Output() emitSaveData = new EventEmitter<any>();
@@ -17,14 +21,17 @@ export class DetailCardComponent implements OnInit {
 
   data_edit: any = {};
   pending_changes: boolean = false;
+  linked_data: any = {};
+  linked_table: string = '';
 
-  constructor() {}
+  constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.data_edit = JSON.parse(JSON.stringify(this.data));
     this.pending_changes = false;
+    this.getLinkedData();
   }
 
   checkPendingChanges(): void {
@@ -38,6 +45,26 @@ export class DetailCardComponent implements OnInit {
 
   deleteData(): void {
     this.emitDeleteData.emit(this.data.id);
+  }
+
+  getLinkedData(): void {
+    if (this.table == 'job') {
+      let api = '/api/crm/table/';
+
+      if (this.parent_table == 'company') {
+        if (!this.data.person_id) return;
+        this.linked_table = 'person';
+        api += this.linked_table + '/id/' + this.data.person_id;
+      } else {
+        if (!this.data.company_id) return;
+        this.linked_table = 'company';
+        api += this.linked_table + '/id/' + this.data.company_id;
+      }
+
+      this.httpService.get(api).subscribe((data: any) => {
+        this.linked_data = data;
+      });
+    }
   }
 
   getDisplayString(): string {
@@ -75,12 +102,6 @@ export class DetailCardComponent implements OnInit {
         if (this.data.description) {
           if (result) result += '\n';
           result += this.data.description;
-        }
-        break;
-
-      case 'Job':
-        if (this.data.name) {
-          result = this.data.name;
         }
         break;
 
