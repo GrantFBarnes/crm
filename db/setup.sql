@@ -63,42 +63,6 @@ CREATE TABLE task (
 );
 INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Name', 'Details of task', 0, 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
 
-CREATE TABLE company_address (
-    id CHAR(36) NOT NULL,
-    user_id CHAR(36) NOT NULL,
-    parent_id CHAR(36) NOT NULL,
-
-    city VARCHAR(255) DEFAULT "",
-    state VARCHAR(255) DEFAULT "",
-    zip VARCHAR(50) DEFAULT "",
-
-    date_added DATETIME NOT NULL,
-    date_modified DATETIME NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_id) REFERENCES company(id) ON DELETE CASCADE
-);
-INSERT INTO company_address VALUES ('2df0928c-5946-41b9-b1fd-215c0a4347ef', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'City 1', 'State 1', 'Zip 1', CURRENT_DATE(), CURRENT_DATE());
-INSERT INTO company_address VALUES ('c1dc04ee-ba7d-4b4d-bc0c-4dce42931961', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '802c0f1a-6f99-49dc-9d79-7cbfeaccb77a', 'City 2', 'State 2', 'Zip 2', CURRENT_DATE(), CURRENT_DATE());
-
-CREATE TABLE person_address (
-    id CHAR(36) NOT NULL,
-    user_id CHAR(36) NOT NULL,
-    parent_id CHAR(36) NOT NULL,
-
-    city VARCHAR(255) DEFAULT "",
-    state VARCHAR(255) DEFAULT "",
-    zip VARCHAR(50) DEFAULT "",
-
-    date_added DATETIME NOT NULL,
-    date_modified DATETIME NOT NULL,
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-    FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
-);
-INSERT INTO person_address VALUES ('766b96b0-ee77-484f-869c-91b09864ba95', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '518ae809-e43e-435f-be69-ef4ca36e9d28', 'City 3', 'State 3', 'Zip 3', CURRENT_DATE(), CURRENT_DATE());
-INSERT INTO person_address VALUES ('445bb890-7784-4eb4-af65-74bd18edb300', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'cefcd403-1a15-4bb5-9d8f-1103c2c92969', 'City 4', 'State 4', 'Zip 4', CURRENT_DATE(), CURRENT_DATE());
-
 CREATE TABLE company_phone (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
@@ -156,6 +120,58 @@ CREATE TABLE person_email (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+CREATE TABLE company_address (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
+
+    city VARCHAR(255) DEFAULT "",
+    state VARCHAR(255) DEFAULT "",
+    zip VARCHAR(50) DEFAULT "",
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES company(id) ON DELETE CASCADE
+);
+INSERT INTO company_address VALUES ('2df0928c-5946-41b9-b1fd-215c0a4347ef', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'b3973f12-7b2a-4729-b102-47bf24a49e5c', 'City 1', 'State 1', 'Zip 1', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO company_address VALUES ('c1dc04ee-ba7d-4b4d-bc0c-4dce42931961', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '802c0f1a-6f99-49dc-9d79-7cbfeaccb77a', 'City 2', 'State 2', 'Zip 2', CURRENT_DATE(), CURRENT_DATE());
+
+CREATE TABLE person_address (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
+
+    city VARCHAR(255) DEFAULT "",
+    state VARCHAR(255) DEFAULT "",
+    zip VARCHAR(50) DEFAULT "",
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
+);
+INSERT INTO person_address VALUES ('766b96b0-ee77-484f-869c-91b09864ba95', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '518ae809-e43e-435f-be69-ef4ca36e9d28', 'City 3', 'State 3', 'Zip 3', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO person_address VALUES ('445bb890-7784-4eb4-af65-74bd18edb300', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'cefcd403-1a15-4bb5-9d8f-1103c2c92969', 'City 4', 'State 4', 'Zip 4', CURRENT_DATE(), CURRENT_DATE());
+
+CREATE TABLE job (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    company_id CHAR(36) NOT NULL,
+    person_id CHAR(36) NOT NULL,
+
+    name VARCHAR(255) DEFAULT "",
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
 CREATE TABLE company_note (
@@ -221,18 +237,32 @@ CREATE TABLE person_contact (
     FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
-CREATE TABLE job (
+CREATE TABLE company_task (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
-    company_id CHAR(36) NOT NULL,
-    person_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
 
-    name VARCHAR(255) DEFAULT "",
+    task_id CHAR(36) NOT NULL,
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
-    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE,
-    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+    FOREIGN KEY (parent_id) REFERENCES company(id) ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES task(id) ON DELETE CASCADE
+);
+
+CREATE TABLE person_task (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
+
+    task_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES task(id) ON DELETE CASCADE
 );
