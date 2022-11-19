@@ -86,10 +86,10 @@
       </div>
       <div class="row">
         <div class="col-sm-3 mb-2">
-          <h4>Description</h4>
+          <h4>Details</h4>
         </div>
         <div class="col-sm-9 mb-2">
-          <p class="wrap-text">{{ data.description }}</p>
+          <p class="wrap-text">{{ data.details }}</p>
         </div>
       </div>
     </ng-container>
@@ -186,12 +186,12 @@
       <div class="row">
         <div class="col-12 mb-2">
           <div class="input-group">
-            <span class="input-group-text">Description</span>
+            <span class="input-group-text">Details</span>
             <textarea
-              rows="{{ data_edit.description.split('\n').length }}"
+              rows="{{ data_edit.details.split('\n').length }}"
               class="form-control"
               (keyup)="checkPendingChanges()"
-              [(ngModel)]="data_edit.description"
+              [(ngModel)]="data_edit.details"
             ></textarea>
           </div>
         </div>

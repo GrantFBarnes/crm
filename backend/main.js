@@ -20,7 +20,7 @@ const table_columns = {
     "date",
     "time",
     "name",
-    "description",
+    "details",
     "completed",
     "repeating",
     "repeat_count",
@@ -32,10 +32,10 @@ const table_columns = {
   person_email: ["value"],
   company_address: ["city", "state", "zip"],
   person_address: ["city", "state", "zip"],
-  company_note: ["value"],
-  person_note: ["value"],
-  company_contact: ["date", "time", "description"],
-  person_contact: ["date", "time", "description"],
+  company_note: ["details"],
+  person_note: ["details"],
+  company_contact: ["date", "time", "details"],
+  person_contact: ["date", "time", "details"],
   job: ["company_id", "person_id", "name"],
 };
 

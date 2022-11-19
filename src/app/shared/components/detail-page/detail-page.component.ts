@@ -21,11 +21,11 @@ export class DetailPageComponent implements OnInit {
     { field: 'state', title: 'State' },
     { field: 'zip', title: 'Zip' },
   ];
-  note_columns: TableColumn[] = [{ field: 'value', title: 'Note' }];
+  note_columns: TableColumn[] = [{ field: 'details', title: 'Details' }];
   contact_columns: TableColumn[] = [
     { field: 'date', title: 'Date' },
     { field: 'time', title: 'Time' },
-    { field: 'description', title: 'Description' },
+    { field: 'details', title: 'Details' },
   ];
   job_columns: TableColumn[] = [
     { field: 'name', title: 'Name' },

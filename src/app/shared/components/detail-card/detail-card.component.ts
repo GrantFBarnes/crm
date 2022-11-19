@@ -72,7 +72,6 @@ export class DetailCardComponent implements OnInit {
     switch (this.title) {
       case 'Phone':
       case 'Email':
-      case 'Note':
         result = this.data.value || '(No ' + this.title + ')';
         break;
 
@@ -91,6 +90,10 @@ export class DetailCardComponent implements OnInit {
         if (!result) result = '(No Address)';
         break;
 
+      case 'Note':
+        result = this.data.details || '(No ' + this.title + ')';
+        break;
+
       case 'Contact Log':
         if (this.data.date) {
           result += this.data.date;
@@ -99,9 +102,9 @@ export class DetailCardComponent implements OnInit {
           if (result) result += ', ';
           result += this.data.time;
         }
-        if (this.data.description) {
+        if (this.data.details) {
           if (result) result += '\n';
-          result += this.data.description;
+          result += this.data.details;
         }
         break;
 
