@@ -79,6 +79,12 @@ export class DetailCardComponent implements OnInit {
         }
         break;
 
+      case 'Job':
+        if (this.data.title) {
+          result = this.data.title;
+        }
+        break;
+
       default:
         break;
     }

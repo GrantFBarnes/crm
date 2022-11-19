@@ -11,6 +11,8 @@ const connection = mysql.createConnection({
 const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
+const table_fks = new Set(["parent_id", "company_id", "person_id"]);
+
 const table_columns = {
   company: ["name"],
   person: ["first_name", "last_name"],
@@ -34,6 +36,7 @@ const table_columns = {
   person_note: ["note"],
   company_contact: ["date", "time", "description"],
   person_contact: ["date", "time", "description"],
+  job: ["company_id", "person_id", "title"],
 };
 
 for (let table in table_columns) {
@@ -54,6 +57,10 @@ function idIsValid(id) {
     return false;
   }
   return true;
+}
+
+function fkIsValid(fk) {
+  return table_fks.has(fk);
 }
 
 function tableIsValid(table) {
@@ -157,7 +164,7 @@ function getTableRows(user_id, table) {
   });
 }
 
-function getTableRowsWithParent(user_id, table, parent_id) {
+function getTableRowsWithForeignKey(user_id, table, fk_name, fk_id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
@@ -169,15 +176,20 @@ function getTableRowsWithParent(user_id, table, parent_id) {
       return;
     }
 
-    if (!idIsValid(parent_id)) {
-      resolve({ statusCode: 500, data: "parent id not valid" });
+    if (!fkIsValid(fk_name)) {
+      resolve({ statusCode: 500, data: "foreign key name not valid" });
+      return;
+    }
+
+    if (!idIsValid(fk_id)) {
+      resolve({ statusCode: 500, data: "foreign key id not valid" });
       return;
     }
 
     execute(`
       SELECT * FROM ${table}
       WHERE user_id = '${user_id}'
-        AND parent_id = '${parent_id}';
+        AND ${fk_name} = '${fk_id}';
         `)
       .then((result) => {
         resolve({ statusCode: 200, data: result });
@@ -186,7 +198,7 @@ function getTableRowsWithParent(user_id, table, parent_id) {
       .catch(() => {
         resolve({
           statusCode: 400,
-          data: "failed to get table rows with parent",
+          data: "failed to get table rows with foreign key",
         });
         return;
       });
@@ -293,11 +305,13 @@ function createTableRow(user_id, table, data) {
           break;
 
         case "parent_id":
-          if (!idIsValid(data.parent_id)) {
-            resolve({ statusCode: 500, data: "parent id not valid" });
+        case "company_id":
+        case "person_id":
+          if (!idIsValid(data[column])) {
+            resolve({ statusCode: 500, data: "foreign key id not valid" });
             return;
           }
-          sql += `'${data.parent_id}', `;
+          sql += `'${data[column]}', `;
           break;
 
         case "date_added":
@@ -362,6 +376,8 @@ function updateTableRow(user_id, table, data) {
         case "id":
         case "user_id":
         case "parent_id":
+        case "company_id":
+        case "person_id":
         case "date_added":
           break;
 
@@ -401,7 +417,7 @@ function updateTableRow(user_id, table, data) {
 module.exports.getUserId = getUserId;
 
 module.exports.getTableRows = getTableRows;
-module.exports.getTableRowsWithParent = getTableRowsWithParent;
+module.exports.getTableRowsWithForeignKey = getTableRowsWithForeignKey;
 module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;
 module.exports.createTableRow = createTableRow;

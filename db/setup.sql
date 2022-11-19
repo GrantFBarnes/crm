@@ -221,3 +221,19 @@ CREATE TABLE person_contact (
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
 );
+
+CREATE TABLE job (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    company_id CHAR(36) NOT NULL,
+    person_id CHAR(36) NOT NULL,
+
+    title VARCHAR(255) DEFAULT "",
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);

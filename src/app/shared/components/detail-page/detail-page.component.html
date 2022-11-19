@@ -170,7 +170,7 @@
                 [(ngModel)]="data_edit.repeat_count"
               />
               <select
-                class="form-control small-from"
+                class="form-control"
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.repeat_interval"
               >
@@ -205,6 +205,7 @@
           <app-list-card
             [title]="'Phone'"
             [table]="table + '_phone'"
+            [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="phone_columns"
           ></app-list-card>
@@ -213,6 +214,7 @@
           <app-list-card
             [title]="'Email'"
             [table]="table + '_email'"
+            [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="email_columns"
           ></app-list-card>
@@ -221,8 +223,18 @@
           <app-list-card
             [title]="'Address'"
             [table]="table + '_address'"
+            [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="address_columns"
+          ></app-list-card>
+        </div>
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Job'"
+            [table]="'job'"
+            [parent_field]="table + '_id'"
+            [parent_id]="data.id"
+            [columns]="job_columns"
           ></app-list-card>
         </div>
       </div>
@@ -231,6 +243,7 @@
           <app-list-card
             [title]="'Note'"
             [table]="table + '_note'"
+            [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="note_columns"
           ></app-list-card>
@@ -239,6 +252,7 @@
           <app-list-card
             [title]="'Contact Log'"
             [table]="table + '_contact'"
+            [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="contact_columns"
           ></app-list-card>

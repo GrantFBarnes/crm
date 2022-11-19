@@ -1,0 +1,38 @@
+<div id="app-modal-table-select" class="modal fade">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Select a {{ table }}</h5>
+        <button
+          id="modal-close-button"
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div class="row mb-2">
+          <div class="col-12">
+            <select class="form-control" [(ngModel)]="id">
+              <option value="" disabled selected hidden>
+                Choose a {{ table }}
+              </option>
+              <ng-container *ngFor="let row of data">
+                <option [value]="row.id">{{ getDisplayStr(row) }}</option>
+              </ng-container>
+            </select>
+          </div>
+        </div>
+        <ng-container *ngIf="id">
+          <div class="row mb-2">
+            <div class="col-12 center">
+              <button class="btn btn-primary" (click)="selectId()">
+                Select
+              </button>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>

@@ -85,16 +85,17 @@ router.get("/api/crm/table/:table", (request, response) => {
   }
 });
 
-// Get rows from table with given parent
-router.get("/api/crm/table/:table/parent/:parent", (request, response) => {
+// Get rows from table with given foreign key
+router.get("/api/crm/table/:table/fk/:fk_name/:fk_id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getTableRowsWithParent(
+      main.getTableRowsWithForeignKey(
         user_id,
         request.params.table,
-        request.params.parent
+        request.params.fk_name,
+        request.params.fk_id
       )
     );
   } else {

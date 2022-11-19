@@ -27,6 +27,7 @@ export class DetailPageComponent implements OnInit {
     { field: 'time', title: 'Time' },
     { field: 'description', title: 'Description' },
   ];
+  job_columns: TableColumn[] = [{ field: 'title', title: 'Title' }];
 
   loading: boolean = true;
 

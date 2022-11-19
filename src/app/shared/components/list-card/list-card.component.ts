@@ -12,6 +12,7 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 export class ListCardComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
+  @Input() parent_field: string = '';
   @Input() parent_id: string = '';
   @Input() columns: TableColumn[] = [];
 
@@ -29,13 +30,21 @@ export class ListCardComponent implements OnInit {
   }
 
   getData(): void {
+    if (!this.parent_field) return;
     if (!this.parent_id) return;
-    this.httpService
-      .get('/api/crm/table/' + this.table + '/parent/' + this.parent_id)
-      .subscribe((data: any) => {
-        this.data = data.sort(this.sortMethod);
-        this.loading = false;
-      });
+
+    let api =
+      '/api/crm/table/' +
+      this.table +
+      '/fk/' +
+      this.parent_field +
+      '/' +
+      this.parent_id;
+
+    this.httpService.get(api).subscribe((data: any) => {
+      this.data = data.sort(this.sortMethod);
+      this.loading = false;
+    });
   }
 
   sortMethod = (a: any, b: any): number => {
@@ -78,13 +87,30 @@ export class ListCardComponent implements OnInit {
     }
   }
 
-  addRow(): void {
+  addRow(body: any): void {
     this.loading = true;
+
+    if (!body) {
+      body = { [this.parent_field]: this.parent_id };
+    }
+
     this.httpService
-      .post('/api/crm/table/' + this.table, { parent_id: this.parent_id })
+      .post('/api/crm/table/' + this.table, body)
       .subscribe(() => {
         this.getData();
         this.enterEditMode();
       });
+  }
+
+  addJob(id: string): void {
+    let body = { company_id: '', person_id: '' };
+    if (this.parent_field == 'company_id') {
+      body.company_id = this.parent_id;
+      body.person_id = id;
+    } else {
+      body.company_id = id;
+      body.person_id = this.parent_id;
+    }
+    this.addRow(body);
   }
 }

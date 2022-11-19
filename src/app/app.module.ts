@@ -21,6 +21,7 @@ import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { TaskComponent } from './pages/task/task.component';
+import { ModalTableSelectComponent } from './modals/modal-table-select/modal-table-select.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { TaskComponent } from './pages/task/task.component';
     PersonComponent,
     TasksComponent,
     TaskComponent,
+    ModalTableSelectComponent,
   ],
   imports: [BrowserModule, FormsModule, HttpClientModule, AppRoutingModule],
   providers: [],
