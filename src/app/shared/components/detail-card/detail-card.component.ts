@@ -46,8 +46,7 @@ export class DetailCardComponent implements OnInit {
       case 'Phone':
       case 'Email':
       case 'Note':
-        const field = this.title.toLocaleLowerCase();
-        result = this.data[field] || '(No ' + this.title + ')';
+        result = this.data.value || '(No ' + this.title + ')';
         break;
 
       case 'Address':
@@ -80,8 +79,8 @@ export class DetailCardComponent implements OnInit {
         break;
 
       case 'Job':
-        if (this.data.title) {
-          result = this.data.title;
+        if (this.data.name) {
+          result = this.data.name;
         }
         break;
 

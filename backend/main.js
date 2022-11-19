@@ -15,28 +15,28 @@ const table_fks = new Set(["parent_id", "company_id", "person_id"]);
 
 const table_columns = {
   company: ["name"],
-  person: ["first_name", "last_name"],
+  person: ["name"],
   task: [
     "date",
     "time",
-    "title",
+    "name",
     "description",
     "completed",
     "repeating",
     "repeat_count",
     "repeat_interval",
   ],
-  company_phone: ["phone"],
-  person_phone: ["phone"],
-  company_email: ["email"],
-  person_email: ["email"],
+  company_phone: ["value"],
+  person_phone: ["value"],
+  company_email: ["value"],
+  person_email: ["value"],
   company_address: ["city", "state", "zip"],
   person_address: ["city", "state", "zip"],
-  company_note: ["note"],
-  person_note: ["note"],
+  company_note: ["value"],
+  person_note: ["value"],
   company_contact: ["date", "time", "description"],
   person_contact: ["date", "time", "description"],
-  job: ["company_id", "person_id", "title"],
+  job: ["company_id", "person_id", "name"],
 };
 
 for (let table in table_columns) {

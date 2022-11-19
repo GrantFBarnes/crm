@@ -22,19 +22,6 @@ export class ModalTableSelectComponent implements OnInit {
     this.getData();
   }
 
-  getDisplayStr(row: any): string {
-    switch (this.table) {
-      case 'company':
-        return row.name;
-
-      case 'person':
-        return row.first_name + ' ' + row.last_name;
-
-      default:
-        return '';
-    }
-  }
-
   selectId(): void {
     this.emitSelectId.emit(this.id);
     this.id = '';
@@ -52,24 +39,8 @@ export class ModalTableSelectComponent implements OnInit {
   }
 
   sortMethod = (a: any, b: any): number => {
-    let a_val = '';
-    let b_val = '';
-    switch (this.table) {
-      case 'company':
-        a_val = a.name;
-        b_val = b.name;
-        break;
-
-      case 'person':
-        a_val = a.first_name + ' ' + a.last_name;
-        b_val = b.first_name + ' ' + b.last_name;
-        break;
-
-      default:
-        break;
-    }
-    a_val = a_val.toLocaleLowerCase();
-    b_val = b_val.toLocaleLowerCase();
+    const a_val = a.name.toLocaleLowerCase();
+    const b_val = b.name.toLocaleLowerCase();
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;
     return 0;

@@ -8,7 +8,7 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
   styleUrls: ['./task.component.css'],
 })
 export class TaskComponent implements OnInit {
-  columns: TableColumn[] = [{ field: 'title', title: 'Title' }];
+  columns: TableColumn[] = [{ field: 'name', title: 'Name' }];
 
   constructor() {}
 

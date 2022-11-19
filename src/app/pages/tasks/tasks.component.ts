@@ -9,7 +9,7 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 })
 export class TasksComponent implements OnInit {
   columns: TableColumn[] = [
-    { field: 'title', title: 'Title' },
+    { field: 'name', title: 'Name' },
     { field: 'date', title: 'Date' },
     { field: 'time', title: 'Time' },
   ];

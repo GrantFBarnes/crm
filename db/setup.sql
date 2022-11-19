@@ -33,16 +33,15 @@ CREATE TABLE person (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
 
-    first_name VARCHAR(255) DEFAULT "",
-    last_name VARCHAR(255) DEFAULT "",
+    name VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-INSERT INTO person VALUES ('518ae809-e43e-435f-be69-ef4ca36e9d28', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'First 1', 'Last 1', CURRENT_DATE(), CURRENT_DATE());
-INSERT INTO person VALUES ('cefcd403-1a15-4bb5-9d8f-1103c2c92969', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'First 2', 'Last 2', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO person VALUES ('518ae809-e43e-435f-be69-ef4ca36e9d28', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'Person 1', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO person VALUES ('cefcd403-1a15-4bb5-9d8f-1103c2c92969', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'Person 2', CURRENT_DATE(), CURRENT_DATE());
 
 CREATE TABLE task (
     id CHAR(36) NOT NULL,
@@ -50,7 +49,7 @@ CREATE TABLE task (
 
     date CHAR(10) DEFAULT "",
     time CHAR(5) DEFAULT "",
-    title VARCHAR(255) DEFAULT "",
+    name VARCHAR(255) DEFAULT "",
     description VARCHAR(10000) DEFAULT "",
     completed TINYINT(1) DEFAULT 0,
     repeating TINYINT(1) DEFAULT 0,
@@ -62,7 +61,7 @@ CREATE TABLE task (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Title', 'Description of task', 0, 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Name', 'Description of task', 0, 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
 
 CREATE TABLE company_address (
     id CHAR(36) NOT NULL,
@@ -105,7 +104,7 @@ CREATE TABLE company_phone (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    phone VARCHAR(255) DEFAULT "",
+    value VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -121,7 +120,7 @@ CREATE TABLE person_phone (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    phone VARCHAR(255) DEFAULT "",
+    value VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -135,7 +134,7 @@ CREATE TABLE company_email (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    email VARCHAR(255) DEFAULT "",
+    value VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -150,7 +149,7 @@ CREATE TABLE person_email (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    email VARCHAR(255) DEFAULT "",
+    value VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -164,7 +163,7 @@ CREATE TABLE company_note (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    note VARCHAR(10000) DEFAULT "",
+    value VARCHAR(10000) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -181,7 +180,7 @@ CREATE TABLE person_note (
     user_id CHAR(36) NOT NULL,
     parent_id CHAR(36) NOT NULL,
 
-    note VARCHAR(10000) DEFAULT "",
+    value VARCHAR(10000) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -228,7 +227,7 @@ CREATE TABLE job (
     company_id CHAR(36) NOT NULL,
     person_id CHAR(36) NOT NULL,
 
-    title VARCHAR(255) DEFAULT "",
+    name VARCHAR(255) DEFAULT "",
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,

@@ -14,20 +14,20 @@ export class DetailPageComponent implements OnInit {
   @Input() list_page: string = '';
   @Input() columns: TableColumn[] = [];
 
-  phone_columns: TableColumn[] = [{ field: 'phone', title: 'Phone' }];
-  email_columns: TableColumn[] = [{ field: 'email', title: 'Email' }];
+  phone_columns: TableColumn[] = [{ field: 'value', title: 'Phone' }];
+  email_columns: TableColumn[] = [{ field: 'value', title: 'Email' }];
   address_columns: TableColumn[] = [
     { field: 'city', title: 'City' },
     { field: 'state', title: 'State' },
     { field: 'zip', title: 'Zip' },
   ];
-  note_columns: TableColumn[] = [{ field: 'note', title: 'Note' }];
+  note_columns: TableColumn[] = [{ field: 'value', title: 'Note' }];
   contact_columns: TableColumn[] = [
     { field: 'date', title: 'Date' },
     { field: 'time', title: 'Time' },
     { field: 'description', title: 'Description' },
   ];
-  job_columns: TableColumn[] = [{ field: 'title', title: 'Title' }];
+  job_columns: TableColumn[] = [{ field: 'name', title: 'Name' }];
 
   loading: boolean = true;
 

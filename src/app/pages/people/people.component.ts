@@ -8,10 +8,7 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
   styleUrls: ['./people.component.css'],
 })
 export class PeopleComponent implements OnInit {
-  columns: TableColumn[] = [
-    { field: 'first_name', title: 'First Name' },
-    { field: 'last_name', title: 'Last Name' },
-  ];
+  columns: TableColumn[] = [{ field: 'name', title: 'Name' }];
 
   constructor() {}
 
