@@ -8,6 +8,8 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
+import { RemindersComponent } from './pages/reminders/reminders.component';
+import { ReminderComponent } from './pages/reminder/reminder.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { TaskComponent } from './pages/task/task.component';
 
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'crm/company/:id', component: CompanyComponent },
   { path: 'crm/people', component: PeopleComponent },
   { path: 'crm/person/:id', component: PersonComponent },
+  { path: 'crm/reminders', component: RemindersComponent },
+  { path: 'crm/reminder/:id', component: ReminderComponent },
   { path: 'crm/tasks', component: TasksComponent },
   { path: 'crm/task/:id', component: TaskComponent },
   { path: 'crm', redirectTo: '/crm/home', pathMatch: 'full' },

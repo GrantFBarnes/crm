@@ -65,17 +65,8 @@
     </div>
   </div>
 
-  <ng-container *ngIf="table == 'task'">
+  <ng-container *ngIf="table == 'reminder'">
     <ng-container *ngIf="!edit_mode">
-      <div class="row">
-        <div class="col-sm-3 mb-2">
-          <h4>Completion</h4>
-        </div>
-        <div class="col-sm-9 mb-2">
-          <ng-container *ngIf="data.completed">Completed</ng-container>
-          <ng-container *ngIf="!data.completed">Not Complete</ng-container>
-        </div>
-      </div>
       <div class="row">
         <div class="col-sm-3 mb-2">
           <h4>Date/Time</h4>
@@ -94,27 +85,6 @@
       </div>
     </ng-container>
     <ng-container *ngIf="edit_mode">
-      <div class="row">
-        <div class="col-12 mb-2">
-          <div class="form-check form-switch">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="complete-switch"
-              (change)="checkPendingChanges()"
-              [(ngModel)]="data_edit.completed"
-            />
-            <label class="form-check-label" for="complete-switch">
-              <ng-container *ngIf="data_edit.completed">
-                Completed
-              </ng-container>
-              <ng-container *ngIf="!data_edit.completed">
-                Not Complete
-              </ng-container>
-            </label>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-md-6 col-lg-4 mb-2">
           <div class="input-group">
@@ -198,6 +168,63 @@
       </div>
     </ng-container>
   </ng-container>
+  <ng-container *ngIf="table == 'task'">
+    <ng-container *ngIf="!edit_mode">
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Completion</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <ng-container *ngIf="data.completed">Completed</ng-container>
+          <ng-container *ngIf="!data.completed">Not Complete</ng-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Details</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p class="wrap-text">{{ data.details }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="complete-switch"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.completed"
+            />
+            <label class="form-check-label" for="complete-switch">
+              <ng-container *ngIf="data_edit.completed">
+                Completed
+              </ng-container>
+              <ng-container *ngIf="!data_edit.completed">
+                Not Complete
+              </ng-container>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Details</span>
+            <textarea
+              rows="{{ data_edit.details.split('\n').length }}"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              [(ngModel)]="data_edit.details"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
   <ng-container *ngIf="table == 'company' || table == 'person'">
     <div class="row">
       <div class="col-lg-4">
@@ -261,6 +288,16 @@
             [parent_field]="'parent_id'"
             [parent_id]="data.id"
             [columns]="contact_columns"
+          ></app-list-card>
+        </div>
+        <div class="mb-2">
+          <app-list-card
+            [title]="'Reminder'"
+            [table]="table + '_reminder'"
+            [parent_table]="table"
+            [parent_field]="'parent_id'"
+            [parent_id]="data.id"
+            [columns]="reminder_columns"
           ></app-list-card>
         </div>
         <div class="mb-2">

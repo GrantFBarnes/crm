@@ -56,6 +56,8 @@ export class DetailCardComponent implements OnInit {
       } else {
         this.linked_table = 'company';
       }
+    } else if (this.table.includes('reminder')) {
+      this.linked_table = 'reminder';
     } else if (this.table.includes('task')) {
       this.linked_table = 'task';
     }

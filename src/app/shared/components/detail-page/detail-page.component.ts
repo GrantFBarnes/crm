@@ -32,6 +32,9 @@ export class DetailPageComponent implements OnInit {
     { field: 'company_id', title: 'Company' },
     { field: 'person_id', title: 'Person' },
   ];
+  reminder_columns: TableColumn[] = [
+    { field: 'reminder_id', title: 'Reminder' },
+  ];
   task_columns: TableColumn[] = [{ field: 'task_id', title: 'Task' }];
 
   loading: boolean = true;
@@ -66,7 +69,7 @@ export class DetailPageComponent implements OnInit {
   getDateTimeString(): string {
     let result = '';
     switch (this.table) {
-      case 'task':
+      case 'reminder':
         if (this.data.date) {
           result += this.data.date;
         }
@@ -95,8 +98,7 @@ export class DetailPageComponent implements OnInit {
 
   validateValues(): void {
     switch (this.table) {
-      case 'task':
-        this.data_edit.completed = this.data_edit.completed ? 1 : 0;
+      case 'reminder':
         this.data_edit.repeating = this.data_edit.repeating ? 1 : 0;
 
         if (!this.data_edit.repeating) {
@@ -117,6 +119,10 @@ export class DetailPageComponent implements OnInit {
             this.data_edit.repeat_count = 127;
           }
         }
+        break;
+
+      case 'task':
+        this.data_edit.completed = this.data_edit.completed ? 1 : 0;
         break;
 
       default:

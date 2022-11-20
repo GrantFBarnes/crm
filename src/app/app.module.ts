@@ -19,6 +19,8 @@ import { CompaniesComponent } from './pages/companies/companies.component';
 import { CompanyComponent } from './pages/company/company.component';
 import { PeopleComponent } from './pages/people/people.component';
 import { PersonComponent } from './pages/person/person.component';
+import { RemindersComponent } from './pages/reminders/reminders.component';
+import { ReminderComponent } from './pages/reminder/reminder.component';
 import { TasksComponent } from './pages/tasks/tasks.component';
 import { TaskComponent } from './pages/task/task.component';
 import { ModalTableSelectComponent } from './modals/modal-table-select/modal-table-select.component';
@@ -38,6 +40,8 @@ import { ModalTableSelectComponent } from './modals/modal-table-select/modal-tab
     CompanyComponent,
     PeopleComponent,
     PersonComponent,
+    RemindersComponent,
+    ReminderComponent,
     TasksComponent,
     TaskComponent,
     ModalTableSelectComponent,

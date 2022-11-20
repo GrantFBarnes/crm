@@ -30,6 +30,8 @@ export class ListCardComponent implements OnInit {
   ngOnChanges(): void {
     if (this.table === 'job') {
       this.link_table = this.parent_table === 'company' ? 'person' : 'company';
+    } else if (this.table.includes('reminder')) {
+      this.link_table = 'reminder';
     } else if (this.table.includes('task')) {
       this.link_table = 'task';
     } else {
@@ -122,6 +124,8 @@ export class ListCardComponent implements OnInit {
         body.person_id = this.parent_id;
       }
       this.addRow(body);
+    } else if (this.table.includes('reminder')) {
+      this.addRow({ parent_id: this.parent_id, reminder_id: id });
     } else if (this.table.includes('task')) {
       this.addRow({ parent_id: this.parent_id, task_id: id });
     }

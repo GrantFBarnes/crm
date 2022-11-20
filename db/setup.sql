@@ -43,7 +43,7 @@ CREATE TABLE person (
 INSERT INTO person VALUES ('518ae809-e43e-435f-be69-ef4ca36e9d28', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'Person 1', CURRENT_DATE(), CURRENT_DATE());
 INSERT INTO person VALUES ('cefcd403-1a15-4bb5-9d8f-1103c2c92969', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'Person 2', CURRENT_DATE(), CURRENT_DATE());
 
-CREATE TABLE task (
+CREATE TABLE reminder (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
 
@@ -51,7 +51,6 @@ CREATE TABLE task (
     time CHAR(5) DEFAULT "",
     name VARCHAR(255) DEFAULT "",
     details VARCHAR(10000) DEFAULT "",
-    completed TINYINT(1) DEFAULT 0,
     repeating TINYINT(1) DEFAULT 0,
     repeat_count TINYINT DEFAULT NULL,
     repeat_interval VARCHAR(50) DEFAULT "",
@@ -61,7 +60,22 @@ CREATE TABLE task (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
 );
-INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Task Name', 'Details of task', 0, 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
+INSERT INTO reminder VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', '2022-11-14', '10:00', 'Reminder Name', 'Details of reminder', 1, 1, 'week', CURRENT_DATE(), CURRENT_DATE());
+
+CREATE TABLE task (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+
+    name VARCHAR(255) DEFAULT "",
+    details VARCHAR(10000) DEFAULT "",
+    completed TINYINT(1) DEFAULT 0,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+INSERT INTO task VALUES ('5afb09ff-6158-4804-96b5-f56a11633820', '77fff5a2-3f34-4d53-8a97-c0d93e21f031', 'Task Name', 'Details of task', 0, CURRENT_DATE(), CURRENT_DATE());
 
 CREATE TABLE company_phone (
     id CHAR(36) NOT NULL,
@@ -235,6 +249,36 @@ CREATE TABLE person_contact (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+CREATE TABLE company_reminder (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
+
+    reminder_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES company(id) ON DELETE CASCADE,
+    FOREIGN KEY (reminder_id) REFERENCES reminder(id) ON DELETE CASCADE
+);
+
+CREATE TABLE person_reminder (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    parent_id CHAR(36) NOT NULL,
+
+    reminder_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (parent_id) REFERENCES person(id) ON DELETE CASCADE,
+    FOREIGN KEY (reminder_id) REFERENCES reminder(id) ON DELETE CASCADE
 );
 
 CREATE TABLE company_task (
