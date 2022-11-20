@@ -215,6 +215,49 @@ function getTableRowsWithForeignKey(user_id, table, fk_name, fk_id) {
   });
 }
 
+function getTableRowsJoinTable(user_id, table1, table2, id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (table1 != "company" && table1 != "person") {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (table2 != "reminder" && table2 != "task") {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (!idIsValid(id)) {
+      resolve({ statusCode: 500, data: "id not valid" });
+      return;
+    }
+
+    execute(`
+      SELECT t1.* FROM ${table1} AS t1
+      INNER JOIN ${table1}_${table2} AS t2 ON t1.id = t2.parent_id
+      WHERE t1.user_id = '${user_id}'
+        AND t2.user_id = '${user_id}'
+        AND t2.${table2}_id = '${id}';
+        `)
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({
+          statusCode: 400,
+          data: "failed to get table rows from join",
+        });
+        return;
+      });
+  });
+}
+
 function getTableRow(user_id, table, id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
@@ -432,6 +475,7 @@ module.exports.getUserId = getUserId;
 
 module.exports.getTableRows = getTableRows;
 module.exports.getTableRowsWithForeignKey = getTableRowsWithForeignKey;
+module.exports.getTableRowsJoinTable = getTableRowsJoinTable;
 module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;
 module.exports.createTableRow = createTableRow;

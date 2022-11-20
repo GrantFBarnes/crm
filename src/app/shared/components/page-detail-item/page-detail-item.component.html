@@ -33,18 +33,22 @@
   <ng-container *ngIf="table == 'reminder'">
     <ng-container *ngIf="!edit_mode">
       <div class="row mb-2">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Date/Time</h5>
-            <p class="wrap-text">{{ getDateTimeString() }}</p>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Date/Time</h5>
+              <p class="wrap-text">{{ getDateTimeString() }}</p>
+            </div>
           </div>
         </div>
       </div>
       <div class="row mb-2">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Details</h5>
-            <p class="wrap-text">{{ data.details }}</p>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Details</h5>
+              <p class="wrap-text">{{ data.details }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -149,24 +153,28 @@
   <ng-container *ngIf="table == 'task'">
     <ng-container *ngIf="!edit_mode">
       <div class="row mb-2">
-        <ng-container *ngIf="data.completed">
-          <h3>
-            <i class="bi bi-toggle-on"></i>
-            Task is Complete
-          </h3>
-        </ng-container>
-        <ng-container *ngIf="!data.completed">
-          <h3>
-            <i class="bi bi-toggle-off"></i>
-            Task is Not Complete
-          </h3>
-        </ng-container>
+        <div class="col-12">
+          <ng-container *ngIf="data.completed">
+            <h3>
+              <i class="bi bi-toggle-on"></i>
+              Task is Complete
+            </h3>
+          </ng-container>
+          <ng-container *ngIf="!data.completed">
+            <h3>
+              <i class="bi bi-toggle-off"></i>
+              Task is Not Complete
+            </h3>
+          </ng-container>
+        </div>
       </div>
       <div class="row mb-2">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Details</h5>
-            <p class="wrap-text">{{ data.details }}</p>
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Details</h5>
+              <p class="wrap-text">{{ data.details }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -208,6 +216,33 @@
       </div>
     </ng-container>
   </ng-container>
+
+  <div class="row">
+    <div class="col-md-6 mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Companies</h5>
+          <ng-container *ngFor="let company of companies">
+            <a [href]="'/crm/company/' + company.id">
+              {{ company.name || "(No Name)" }}
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-2">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">People</h5>
+          <ng-container *ngFor="let person of people">
+            <a [href]="'/crm/person/' + person.id">
+              {{ person.name || "(No Name)" }}
+            </a>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <ng-container *ngIf="edit_mode">
     <div class="row mt-4">
