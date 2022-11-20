@@ -16,6 +16,21 @@
   </div>
   <ng-container *ngIf="edit_mode">
     <div class="row mb-2">
+      <div class="col-12 center">
+        <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
+          Delete
+          <i class="bi bi-trash"></i>
+        </button>
+        <ng-container *ngIf="pending_changes">
+          &nbsp;
+          <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
+            Save
+            <i class="bi bi-save"></i>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row mb-2">
       <div class="col-12">
         <div class="input-group">
           <span class="input-group-text">Name</span>
@@ -151,23 +166,28 @@
     </ng-container>
   </ng-container>
   <ng-container *ngIf="table == 'task'">
-    <ng-container *ngIf="!edit_mode">
-      <div class="row mb-2">
-        <div class="col-12">
-          <ng-container *ngIf="data.completed">
-            <h3>
-              <i class="bi bi-toggle-on"></i>
+    <div class="row">
+      <div class="col-12 mb-2">
+        <div class="form-check form-switch">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="complete-switch"
+            (change)="toggleCompleted()"
+            [(ngModel)]="data_edit.completed"
+          />
+          <label class="form-check-label" for="complete-switch">
+            <ng-container *ngIf="data_edit.completed">
               Task is Complete
-            </h3>
-          </ng-container>
-          <ng-container *ngIf="!data.completed">
-            <h3>
-              <i class="bi bi-toggle-off"></i>
+            </ng-container>
+            <ng-container *ngIf="!data_edit.completed">
               Task is Not Complete
-            </h3>
-          </ng-container>
+            </ng-container>
+          </label>
         </div>
       </div>
+    </div>
+    <ng-container *ngIf="!edit_mode">
       <div class="row mb-2">
         <div class="col-12">
           <div class="card">
@@ -180,27 +200,6 @@
       </div>
     </ng-container>
     <ng-container *ngIf="edit_mode">
-      <div class="row">
-        <div class="col-12 mb-2">
-          <div class="form-check form-switch">
-            <input
-              type="checkbox"
-              class="form-check-input"
-              id="complete-switch"
-              (change)="checkPendingChanges()"
-              [(ngModel)]="data_edit.completed"
-            />
-            <label class="form-check-label" for="complete-switch">
-              <ng-container *ngIf="data_edit.completed">
-                Task is Complete
-              </ng-container>
-              <ng-container *ngIf="!data_edit.completed">
-                Task is Not Complete
-              </ng-container>
-            </label>
-          </div>
-        </div>
-      </div>
       <div class="row">
         <div class="col-12 mb-2">
           <div class="input-group">
@@ -239,22 +238,4 @@
       ></app-card-list-table>
     </div>
   </div>
-
-  <ng-container *ngIf="edit_mode">
-    <div class="row mt-4">
-      <div class="col-12 center">
-        <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
-          Delete
-          <i class="bi bi-trash"></i>
-        </button>
-        <ng-container *ngIf="pending_changes">
-          &nbsp;
-          <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
-            Save
-            <i class="bi bi-save"></i>
-          </button>
-        </ng-container>
-      </div>
-    </div>
-  </ng-container>
 </div>

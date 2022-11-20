@@ -39,6 +39,7 @@ export class PageDetailItemComponent implements OnInit {
 
   enterEditMode(): void {
     this.data_edit = JSON.parse(JSON.stringify(this.data));
+    this.pending_changes = false;
     this.edit_mode = true;
   }
 
@@ -104,6 +105,11 @@ export class PageDetailItemComponent implements OnInit {
     }
   }
 
+  toggleCompleted(): void {
+    this.validateValues();
+    this.saveData();
+  }
+
   checkPendingChanges(): void {
     this.validateValues();
     this.pending_changes =
@@ -138,6 +144,7 @@ export class PageDetailItemComponent implements OnInit {
       .get('/api/crm/table/' + this.table + '/id/' + this.data.id)
       .subscribe((data: any) => {
         this.data = data;
+        this.data_edit = JSON.parse(JSON.stringify(this.data));
         if (!this.data.name) {
           this.enterEditMode();
         }

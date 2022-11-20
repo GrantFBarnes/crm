@@ -28,7 +28,7 @@ export class PageDetailContactComponent implements OnInit {
     { field: 'time', title: 'Time' },
   ];
   job_columns: TableColumn[] = [
-    { field: 'name', title: 'Name' },
+    { field: 'name', title: 'Job Position' },
     { field: 'company_id', title: 'Company' },
     { field: 'person_id', title: 'Person' },
   ];

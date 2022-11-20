@@ -16,19 +16,6 @@
   </div>
   <ng-container *ngIf="edit_mode">
     <div class="row mb-2">
-      <div class="col-12">
-        <div class="input-group">
-          <span class="input-group-text">Name</span>
-          <input
-            type="text"
-            class="form-control"
-            (keyup)="checkPendingChanges()"
-            [(ngModel)]="data_edit.name"
-          />
-        </div>
-      </div>
-    </div>
-    <div class="row mb-4">
       <div class="col-12 center">
         <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
           Delete
@@ -41,6 +28,19 @@
             <i class="bi bi-save"></i>
           </button>
         </ng-container>
+      </div>
+    </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <div class="input-group">
+          <span class="input-group-text">Name</span>
+          <input
+            type="text"
+            class="form-control"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit.name"
+          />
+        </div>
       </div>
     </div>
   </ng-container>
