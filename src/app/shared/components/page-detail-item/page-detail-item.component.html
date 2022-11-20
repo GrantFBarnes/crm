@@ -32,20 +32,20 @@
 
   <ng-container *ngIf="table == 'reminder'">
     <ng-container *ngIf="!edit_mode">
-      <div class="row">
-        <div class="col-sm-3 mb-2">
-          <h4>Date/Time</h4>
-        </div>
-        <div class="col-sm-9 mb-2">
-          <p class="wrap-text">{{ getDateTimeString() }}</p>
+      <div class="row mb-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Date/Time</h5>
+            <p class="wrap-text">{{ getDateTimeString() }}</p>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-sm-3 mb-2">
-          <h4>Details</h4>
-        </div>
-        <div class="col-sm-9 mb-2">
-          <p class="wrap-text">{{ data.details }}</p>
+      <div class="row mb-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Details</h5>
+            <p class="wrap-text">{{ data.details }}</p>
+          </div>
         </div>
       </div>
     </ng-container>
@@ -76,7 +76,7 @@
           </div>
         </div>
         <div class="col-md-6 col-lg-4 mb-2">
-          <div class="form-check form-switch">
+          <div class="form-check form-switch mt-2">
             <input
               type="checkbox"
               class="form-check-input"
@@ -85,7 +85,12 @@
               [(ngModel)]="data_edit.repeating"
             />
             <label class="form-check-label" for="repeat-switch">
-              {{ data_edit.repeating ? "" : " Not" }} Repeating
+              <ng-container *ngIf="data_edit.repeating">
+                Reminder Will Repeat
+              </ng-container>
+              <ng-container *ngIf="!data_edit.repeating">
+                One Time Reminder Only
+              </ng-container>
             </label>
           </div>
         </div>
@@ -94,12 +99,12 @@
         <div class="row">
           <div class="col-12 mb-2">
             <div class="input-group">
-              <span class="input-group-text">Repeat every</span>
+              <span class="input-group-text">Repeat Reminder Every</span>
               <input
                 type="number"
                 min="0"
                 max="127"
-                class="form-control small-form"
+                class="form-control"
                 (keyup)="checkPendingChanges()"
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.repeat_count"
@@ -109,10 +114,18 @@
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.repeat_interval"
               >
-                <option value="work day">Work Day</option>
-                <option value="week">Week</option>
-                <option value="month">Month</option>
-                <option value="year">Year</option>
+                <option value="work day">
+                  Work Day{{ data_edit.repeat_count > 1 ? "s" : "" }}
+                </option>
+                <option value="week">
+                  Week{{ data_edit.repeat_count > 1 ? "s" : "" }}
+                </option>
+                <option value="month">
+                  Month{{ data_edit.repeat_count > 1 ? "s" : "" }}
+                </option>
+                <option value="year">
+                  Year{{ data_edit.repeat_count > 1 ? "s" : "" }}
+                </option>
               </select>
             </div>
           </div>
@@ -135,21 +148,26 @@
   </ng-container>
   <ng-container *ngIf="table == 'task'">
     <ng-container *ngIf="!edit_mode">
-      <div class="row">
-        <div class="col-sm-3 mb-2">
-          <h4>Completion</h4>
-        </div>
-        <div class="col-sm-9 mb-2">
-          <ng-container *ngIf="data.completed">Completed</ng-container>
-          <ng-container *ngIf="!data.completed">Not Complete</ng-container>
-        </div>
+      <div class="row mb-2">
+        <ng-container *ngIf="data.completed">
+          <h3>
+            <i class="bi bi-toggle-on"></i>
+            Task is Complete
+          </h3>
+        </ng-container>
+        <ng-container *ngIf="!data.completed">
+          <h3>
+            <i class="bi bi-toggle-off"></i>
+            Task is Not Complete
+          </h3>
+        </ng-container>
       </div>
-      <div class="row">
-        <div class="col-sm-3 mb-2">
-          <h4>Details</h4>
-        </div>
-        <div class="col-sm-9 mb-2">
-          <p class="wrap-text">{{ data.details }}</p>
+      <div class="row mb-2">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Details</h5>
+            <p class="wrap-text">{{ data.details }}</p>
+          </div>
         </div>
       </div>
     </ng-container>
@@ -166,10 +184,10 @@
             />
             <label class="form-check-label" for="complete-switch">
               <ng-container *ngIf="data_edit.completed">
-                Completed
+                Task is Complete
               </ng-container>
               <ng-container *ngIf="!data_edit.completed">
-                Not Complete
+                Task is Not Complete
               </ng-container>
             </label>
           </div>

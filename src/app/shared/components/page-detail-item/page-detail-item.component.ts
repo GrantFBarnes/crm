@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
-import { TableColumn } from 'src/app/shared/interfaces/table-column';
-
 @Component({
   selector: 'app-page-detail-item',
   templateUrl: './page-detail-item.component.html',
@@ -13,29 +11,6 @@ export class PageDetailItemComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
   @Input() list_page: string = '';
-
-  phone_columns: TableColumn[] = [{ field: 'value', title: 'Phone' }];
-  email_columns: TableColumn[] = [{ field: 'value', title: 'Email' }];
-  address_columns: TableColumn[] = [
-    { field: 'city', title: 'City' },
-    { field: 'state', title: 'State' },
-    { field: 'zip', title: 'Zip' },
-  ];
-  note_columns: TableColumn[] = [{ field: 'details', title: 'Details' }];
-  contact_columns: TableColumn[] = [
-    { field: 'date', title: 'Date' },
-    { field: 'time', title: 'Time' },
-    { field: 'details', title: 'Details' },
-  ];
-  job_columns: TableColumn[] = [
-    { field: 'name', title: 'Name' },
-    { field: 'company_id', title: 'Company' },
-    { field: 'person_id', title: 'Person' },
-  ];
-  reminder_columns: TableColumn[] = [
-    { field: 'reminder_id', title: 'Reminder' },
-  ];
-  task_columns: TableColumn[] = [{ field: 'task_id', title: 'Task' }];
 
   loading: boolean = true;
 
@@ -68,31 +43,25 @@ export class PageDetailItemComponent implements OnInit {
 
   getDateTimeString(): string {
     let result = '';
-    switch (this.table) {
-      case 'reminder':
-        if (this.data.date) {
-          result += this.data.date;
-        }
-        if (this.data.time) {
-          if (result) result += ', ';
-          result += this.data.time;
-        }
-        if (this.data.repeating) {
-          if (result) result += '\n';
-          result +=
-            'Repeats every ' +
-            this.data.repeat_count +
-            ' ' +
-            this.data.repeat_interval;
-          if (this.data.repeat_count > 1) {
-            result += 's';
-          }
-        }
-        break;
 
-      default:
-        break;
+    if (this.data.date) {
+      result += this.data.date;
     }
+
+    if (this.data.time) {
+      if (result) result += ', ';
+      result += this.data.time;
+    }
+
+    if (this.data.repeating) {
+      if (result) result += ' - ';
+      result += this.title + ' will repeat every ';
+      result += this.data.repeat_count + ' ' + this.data.repeat_interval;
+      if (this.data.repeat_count > 1) {
+        result += 's';
+      }
+    }
+
     return result;
   }
 
