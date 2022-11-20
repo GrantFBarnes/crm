@@ -9,9 +9,7 @@
       <table class="table table-light">
         <thead>
           <tr>
-            <ng-container *ngFor="let column of columns">
-              <th>{{ column.title }}</th>
-            </ng-container>
+            <th>Name</th>
           </tr>
         </thead>
         <tbody>
@@ -34,11 +32,9 @@
           <ng-container *ngFor="let row of data">
             <ng-container *ngIf="searchTextInRow(row)">
               <tr class="clickable" (click)="openRow(row.id)">
-                <ng-container *ngFor="let column of columns">
-                  <td>
-                    {{ row[column.field] || "(No " + column.title + ")" }}
-                  </td>
-                </ng-container>
+                <td>
+                  {{ row.name || "(No Name)" }}
+                </td>
               </tr>
             </ng-container>
           </ng-container>

@@ -10,9 +10,9 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
   styleUrls: ['./page-detail-contact.component.css'],
 })
 export class PageDetailContactComponent implements OnInit {
+  @Input() title: string = '';
   @Input() table: string = '';
   @Input() list_page: string = '';
-  @Input() columns: TableColumn[] = [];
 
   phone_columns: TableColumn[] = [{ field: 'value', title: 'Phone' }];
   email_columns: TableColumn[] = [{ field: 'value', title: 'Email' }];
@@ -164,14 +164,7 @@ export class PageDetailContactComponent implements OnInit {
       .get('/api/crm/table/' + this.table + '/id/' + this.data.id)
       .subscribe((data: any) => {
         this.data = data;
-        let has_data = false;
-        for (let column of this.columns) {
-          if (this.data[column.field]) {
-            has_data = true;
-            break;
-          }
-        }
-        if (!has_data) {
+        if (!this.data.name) {
           this.enterEditMode();
         }
         this.loading = false;

@@ -1,8 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
-import { TableColumn } from 'src/app/shared/interfaces/table-column';
-
 @Component({
   selector: 'app-page-list-table',
   templateUrl: './page-list-table.component.html',
@@ -12,7 +10,6 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 export class PageListTableComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
-  @Input() columns: TableColumn[] = [];
 
   loading: boolean = true;
 
@@ -55,14 +52,8 @@ export class PageListTableComponent implements OnInit {
   }
 
   sortMethod = (a: any, b: any): number => {
-    let a_val = '';
-    let b_val = '';
-    for (let i in this.columns) {
-      a_val += a[this.columns[i].field];
-      b_val += b[this.columns[i].field];
-    }
-    a_val = a_val.toLocaleLowerCase();
-    b_val = b_val.toLocaleLowerCase();
+    const a_val = a.name.toLocaleLowerCase();
+    const b_val = b.name.toLocaleLowerCase();
     if (a_val < b_val) return -1;
     if (a_val > b_val) return 1;
     return 0;
@@ -71,13 +62,7 @@ export class PageListTableComponent implements OnInit {
   searchTextInRow(row: any): boolean {
     const search_text = this.search_text.trim().toLocaleLowerCase();
     if (!search_text) return true;
-    for (let i in this.columns) {
-      if (
-        row[this.columns[i].field].toLocaleLowerCase().includes(search_text)
-      ) {
-        return true;
-      }
-    }
+    if (row.name.toLocaleLowerCase().includes(search_text)) return true;
     return false;
   }
 }
