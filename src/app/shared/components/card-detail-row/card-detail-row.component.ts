@@ -12,8 +12,8 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 export class CardDetailRowComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
+  @Input() link_table: string = '';
   @Input() data: any = {};
-  @Input() parent_table: string = '';
   @Input() columns: TableColumn[] = [];
   @Input() edit_mode: boolean = false;
   @Output() emitSaveData = new EventEmitter<any>();
@@ -21,8 +21,7 @@ export class CardDetailRowComponent implements OnInit {
 
   data_edit: any = {};
   pending_changes: boolean = false;
-  linked_data: any = {};
-  linked_table: string = '';
+  link_data: any = {};
 
   constructor(private httpService: HttpService) {}
 
@@ -31,7 +30,7 @@ export class CardDetailRowComponent implements OnInit {
   ngOnChanges(): void {
     this.data_edit = JSON.parse(JSON.stringify(this.data));
     this.pending_changes = false;
-    this.getLinkedData();
+    this.getLinkData();
   }
 
   checkPendingChanges(): void {
@@ -47,30 +46,17 @@ export class CardDetailRowComponent implements OnInit {
     this.emitDeleteData.emit(this.data.id);
   }
 
-  getLinkedData(): void {
-    this.linked_table = '';
+  getLinkData(): void {
+    if (!this.link_table) return;
 
-    if (this.table == 'job') {
-      if (this.parent_table == 'company') {
-        this.linked_table = 'person';
-      } else {
-        this.linked_table = 'company';
-      }
-    } else if (this.table.includes('reminder')) {
-      this.linked_table = 'reminder';
-    } else if (this.table.includes('task')) {
-      this.linked_table = 'task';
-    }
+    const id = this.data[this.link_table + '_id'];
+    if (!id) return;
 
-    if (this.linked_table) {
-      const id = this.data[this.linked_table + '_id'];
-      if (!id) return;
-      this.httpService
-        .get('/api/crm/table/' + this.linked_table + '/id/' + id)
-        .subscribe((data: any) => {
-          this.linked_data = data;
-        });
-    }
+    this.httpService
+      .get('/api/crm/table/' + this.link_table + '/id/' + id)
+      .subscribe((data: any) => {
+        this.link_data = data;
+      });
   }
 
   getDisplayString(): string {
@@ -100,7 +86,7 @@ export class CardDetailRowComponent implements OnInit {
         result = this.data.details || '(No ' + this.title + ')';
         break;
 
-      case 'Contact Log':
+      case 'Log':
         if (this.data.date) {
           result += this.data.date;
         }

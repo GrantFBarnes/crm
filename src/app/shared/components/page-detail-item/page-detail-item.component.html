@@ -219,28 +219,24 @@
 
   <div class="row">
     <div class="col-md-6 mb-2">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">Companies</h5>
-          <ng-container *ngFor="let company of companies">
-            <a [href]="'/crm/company/' + company.id">
-              {{ company.name || "(No Name)" }}
-            </a>
-          </ng-container>
-        </div>
-      </div>
+      <app-card-list-table
+        [title]="'Company'"
+        [table]="'link_company_' + table"
+        [parent_field]="table + '_id'"
+        [parent_id]="data.id"
+        [link_table]="'company'"
+        [columns]="company_columns"
+      ></app-card-list-table>
     </div>
     <div class="col-md-6 mb-2">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">People</h5>
-          <ng-container *ngFor="let person of people">
-            <a [href]="'/crm/person/' + person.id">
-              {{ person.name || "(No Name)" }}
-            </a>
-          </ng-container>
-        </div>
-      </div>
+      <app-card-list-table
+        [title]="'Person'"
+        [table]="'link_person_' + table"
+        [parent_field]="table + '_id'"
+        [parent_id]="data.id"
+        [link_table]="'person'"
+        [columns]="person_columns"
+      ></app-card-list-table>
     </div>
   </div>
 

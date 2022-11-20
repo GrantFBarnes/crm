@@ -12,7 +12,6 @@ const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const table_fks = new Set([
-  "parent_id",
   "company_id",
   "person_id",
   "reminder_id",
@@ -23,35 +22,46 @@ const table_columns = {
   company: ["name"],
   person: ["name"],
   reminder: [
-    "date",
-    "time",
     "name",
     "details",
+    "date",
+    "time",
     "repeating",
     "repeat_count",
     "repeat_interval",
   ],
   task: ["name", "details", "completed"],
-  company_phone: ["value"],
-  person_phone: ["value"],
-  company_email: ["value"],
-  person_email: ["value"],
-  company_address: ["city", "state", "zip"],
-  person_address: ["city", "state", "zip"],
-  company_note: ["details"],
-  person_note: ["details"],
-  company_contact: ["date", "time", "details"],
-  person_contact: ["date", "time", "details"],
-  company_reminder: ["reminder_id"],
-  person_reminder: ["reminder_id"],
-  company_task: ["task_id"],
-  person_task: ["task_id"],
-  job: ["company_id", "person_id", "name"],
+
+  phone_company: ["value"],
+  phone_person: ["value"],
+  email_company: ["value"],
+  email_person: ["value"],
+  address_company: ["city", "state", "zip"],
+  address_person: ["city", "state", "zip"],
+  note_company: ["details"],
+  note_person: ["details"],
+  log_company: ["details", "date", "time"],
+  log_person: ["details", "date", "time"],
+
+  link_company_person: ["name"],
+  link_company_reminder: [],
+  link_person_reminder: [],
+  link_company_task: [],
+  link_person_task: [],
 };
 
 for (let table in table_columns) {
-  if (table.startsWith("company_") || table.startsWith("person_")) {
-    table_columns[table].unshift("parent_id");
+  if (table.includes("_company")) {
+    table_columns[table].unshift("company_id");
+  }
+  if (table.includes("_person")) {
+    table_columns[table].unshift("person_id");
+  }
+  if (table.includes("_reminder")) {
+    table_columns[table].unshift("reminder_id");
+  }
+  if (table.includes("_task")) {
+    table_columns[table].unshift("task_id");
   }
   table_columns[table].unshift("user_id");
   table_columns[table].unshift("id");
@@ -215,49 +225,6 @@ function getTableRowsWithForeignKey(user_id, table, fk_name, fk_id) {
   });
 }
 
-function getTableRowsJoinTable(user_id, table1, table2, id) {
-  return new Promise((resolve) => {
-    if (!idIsValid(user_id)) {
-      resolve({ statusCode: 500, data: "user id not valid" });
-      return;
-    }
-
-    if (table1 != "company" && table1 != "person") {
-      resolve({ statusCode: 500, data: "table not valid" });
-      return;
-    }
-
-    if (table2 != "reminder" && table2 != "task") {
-      resolve({ statusCode: 500, data: "table not valid" });
-      return;
-    }
-
-    if (!idIsValid(id)) {
-      resolve({ statusCode: 500, data: "id not valid" });
-      return;
-    }
-
-    execute(`
-      SELECT t1.* FROM ${table1} AS t1
-      INNER JOIN ${table1}_${table2} AS t2 ON t1.id = t2.parent_id
-      WHERE t1.user_id = '${user_id}'
-        AND t2.user_id = '${user_id}'
-        AND t2.${table2}_id = '${id}';
-        `)
-      .then((result) => {
-        resolve({ statusCode: 200, data: result });
-        return;
-      })
-      .catch(() => {
-        resolve({
-          statusCode: 400,
-          data: "failed to get table rows from join",
-        });
-        return;
-      });
-  });
-}
-
 function getTableRow(user_id, table, id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
@@ -357,7 +324,6 @@ function createTableRow(user_id, table, data) {
           sql += `'${user_id}', `;
           break;
 
-        case "parent_id":
         case "company_id":
         case "person_id":
         case "reminder_id":
@@ -430,7 +396,6 @@ function updateTableRow(user_id, table, data) {
       switch (column) {
         case "id":
         case "user_id":
-        case "parent_id":
         case "company_id":
         case "person_id":
         case "reminder_id":
@@ -475,7 +440,6 @@ module.exports.getUserId = getUserId;
 
 module.exports.getTableRows = getTableRows;
 module.exports.getTableRowsWithForeignKey = getTableRowsWithForeignKey;
-module.exports.getTableRowsJoinTable = getTableRowsJoinTable;
 module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;
 module.exports.createTableRow = createTableRow;

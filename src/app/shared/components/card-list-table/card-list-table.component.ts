@@ -12,35 +12,26 @@ import { TableColumn } from 'src/app/shared/interfaces/table-column';
 export class CardListTableComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
-  @Input() parent_table: string = '';
   @Input() parent_field: string = '';
   @Input() parent_id: string = '';
+  @Input() link_table: string = '';
   @Input() columns: TableColumn[] = [];
 
   loading: boolean = true;
 
   edit_mode: boolean = false;
   data: any[] = [];
-  link_table: string = '';
 
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    if (this.table === 'job') {
-      this.link_table = this.parent_table === 'company' ? 'person' : 'company';
-    } else if (this.table.includes('reminder')) {
-      this.link_table = 'reminder';
-    } else if (this.table.includes('task')) {
-      this.link_table = 'task';
-    } else {
-      this.link_table = '';
-    }
     this.getData();
   }
 
   getData(): void {
+    if (!this.table) return;
     if (!this.parent_field) return;
     if (!this.parent_id) return;
 
@@ -101,9 +92,8 @@ export class CardListTableComponent implements OnInit {
   addRow(body: any): void {
     this.loading = true;
 
-    if (!body) {
-      body = { [this.parent_field]: this.parent_id };
-    }
+    if (!body) body = {};
+    body[this.parent_field] = this.parent_id;
 
     this.httpService
       .post('/api/crm/table/' + this.table, body)
@@ -114,20 +104,6 @@ export class CardListTableComponent implements OnInit {
   }
 
   addLink(id: string): void {
-    if (this.table === 'job') {
-      let body = { company_id: '', person_id: '' };
-      if (this.parent_field == 'company_id') {
-        body.company_id = this.parent_id;
-        body.person_id = id;
-      } else {
-        body.company_id = id;
-        body.person_id = this.parent_id;
-      }
-      this.addRow(body);
-    } else if (this.table.includes('reminder')) {
-      this.addRow({ parent_id: this.parent_id, reminder_id: id });
-    } else if (this.table.includes('task')) {
-      this.addRow({ parent_id: this.parent_id, task_id: id });
-    }
+    this.addRow({ [this.link_table + '_id']: id });
   }
 }

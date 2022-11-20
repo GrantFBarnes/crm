@@ -1,38 +1,17 @@
 <ng-container *ngIf="!edit_mode">
-  <ng-container [ngSwitch]="title">
-    <ng-container *ngSwitchCase="'Job'">
-      <div class="wrap-text">
-        {{ data.name || "(No Job Title)" }} -
-        <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-          {{ linked_data.name || "(No Name)" }}
-        </a>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Reminder'">
-      <div class="wrap-text">
-        <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-          {{ linked_data.name || "(No Name)" }}
-        </a>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Task'">
-      <div class="wrap-text">
-        <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-          {{ linked_data.name || "(No Name)" }}
-        </a>
-      </div>
-    </ng-container>
-    <ng-container *ngSwitchCase="'Note'">
+  <ng-container *ngIf="link_table">
+    <div class="wrap-text">
+      <ng-container *ngIf="data.name">{{ data.name }} - </ng-container>
+      <a [href]="'/crm/' + link_table + '/' + link_data.id">
+        {{ link_data.name || "(No Name)" }}
+      </a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="!link_table">
+    <ng-container *ngIf="title == 'Log' || title == 'Note'">
       <hr />
-      <div class="wrap-text">{{ getDisplayString() }}</div>
     </ng-container>
-    <ng-container *ngSwitchCase="'Contact Log'">
-      <hr />
-      <div class="wrap-text">{{ getDisplayString() }}</div>
-    </ng-container>
-    <ng-container *ngSwitchDefault>
-      <div class="wrap-text">{{ getDisplayString() }}</div>
-    </ng-container>
+    <div class="wrap-text">{{ getDisplayString() }}</div>
   </ng-container>
 </ng-container>
 
@@ -69,14 +48,14 @@
       </ng-container>
       <ng-container *ngSwitchCase="'time'"></ng-container>
       <ng-container *ngSwitchCase="'company_id'">
-        <ng-container *ngIf="parent_table == 'person'">
+        <ng-container *ngIf="link_table == 'company'">
           <div class="row mb-2">
             <div class="col-12">
               <div class="input-group">
                 <span class="input-group-text">{{ column.title }}</span>
                 <div class="ms-2 mt-2">
-                  <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-                    {{ linked_data.name || "(No Name)" }}
+                  <a [href]="'/crm/' + link_table + '/' + link_data.id">
+                    {{ link_data.name || "(No Name)" }}
                   </a>
                 </div>
               </div>
@@ -85,14 +64,14 @@
         </ng-container>
       </ng-container>
       <ng-container *ngSwitchCase="'person_id'">
-        <ng-container *ngIf="parent_table == 'company'">
+        <ng-container *ngIf="link_table == 'person'">
           <div class="row mb-2">
             <div class="col-12">
               <div class="input-group">
                 <span class="input-group-text">{{ column.title }}</span>
                 <div class="ms-2 mt-2">
-                  <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-                    {{ linked_data.name || "(No Name)" }}
+                  <a [href]="'/crm/' + link_table + '/' + link_data.id">
+                    {{ link_data.name || "(No Name)" }}
                   </a>
                 </div>
               </div>
@@ -106,8 +85,8 @@
             <div class="input-group">
               <span class="input-group-text">{{ column.title }}</span>
               <div class="ms-2 mt-2">
-                <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-                  {{ linked_data.name || "(No Name)" }}
+                <a [href]="'/crm/' + link_table + '/' + link_data.id">
+                  {{ link_data.name || "(No Name)" }}
                 </a>
               </div>
             </div>
@@ -120,8 +99,8 @@
             <div class="input-group">
               <span class="input-group-text">{{ column.title }}</span>
               <div class="ms-2 mt-2">
-                <a [href]="'/crm/' + linked_table + '/' + linked_data.id">
-                  {{ linked_data.name || "(No Name)" }}
+                <a [href]="'/crm/' + link_table + '/' + link_data.id">
+                  {{ link_data.name || "(No Name)" }}
                 </a>
               </div>
             </div>

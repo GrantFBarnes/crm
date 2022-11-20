@@ -22,10 +22,10 @@ export class PageDetailContactComponent implements OnInit {
     { field: 'zip', title: 'Zip' },
   ];
   note_columns: TableColumn[] = [{ field: 'details', title: 'Details' }];
-  contact_columns: TableColumn[] = [
+  log_columns: TableColumn[] = [
+    { field: 'details', title: 'Details' },
     { field: 'date', title: 'Date' },
     { field: 'time', title: 'Time' },
-    { field: 'details', title: 'Details' },
   ];
   job_columns: TableColumn[] = [
     { field: 'name', title: 'Name' },

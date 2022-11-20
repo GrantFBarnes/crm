@@ -22,8 +22,8 @@
       <app-card-detail-row
         [title]="title"
         [table]="table"
+        [link_table]="link_table"
         [data]="row"
-        [parent_table]="parent_table"
         [columns]="columns"
         [edit_mode]="edit_mode"
         (emitSaveData)="saveData($event)"
@@ -32,7 +32,7 @@
     </ng-container>
     <ng-container *ngIf="edit_mode || !data.length">
       <ng-container *ngIf="!link_table">
-        <button class="btn btn-link btn-sm" (click)="addRow(null)">Add</button>
+        <button class="btn btn-link btn-sm" (click)="addRow({})">Add</button>
       </ng-container>
       <ng-container *ngIf="link_table">
         <button

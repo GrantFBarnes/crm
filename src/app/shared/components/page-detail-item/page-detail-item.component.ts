@@ -1,8 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
-import { Company } from 'src/app/shared/interfaces/company';
-import { Person } from 'src/app/shared/interfaces/person';
+import { TableColumn } from 'src/app/shared/interfaces/table-column';
 
 @Component({
   selector: 'app-page-detail-item',
@@ -22,8 +21,8 @@ export class PageDetailItemComponent implements OnInit {
   data_edit: any = JSON.parse(JSON.stringify(this.data));
   pending_changes: boolean = false;
 
-  companies: Company[] = [];
-  people: Person[] = [];
+  company_columns: TableColumn[] = [{ field: 'company_id', title: 'Company' }];
+  person_columns: TableColumn[] = [{ field: 'person_id', title: 'Person' }];
 
   constructor(private httpService: HttpService) {}
 
@@ -142,25 +141,7 @@ export class PageDetailItemComponent implements OnInit {
         if (!this.data.name) {
           this.enterEditMode();
         }
-        this.getCompanies();
-        this.getPeople();
         this.loading = false;
-      });
-  }
-
-  getCompanies(): void {
-    this.httpService
-      .get('/api/crm/table/company/join/' + this.table + '/id/' + this.data.id)
-      .subscribe((data: any) => {
-        this.companies = data;
-      });
-  }
-
-  getPeople(): void {
-    this.httpService
-      .get('/api/crm/table/person/join/' + this.table + '/id/' + this.data.id)
-      .subscribe((data: any) => {
-        this.people = data;
       });
   }
 }

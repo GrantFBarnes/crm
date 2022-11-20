@@ -50,9 +50,8 @@
       <div class="mb-2">
         <app-card-list-table
           [title]="'Phone'"
-          [table]="table + '_phone'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'phone_' + table"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
           [columns]="phone_columns"
         ></app-card-list-table>
@@ -60,9 +59,8 @@
       <div class="mb-2">
         <app-card-list-table
           [title]="'Email'"
-          [table]="table + '_email'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'email_' + table"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
           [columns]="email_columns"
         ></app-card-list-table>
@@ -70,9 +68,8 @@
       <div class="mb-2">
         <app-card-list-table
           [title]="'Address'"
-          [table]="table + '_address'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'address_' + table"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
           [columns]="address_columns"
         ></app-card-list-table>
@@ -80,10 +77,10 @@
       <div class="mb-2">
         <app-card-list-table
           [title]="'Job'"
-          [table]="'job'"
-          [parent_table]="table"
+          [table]="'link_company_person'"
           [parent_field]="table + '_id'"
           [parent_id]="data.id"
+          [link_table]="table == 'company' ? 'person' : 'company'"
           [columns]="job_columns"
         ></app-card-list-table>
       </div>
@@ -92,40 +89,38 @@
       <div class="mb-2">
         <app-card-list-table
           [title]="'Note'"
-          [table]="table + '_note'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'note_' + table"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
           [columns]="note_columns"
         ></app-card-list-table>
       </div>
       <div class="mb-2">
         <app-card-list-table
-          [title]="'Contact Log'"
-          [table]="table + '_contact'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [title]="'Log'"
+          [table]="'log_' + table"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
-          [columns]="contact_columns"
+          [columns]="log_columns"
         ></app-card-list-table>
       </div>
       <div class="mb-2">
         <app-card-list-table
           [title]="'Reminder'"
-          [table]="table + '_reminder'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'link_' + table + '_reminder'"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
+          [link_table]="'reminder'"
           [columns]="reminder_columns"
         ></app-card-list-table>
       </div>
       <div class="mb-2">
         <app-card-list-table
           [title]="'Task'"
-          [table]="table + '_task'"
-          [parent_table]="table"
-          [parent_field]="'parent_id'"
+          [table]="'link_' + table + '_task'"
+          [parent_field]="table + '_id'"
           [parent_id]="data.id"
+          [link_table]="'task'"
           [columns]="task_columns"
         ></app-card-list-table>
       </div>

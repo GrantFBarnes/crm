@@ -103,24 +103,6 @@ router.get("/api/crm/table/:table/fk/:fk_name/:fk_id", (request, response) => {
   }
 });
 
-// Get rows from table 1 joining on given id from table 2
-router.get("/api/crm/table/:t1/join/:t2/id/:id", (request, response) => {
-  const user_id = authentication.getAuthentication(request, userCookieName);
-  if (user_id) {
-    returnPromiseResponse(
-      response,
-      main.getTableRowsJoinTable(
-        user_id,
-        request.params.t1,
-        request.params.t2,
-        request.params.id
-      )
-    );
-  } else {
-    rejectUnauthenticated(response, userCookieName);
-  }
-});
-
 // Get row from table
 router.get("/api/crm/table/:table/id/:id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
