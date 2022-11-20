@@ -1,0 +1,211 @@
+<app-loading *ngIf="loading"></app-loading>
+<div [ngClass]="loading ? 'container blur' : 'container'">
+  <div class="main-title">
+    <h4>
+      <small class="text-muted">{{ title }}</small>
+    </h4>
+    <h1>{{ data.name || "(No Name)" }}</h1>
+    <ng-container *ngIf="!edit_mode">
+      <button class="btn btn-link btn-sm" (click)="enterEditMode()">
+        Edit
+      </button>
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      <button class="btn btn-link btn-sm" (click)="exitEditMode()">Done</button>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="edit_mode">
+    <div class="row mb-2">
+      <div class="col-12">
+        <div class="input-group">
+          <span class="input-group-text">Name</span>
+          <input
+            type="text"
+            class="form-control"
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit.name"
+          />
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="table == 'reminder'">
+    <ng-container *ngIf="!edit_mode">
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Date/Time</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p class="wrap-text">{{ getDateTimeString() }}</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Details</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p class="wrap-text">{{ data.details }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      <div class="row">
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Date</span>
+            <input
+              type="date"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.date"
+            />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Time</span>
+            <input
+              type="time"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.time"
+            />
+          </div>
+        </div>
+        <div class="col-md-6 col-lg-4 mb-2">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="repeat-switch"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.repeating"
+            />
+            <label class="form-check-label" for="repeat-switch">
+              {{ data_edit.repeating ? "" : " Not" }} Repeating
+            </label>
+          </div>
+        </div>
+      </div>
+      <ng-container *ngIf="data_edit.repeating">
+        <div class="row">
+          <div class="col-12 mb-2">
+            <div class="input-group">
+              <span class="input-group-text">Repeat every</span>
+              <input
+                type="number"
+                min="0"
+                max="127"
+                class="form-control small-form"
+                (keyup)="checkPendingChanges()"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.repeat_count"
+              />
+              <select
+                class="form-control"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.repeat_interval"
+              >
+                <option value="work day">Work Day</option>
+                <option value="week">Week</option>
+                <option value="month">Month</option>
+                <option value="year">Year</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Details</span>
+            <textarea
+              rows="{{ data_edit.details.split('\n').length }}"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              [(ngModel)]="data_edit.details"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="table == 'task'">
+    <ng-container *ngIf="!edit_mode">
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Completion</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <ng-container *ngIf="data.completed">Completed</ng-container>
+          <ng-container *ngIf="!data.completed">Not Complete</ng-container>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 mb-2">
+          <h4>Details</h4>
+        </div>
+        <div class="col-sm-9 mb-2">
+          <p class="wrap-text">{{ data.details }}</p>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="edit_mode">
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="form-check form-switch">
+            <input
+              type="checkbox"
+              class="form-check-input"
+              id="complete-switch"
+              (change)="checkPendingChanges()"
+              [(ngModel)]="data_edit.completed"
+            />
+            <label class="form-check-label" for="complete-switch">
+              <ng-container *ngIf="data_edit.completed">
+                Completed
+              </ng-container>
+              <ng-container *ngIf="!data_edit.completed">
+                Not Complete
+              </ng-container>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">Details</span>
+            <textarea
+              rows="{{ data_edit.details.split('\n').length }}"
+              class="form-control"
+              (keyup)="checkPendingChanges()"
+              [(ngModel)]="data_edit.details"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="edit_mode">
+    <div class="row mt-4">
+      <div class="col-12 center">
+        <button class="btn btn-outline-danger btn-sm" (click)="deleteData()">
+          Delete
+          <i class="bi bi-trash"></i>
+        </button>
+        <ng-container *ngIf="pending_changes">
+          &nbsp;
+          <button class="btn btn-outline-primary btn-sm" (click)="saveData()">
+            Save
+            <i class="bi bi-save"></i>
+          </button>
+        </ng-container>
+      </div>
+    </div>
+  </ng-container>
+</div>

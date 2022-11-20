@@ -4,12 +4,12 @@ import { HttpService } from 'src/app/shared/services/http.service';
 import { TableColumn } from 'src/app/shared/interfaces/table-column';
 
 @Component({
-  selector: 'app-page-detail-contact',
-  templateUrl: './page-detail-contact.component.html',
+  selector: 'app-page-detail-item',
+  templateUrl: './page-detail-item.component.html',
   providers: [HttpService],
-  styleUrls: ['./page-detail-contact.component.css'],
+  styleUrls: ['./page-detail-item.component.css'],
 })
-export class PageDetailContactComponent implements OnInit {
+export class PageDetailItemComponent implements OnInit {
   @Input() title: string = '';
   @Input() table: string = '';
   @Input() list_page: string = '';
@@ -66,7 +66,72 @@ export class PageDetailContactComponent implements OnInit {
     this.edit_mode = false;
   }
 
+  getDateTimeString(): string {
+    let result = '';
+    switch (this.table) {
+      case 'reminder':
+        if (this.data.date) {
+          result += this.data.date;
+        }
+        if (this.data.time) {
+          if (result) result += ', ';
+          result += this.data.time;
+        }
+        if (this.data.repeating) {
+          if (result) result += '\n';
+          result +=
+            'Repeats every ' +
+            this.data.repeat_count +
+            ' ' +
+            this.data.repeat_interval;
+          if (this.data.repeat_count > 1) {
+            result += 's';
+          }
+        }
+        break;
+
+      default:
+        break;
+    }
+    return result;
+  }
+
+  validateValues(): void {
+    switch (this.table) {
+      case 'reminder':
+        this.data_edit.repeating = this.data_edit.repeating ? 1 : 0;
+
+        if (!this.data_edit.repeating) {
+          this.data_edit.repeat_count = 0;
+          this.data_edit.repeat_interval = '';
+        } else {
+          if (!this.data_edit.repeat_count) {
+            this.data_edit.repeat_count = 1;
+          }
+
+          if (!this.data_edit.repeat_interval) {
+            this.data_edit.repeat_interval = 'week';
+          }
+
+          if (this.data_edit.repeat_count < 1) {
+            this.data_edit.repeat_count = 1;
+          } else if (this.data_edit.repeat_count > 127) {
+            this.data_edit.repeat_count = 127;
+          }
+        }
+        break;
+
+      case 'task':
+        this.data_edit.completed = this.data_edit.completed ? 1 : 0;
+        break;
+
+      default:
+        break;
+    }
+  }
+
   checkPendingChanges(): void {
+    this.validateValues();
     this.pending_changes =
       JSON.stringify(this.data) != JSON.stringify(this.data_edit);
   }

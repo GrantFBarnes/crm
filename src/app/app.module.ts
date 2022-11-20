@@ -22,6 +22,7 @@ import { PageTaskComponent } from './pages/page-task/page-task.component';
 
 import { PageListTableComponent } from './shared/components/page-list-table/page-list-table.component';
 import { PageDetailContactComponent } from './shared/components/page-detail-contact/page-detail-contact.component';
+import { PageDetailItemComponent } from './shared/components/page-detail-item/page-detail-item.component';
 
 import { CardListTableComponent } from './shared/components/card-list-table/card-list-table.component';
 import { CardDetailRowComponent } from './shared/components/card-detail-row/card-detail-row.component';
@@ -47,6 +48,7 @@ import { ModalTableSelectComponent } from './modals/modal-table-select/modal-tab
 
     PageListTableComponent,
     PageDetailContactComponent,
+    PageDetailItemComponent,
 
     CardListTableComponent,
     CardDetailRowComponent,
