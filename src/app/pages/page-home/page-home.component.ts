@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { KeyValue } from '@angular/common';
 import { HttpService } from 'src/app/shared/services/http.service';
 
-import { Company } from 'src/app/shared/interfaces/company';
-import { Person } from 'src/app/shared/interfaces/person';
-import { Reminder } from 'src/app/shared/interfaces/reminder';
-import { Task } from 'src/app/shared/interfaces/task';
+import { TableReminder } from 'src/app/shared/interfaces/table-reminder';
+import { TableTask } from 'src/app/shared/interfaces/table-task';
+import { TableCompany } from 'src/app/shared/interfaces/table-company';
+import { TablePerson } from 'src/app/shared/interfaces/table-person';
 
 import * as datetime from 'src/app/shared/methods/datetime';
 import * as sort from 'src/app/shared/methods/sort';
@@ -19,15 +19,16 @@ import * as sort from 'src/app/shared/methods/sort';
 export class PageHomeComponent implements OnInit {
   loading: boolean = true;
 
-  reminders: { [date: string]: Reminder[] } = {};
+  reminders: { [date: string]: TableReminder[] } = {};
 
   tab: string = '';
-  tab_list: any[] = [];
-  tab_table: string = 'task';
 
-  companies: Company[] = [];
-  people: Person[] = [];
-  tasks: Task[] = [];
+  tasks: { [completion: string]: TableTask[] } = {};
+  top_companies: TableCompany[] = [];
+  top_people: TablePerson[] = [];
+
+  top_list: any[] = [];
+  top_list_table: string = '';
 
   constructor(private httpService: HttpService) {}
 
@@ -46,37 +47,42 @@ export class PageHomeComponent implements OnInit {
     this.tab = tab;
 
     switch (tab) {
-      case 'Tasks':
-        this.tab_list = JSON.parse(JSON.stringify(this.tasks));
-        this.tab_table = 'task';
-        break;
-
       case 'Companies':
-        this.tab_list = JSON.parse(JSON.stringify(this.companies));
-        this.tab_table = 'company';
+        this.top_list = JSON.parse(JSON.stringify(this.top_companies));
+        this.top_list_table = 'company';
         break;
 
       case 'People':
-        this.tab_list = JSON.parse(JSON.stringify(this.people));
-        this.tab_table = 'person';
+        this.top_list = JSON.parse(JSON.stringify(this.top_people));
+        this.top_list_table = 'person';
         break;
 
       default:
-        this.tab_list = [];
-        this.tab_table = '';
+        this.top_list = [];
+        this.top_list_table = '';
         break;
     }
   }
 
+  toggleCompleted(task: any): void {
+    this.loading = true;
+    task.completed = task.completed ? 1 : 0;
+    this.httpService.put('/api/crm/table/task', task).subscribe(() => {
+      this.getTasks();
+      this.loading = false;
+    });
+  }
+
   getData(): void {
     this.getReminders();
+    this.getTasks();
     this.getCompanies();
     this.getPeople();
-    this.getTasks();
     this.loading = false;
   }
 
   getReminders(): void {
+    this.reminders = {};
     this.httpService.get('/api/crm/table/reminder').subscribe((data: any) => {
       for (let i in data) {
         const date = datetime.getRepeatingISO(
@@ -94,22 +100,36 @@ export class PageHomeComponent implements OnInit {
     });
   }
 
-  getCompanies(): void {
-    this.httpService.get('/api/crm/table/company').subscribe((data: any) => {
-      this.companies = data.sort(sort.sortByName);
+  getTasks(): void {
+    this.tasks = {};
+    this.httpService.get('/api/crm/table/task').subscribe((data: any) => {
+      for (let i in data) {
+        const key = data[i].completed ? 'Completed' : 'Not Completed';
+        if (!this.tasks[key]) this.tasks[key] = [];
+        this.tasks[key].push(data[i]);
+      }
+
+      for (let key in this.tasks) {
+        this.tasks[key] = this.tasks[key].sort(sort.sortByName);
+      }
+
+      this.setTab('Tasks');
     });
+  }
+
+  getCompanies(): void {
+    this.top_companies = [];
+    this.httpService
+      .get('/api/crm/table/company/top')
+      .subscribe((data: any) => {
+        this.top_companies = data.sort(sort.sortByViewCount);
+      });
   }
 
   getPeople(): void {
-    this.httpService.get('/api/crm/table/person').subscribe((data: any) => {
-      this.people = data.sort(sort.sortByName);
-    });
-  }
-
-  getTasks(): void {
-    this.httpService.get('/api/crm/table/task').subscribe((data: any) => {
-      this.tasks = data.sort(sort.sortByName);
-      this.setTab('Tasks');
+    this.top_people = [];
+    this.httpService.get('/api/crm/table/person/top').subscribe((data: any) => {
+      this.top_people = data.sort(sort.sortByViewCount);
     });
   }
 
@@ -121,7 +141,11 @@ export class PageHomeComponent implements OnInit {
     return datetime.get12HourTime(time);
   }
 
-  sortByDate = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
+  sortByKeyAsc = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
     return sort.sortByKey(a, b);
+  };
+
+  sortByKeyDesc = (a: KeyValue<any, any>, b: KeyValue<any, any>): number => {
+    return sort.sortByKey(b, a);
   };
 }

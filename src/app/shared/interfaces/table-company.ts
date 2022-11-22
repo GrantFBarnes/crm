@@ -1,4 +1,4 @@
-export interface Company {
+export interface TableCompany {
   id: string;
   user_id: string;
 

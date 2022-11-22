@@ -1,10 +1,9 @@
-export interface Task {
+export interface TablePerson {
   id: string;
   user_id: string;
 
   name: string;
-  details: string;
-  completed: boolean;
+  view_count: number;
 
   date_added: Date;
   date_modified: Date;

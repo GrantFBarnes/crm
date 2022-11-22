@@ -1,4 +1,4 @@
-export interface Reminder {
+export interface TableReminder {
   id: string;
   user_id: string;
 

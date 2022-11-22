@@ -12,6 +12,14 @@ export function sortByKey(
   return 0;
 }
 
+export function sortByViewCount(a: any, b: any): number {
+  const a_val = a.view_count;
+  const b_val = b.view_count;
+  if (a_val < b_val) return 1;
+  if (a_val > b_val) return -1;
+  return 0;
+}
+
 export function sortByDate(a: any, b: any): number {
   const a_val = a.date;
   const b_val = b.date;

@@ -184,6 +184,40 @@ function getTableRows(user_id, table) {
   });
 }
 
+function getTableTopRows(user_id, table) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (!table_columns[table].includes("view_count")) {
+      resolve({ statusCode: 500, data: "table has no view count" });
+      return;
+    }
+
+    execute(`
+      SELECT * FROM ${table}
+      WHERE user_id = '${user_id}'
+      ORDER BY view_count DESC
+      LIMIT 10;
+        `)
+      .then((result) => {
+        resolve({ statusCode: 200, data: result });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get table top rows" });
+        return;
+      });
+  });
+}
+
 function getTableRowsWithForeignKey(user_id, table, fk_name, fk_id) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
@@ -441,6 +475,7 @@ function updateTableRow(user_id, table, data) {
 module.exports.getUserId = getUserId;
 
 module.exports.getTableRows = getTableRows;
+module.exports.getTableTopRows = getTableTopRows;
 module.exports.getTableRowsWithForeignKey = getTableRowsWithForeignKey;
 module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;

@@ -9,7 +9,7 @@
       <div class="card">
         <div class="card-body">
           <h5 class="card-title">Reminders</h5>
-          <ng-container *ngFor="let item of reminders | keyvalue: sortByDate">
+          <ng-container *ngFor="let item of reminders | keyvalue: sortByKeyAsc">
             <h6 class="card-subtitle mt-4 mb-2 text-muted">
               {{ getDateString(item.key) }}
             </h6>
@@ -53,15 +53,39 @@
             </a>
           </li>
         </ul>
-        <div class="card-body">
-          <ng-container *ngFor="let row of tab_list">
-            <div class="wrap-text">
-              <a [href]="'/crm/' + tab_table + '/' + row.id">
-                {{ row.name || "(No Name)" }}
-              </a>
-            </div>
-          </ng-container>
-        </div>
+        <ng-container *ngIf="tab == 'Tasks'">
+          <div class="card-body">
+            <h5 class="card-title">{{ tab }}</h5>
+            <ng-container *ngFor="let item of tasks | keyvalue: sortByKeyDesc">
+              <h6 class="card-subtitle mt-4 mb-2 text-muted">{{ item.key }}</h6>
+              <ng-container *ngFor="let row of item.value">
+                <div class="form-check form-switch">
+                  <input
+                    type="checkbox"
+                    class="form-check-input"
+                    (change)="toggleCompleted(row)"
+                    [(ngModel)]="row.completed"
+                  />
+                  <a [href]="'/crm/task/' + row.id">
+                    {{ row.name || "(No Name)" }}
+                  </a>
+                </div>
+              </ng-container>
+            </ng-container>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="tab != 'Tasks'">
+          <div class="card-body">
+            <h5 class="card-title">Most Viewed {{ tab }}</h5>
+            <ng-container *ngFor="let row of top_list">
+              <div class="wrap-text">
+                <a [href]="'/crm/' + top_list_table + '/' + row.id">
+                  {{ row.name || "(No Name)" }}
+                </a>
+              </div>
+            </ng-container>
+          </div>
+        </ng-container>
       </div>
     </div>
   </div>

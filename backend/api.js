@@ -85,6 +85,19 @@ router.get("/api/crm/table/:table", (request, response) => {
   }
 });
 
+// Get top view count rows from table
+router.get("/api/crm/table/:table/top", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getTableTopRows(user_id, request.params.table)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 // Get rows from table with given foreign key
 router.get("/api/crm/table/:table/fk/:fk_name/:fk_id", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
