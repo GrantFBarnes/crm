@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+import * as sort from 'src/app/shared/methods/sort';
+
 @Component({
   selector: 'app-modal-table-select',
   templateUrl: './modal-table-select.component.html',
@@ -36,15 +38,7 @@ export class ModalTableSelectComponent implements OnInit {
     this.httpService
       .get('/api/crm/table/' + this.table)
       .subscribe((data: any) => {
-        this.data = data.sort(this.sortMethod);
+        this.data = data.sort(sort.sortByName);
       });
   }
-
-  sortMethod = (a: any, b: any): number => {
-    const a_val = a.name.toLocaleLowerCase();
-    const b_val = b.name.toLocaleLowerCase();
-    if (a_val < b_val) return -1;
-    if (a_val > b_val) return 1;
-    return 0;
-  };
 }

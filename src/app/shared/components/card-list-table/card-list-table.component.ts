@@ -3,6 +3,8 @@ import { HttpService } from 'src/app/shared/services/http.service';
 
 import { TableColumn } from 'src/app/shared/interfaces/table-column';
 
+import * as sort from 'src/app/shared/methods/sort';
+
 @Component({
   selector: 'app-card-list-table',
   templateUrl: './card-list-table.component.html',
@@ -44,24 +46,10 @@ export class CardListTableComponent implements OnInit {
       this.parent_id;
 
     this.httpService.get(api).subscribe((data: any) => {
-      this.data = data.sort(this.sortMethod);
+      this.data = data.sort(sort.sortByColumns(this.columns));
       this.loading = false;
     });
   }
-
-  sortMethod = (a: any, b: any): number => {
-    let a_val = '';
-    let b_val = '';
-    for (let i in this.columns) {
-      a_val += a[this.columns[i].field];
-      b_val += b[this.columns[i].field];
-    }
-    a_val = a_val.toLocaleLowerCase();
-    b_val = b_val.toLocaleLowerCase();
-    if (a_val < b_val) return -1;
-    if (a_val > b_val) return 1;
-    return 0;
-  };
 
   enterEditMode(): void {
     this.edit_mode = true;

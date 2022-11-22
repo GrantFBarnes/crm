@@ -8,54 +8,55 @@
     <div class="col-md-6 mb-2">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Companies</h5>
-          <ng-container *ngFor="let row of companies">
-            <div class="wrap-text">
-              <a [href]="'/crm/company/' + row.id">
-                {{ row.name || "(No Name)" }}
-              </a>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 mb-2">
-      <div class="card">
-        <div class="card-body">
-          <h5 class="card-title">People</h5>
-          <ng-container *ngFor="let row of people">
-            <div class="wrap-text">
-              <a [href]="'/crm/person/' + row.id">
-                {{ row.name || "(No Name)" }}
-              </a>
-            </div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 mb-2">
-      <div class="card">
-        <div class="card-body">
           <h5 class="card-title">Reminders</h5>
-          <ng-container *ngFor="let row of reminders">
-            <div class="wrap-text">
-              <a [href]="'/crm/reminder/' + row.id">
-                {{ row.name || "(No Name)" }}
-              </a>
-            </div>
+          <ng-container *ngFor="let item of reminders | keyvalue: sortByDate">
+            <h6 class="card-subtitle mt-4 mb-2 text-muted">
+              {{ getDateString(item.key) }}
+            </h6>
+            <ng-container *ngFor="let row of item.value">
+              <div class="wrap-text">
+                {{ getTimeString(row.time) }}
+                <a [href]="'/crm/reminder/' + row.id">
+                  {{ row.name || "(No Name)" }}
+                </a>
+              </div>
+            </ng-container>
           </ng-container>
         </div>
       </div>
     </div>
     <div class="col-md-6 mb-2">
       <div class="card">
+        <ul class="nav nav-tabs nav-fill">
+          <li class="nav-item clickable">
+            <a
+              [ngClass]="tab == 'Tasks' ? 'nav-link active' : 'nav-link'"
+              (click)="setTab('Tasks')"
+            >
+              Tasks
+            </a>
+          </li>
+          <li class="nav-item clickable">
+            <a
+              [ngClass]="tab == 'Companies' ? 'nav-link active' : 'nav-link'"
+              (click)="setTab('Companies')"
+            >
+              Companies
+            </a>
+          </li>
+          <li class="nav-item clickable">
+            <a
+              [ngClass]="tab == 'People' ? 'nav-link active' : 'nav-link'"
+              (click)="setTab('People')"
+            >
+              People
+            </a>
+          </li>
+        </ul>
         <div class="card-body">
-          <h5 class="card-title">Tasks</h5>
-          <ng-container *ngFor="let row of tasks">
+          <ng-container *ngFor="let row of tab_list">
             <div class="wrap-text">
-              <a [href]="'/crm/task/' + row.id">
+              <a [href]="'/crm/' + tab_table + '/' + row.id">
                 {{ row.name || "(No Name)" }}
               </a>
             </div>

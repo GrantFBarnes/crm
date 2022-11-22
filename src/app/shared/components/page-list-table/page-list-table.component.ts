@@ -1,6 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from 'src/app/shared/services/http.service';
 
+import * as sort from 'src/app/shared/methods/sort';
+
 @Component({
   selector: 'app-page-list-table',
   templateUrl: './page-list-table.component.html',
@@ -33,7 +35,7 @@ export class PageListTableComponent implements OnInit {
     this.httpService
       .get('/api/crm/table/' + this.table)
       .subscribe((data: any) => {
-        this.data = data.sort(this.sortMethod);
+        this.data = data.sort(sort.sortByName);
         this.loading = false;
       });
   }
@@ -50,14 +52,6 @@ export class PageListTableComponent implements OnInit {
   openRow(id: string): void {
     window.location.href = '/crm/' + this.table + '/' + id;
   }
-
-  sortMethod = (a: any, b: any): number => {
-    const a_val = a.name.toLocaleLowerCase();
-    const b_val = b.name.toLocaleLowerCase();
-    if (a_val < b_val) return -1;
-    if (a_val > b_val) return 1;
-    return 0;
-  };
 
   searchTextInRow(row: any): boolean {
     const search_text = this.search_text.trim().toLocaleLowerCase();

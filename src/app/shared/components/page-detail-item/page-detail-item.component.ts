@@ -3,6 +3,8 @@ import { HttpService } from 'src/app/shared/services/http.service';
 
 import { TableColumn } from 'src/app/shared/interfaces/table-column';
 
+import * as datetime from 'src/app/shared/methods/datetime';
+
 @Component({
   selector: 'app-page-detail-item',
   templateUrl: './page-detail-item.component.html',
@@ -80,6 +82,10 @@ export class PageDetailItemComponent implements OnInit {
           this.data_edit.repeat_count = 0;
           this.data_edit.repeat_interval = '';
         } else {
+          if (!this.data_edit.date) {
+            this.data_edit.date = datetime.getTodayISO();
+          }
+
           if (!this.data_edit.repeat_count) {
             this.data_edit.repeat_count = 1;
           }
