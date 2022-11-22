@@ -19,6 +19,7 @@ CREATE TABLE company (
     user_id CHAR(36) NOT NULL,
 
     name VARCHAR(255) DEFAULT "",
+    view_count INT DEFAULT 0,
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,
@@ -31,6 +32,7 @@ CREATE TABLE person (
     user_id CHAR(36) NOT NULL,
 
     name VARCHAR(255) DEFAULT "",
+    view_count INT DEFAULT 0,
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,

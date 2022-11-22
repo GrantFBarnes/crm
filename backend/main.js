@@ -19,8 +19,8 @@ const table_fks = new Set([
 ]);
 
 const table_columns = {
-  company: ["name"],
-  person: ["name"],
+  company: ["name", "view_count"],
+  person: ["name", "view_count"],
   reminder: [
     "name",
     "details",
@@ -342,6 +342,7 @@ function createTableRow(user_id, table, data) {
 
         case "completed":
         case "repeating":
+        case "view_count":
           sql += "0, ";
           break;
 
@@ -410,6 +411,7 @@ function updateTableRow(user_id, table, data) {
         case "completed":
         case "repeating":
         case "repeat_count":
+        case "view_count":
           sql += `${column} = ${data[column]}, `;
           break;
 
