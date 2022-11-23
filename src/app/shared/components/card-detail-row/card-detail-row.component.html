@@ -25,7 +25,9 @@
               <span class="input-group-text">Date</span>
               <input
                 type="date"
-                class="form-control"
+                [ngClass]="
+                  data_edit.date ? 'form-control' : 'form-control is-invalid'
+                "
                 (keyup)="checkPendingChanges()"
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.date"
@@ -37,7 +39,9 @@
               <span class="input-group-text">Time</span>
               <input
                 type="time"
-                class="form-control"
+                [ngClass]="
+                  data_edit.time ? 'form-control' : 'form-control is-invalid'
+                "
                 (keyup)="checkPendingChanges()"
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.time"
@@ -114,7 +118,11 @@
               <span class="input-group-text">{{ column.title }}</span>
               <textarea
                 rows="{{ data_edit[column.field].split('\n').length }}"
-                class="form-control"
+                [ngClass]="
+                  data_edit[column.field]
+                    ? 'form-control'
+                    : 'form-control is-invalid'
+                "
                 [placeholder]="column.title"
                 (keyup)="checkPendingChanges()"
                 [(ngModel)]="data_edit[column.field]"
@@ -130,7 +138,11 @@
               <span class="input-group-text">{{ column.title }}</span>
               <input
                 type="text"
-                class="form-control"
+                [ngClass]="
+                  data_edit[column.field]
+                    ? 'form-control'
+                    : 'form-control is-invalid'
+                "
                 [placeholder]="column.title"
                 (keyup)="checkPendingChanges()"
                 [(ngModel)]="data_edit[column.field]"

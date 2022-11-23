@@ -36,7 +36,9 @@
           <span class="input-group-text">Name</span>
           <input
             type="text"
-            class="form-control"
+            [ngClass]="
+              data_edit.name ? 'form-control' : 'form-control is-invalid'
+            "
             (keyup)="checkPendingChanges()"
             [(ngModel)]="data_edit.name"
           />

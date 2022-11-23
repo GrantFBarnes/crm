@@ -36,7 +36,9 @@
           <span class="input-group-text">Name</span>
           <input
             type="text"
-            class="form-control"
+            [ngClass]="
+              data_edit.name ? 'form-control' : 'form-control is-invalid'
+            "
             (keyup)="checkPendingChanges()"
             [(ngModel)]="data_edit.name"
           />
@@ -75,7 +77,9 @@
             <span class="input-group-text">Date</span>
             <input
               type="date"
-              class="form-control"
+              [ngClass]="
+                data_edit.date ? 'form-control' : 'form-control is-invalid'
+              "
               (keyup)="checkPendingChanges()"
               (change)="checkPendingChanges()"
               [(ngModel)]="data_edit.date"
@@ -87,7 +91,9 @@
             <span class="input-group-text">Time</span>
             <input
               type="time"
-              class="form-control"
+              [ngClass]="
+                data_edit.time ? 'form-control' : 'form-control is-invalid'
+              "
               (keyup)="checkPendingChanges()"
               (change)="checkPendingChanges()"
               [(ngModel)]="data_edit.time"
@@ -156,7 +162,9 @@
             <span class="input-group-text">Details</span>
             <textarea
               rows="{{ data_edit.details.split('\n').length }}"
-              class="form-control"
+              [ngClass]="
+                data_edit.details ? 'form-control' : 'form-control is-invalid'
+              "
               (keyup)="checkPendingChanges()"
               [(ngModel)]="data_edit.details"
             ></textarea>
@@ -206,7 +214,9 @@
             <span class="input-group-text">Details</span>
             <textarea
               rows="{{ data_edit.details.split('\n').length }}"
-              class="form-control"
+              [ngClass]="
+                data_edit.details ? 'form-control' : 'form-control is-invalid'
+              "
               (keyup)="checkPendingChanges()"
               [(ngModel)]="data_edit.details"
             ></textarea>
