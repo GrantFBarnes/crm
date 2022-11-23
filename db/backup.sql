@@ -648,7 +648,6 @@ CREATE TABLE `reminder` (
 
 LOCK TABLES `reminder` WRITE;
 /*!40000 ALTER TABLE `reminder` DISABLE KEYS */;
-INSERT INTO `reminder` VALUES ('3fd47b6d-a1c8-438a-b713-6d2413d95a87','77fff5a2-3f34-4d53-8a97-c0d93e21f031','No Date','','','',0,0,'','2022-11-21 00:00:00','2022-11-21 00:00:00');
 INSERT INTO `reminder` VALUES ('5afb09ff-6158-4804-96b5-f56a11633820','77fff5a2-3f34-4d53-8a97-c0d93e21f031','Daily Call','This is the details of the reminder','2022-11-14','09:00',1,1,'day','2022-11-21 00:00:00','2022-11-21 00:00:00');
 INSERT INTO `reminder` VALUES ('5c671528-5b45-4277-8873-d7c68d944a01','77fff5a2-3f34-4d53-8a97-c0d93e21f031','Friday Call','This is the details of the reminder','2022-11-18','14:00',1,1,'week','2022-11-21 00:00:00','2022-11-21 00:00:00');
 INSERT INTO `reminder` VALUES ('a2622364-f0bc-49d8-a5fb-36c2d3e1b4ff','77fff5a2-3f34-4d53-8a97-c0d93e21f031','Monday Call','This is the details of the reminder','2022-11-14','10:00',1,1,'week','2022-11-21 00:00:00','2022-11-21 00:00:00');
@@ -717,7 +716,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('77fff5a2-3f34-4d53-8a97-c0d93e21f031','grant','password','2022-11-21 00:00:00','2022-11-21 00:00:00');
+INSERT INTO `user` VALUES ('77fff5a2-3f34-4d53-8a97-c0d93e21f031','Frank','password','2022-11-21 00:00:00','2022-11-21 00:00:00');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
