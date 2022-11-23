@@ -26,7 +26,14 @@ export class PageLoginComponent implements OnInit {
       }
     }
 
-    this.loading = false;
+    this.httpService.get('/api/crm/user/authenticated').subscribe({
+      next: () => {
+        window.location.href = '/crm/home';
+      },
+      error: () => {
+        this.loading = false;
+      },
+    });
   }
 
   submit(): void {

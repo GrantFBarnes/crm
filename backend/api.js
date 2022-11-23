@@ -79,6 +79,18 @@ router.get("/api/crm/user/name", (request, response) => {
   }
 });
 
+// Get if user is authenticated
+router.get("/api/crm/user/authenticated", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    // refresh cookie to reset timeout
+    authentication.setAuthentication(response, userCookieName, user_id);
+    returnSuccess(response);
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 // Generic Tables
 

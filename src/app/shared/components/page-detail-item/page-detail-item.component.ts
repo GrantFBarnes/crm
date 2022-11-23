@@ -29,7 +29,14 @@ export class PageDetailItemComponent implements OnInit {
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    this.getData();
+    this.httpService.get('/api/crm/user/authenticated').subscribe({
+      next: () => {
+        this.getData();
+      },
+      error: () => {
+        window.location.href = '/crm/login';
+      },
+    });
   }
 
   enterEditMode(): void {
