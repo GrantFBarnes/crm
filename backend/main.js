@@ -154,6 +154,32 @@ function getUserId(data) {
   });
 }
 
+function getUserName(user_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    execute(`
+      SELECT name FROM user
+      WHERE id = '${user_id}';
+        `)
+      .then((result) => {
+        if (result.length) {
+          resolve({ statusCode: 200, data: result[0] });
+          return;
+        }
+        resolve({ statusCode: 400, data: "id not found" });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to get user name" });
+        return;
+      });
+  });
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // Generic Tables
 
@@ -473,6 +499,7 @@ function updateTableRow(user_id, table, data) {
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports.getUserId = getUserId;
+module.exports.getUserName = getUserName;
 
 module.exports.getTableRows = getTableRows;
 module.exports.getTableTopRows = getTableTopRows;

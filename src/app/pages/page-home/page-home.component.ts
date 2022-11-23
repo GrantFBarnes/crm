@@ -33,14 +33,7 @@ export class PageHomeComponent implements OnInit {
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    this.httpService.get('/api/authentication/user').subscribe({
-      next: () => {
-        this.getData();
-      },
-      error: () => {
-        window.location.href = '/crm/login';
-      },
-    });
+    this.getData();
   }
 
   setTab(tab: string): void {

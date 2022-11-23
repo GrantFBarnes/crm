@@ -12,3 +12,7 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+.input-group-text {
+  width: 6em;
+}

@@ -9,18 +9,30 @@ import { HttpService } from 'src/app/shared/services/http.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  showLogout: boolean = true;
+  user_name: string = '';
 
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    if (window.location.pathname == '/crm/login') {
-      this.showLogout = false;
-    }
+    const is_login_page = window.location.pathname == '/crm/login';
+
+    this.httpService.get('/api/crm/user/name').subscribe({
+      next: (data: any) => {
+        this.user_name = data.name;
+        if (is_login_page) {
+          window.location.href = '/crm/home';
+        }
+      },
+      error: () => {
+        if (!is_login_page) {
+          window.location.href = '/crm/login';
+        }
+      },
+    });
   }
 
   logout(): void {
-    this.httpService.post('/api/crm/logout', {}).subscribe(() => {
+    this.httpService.post('/api/crm/user/logout', {}).subscribe(() => {
       window.location.href = '/crm/login';
     });
   }

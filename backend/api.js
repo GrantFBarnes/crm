@@ -51,7 +51,7 @@ function returnPromiseResponse(response, promise) {
 // Users
 
 // User login
-router.post("/api/crm/login", (request, response) => {
+router.post("/api/crm/user/login", (request, response) => {
   main
     .getUserId(request.body)
     .then((user_id) => {
@@ -64,9 +64,19 @@ router.post("/api/crm/login", (request, response) => {
 });
 
 // User logout
-router.post("/api/crm/logout", (request, response) => {
+router.post("/api/crm/user/logout", (request, response) => {
   authentication.removeAuthentication(response, userCookieName);
   returnSuccess(response);
+});
+
+// Get user name
+router.get("/api/crm/user/name", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.getUserName(user_id));
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
 });
 
 ////////////////////////////////////////////////////////////////////////////////

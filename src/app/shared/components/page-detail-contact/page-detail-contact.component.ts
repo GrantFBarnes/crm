@@ -47,14 +47,7 @@ export class PageDetailContactComponent implements OnInit {
   constructor(private httpService: HttpService) {}
 
   ngOnInit(): void {
-    this.httpService.get('/api/authentication/user').subscribe({
-      next: () => {
-        this.getData();
-      },
-      error: () => {
-        window.location.href = '/crm/login';
-      },
-    });
+    this.getData();
   }
 
   enterEditMode(): void {

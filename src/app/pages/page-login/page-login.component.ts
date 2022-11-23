@@ -26,20 +26,13 @@ export class PageLoginComponent implements OnInit {
       }
     }
 
-    this.httpService.get('/api/authentication/user').subscribe({
-      next: () => {
-        window.location.href = '/crm/home';
-      },
-      error: () => {
-        this.loading = false;
-      },
-    });
+    this.loading = false;
   }
 
   submit(): void {
     this.loading = true;
     const body = { username: this.username, password: this.password };
-    this.httpService.post('/api/crm/login', body).subscribe({
+    this.httpService.post('/api/crm/user/login', body).subscribe({
       next: () => {
         window.location.href = '/crm/home';
       },

@@ -2,49 +2,78 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand">CRM</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navButtons"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navButtons">
-        <div class="navbar-nav">
-          <a class="nav-link" routerLink="/crm/home" routerLinkActive="active">
-            Home
-          </a>
-          <a
-            class="nav-link"
-            routerLink="/crm/companies"
-            routerLinkActive="active"
-          >
-            Companies
-          </a>
-          <a
-            class="nav-link"
-            routerLink="/crm/people"
-            routerLinkActive="active"
-          >
-            People
-          </a>
-          <a
-            class="nav-link"
-            routerLink="/crm/reminders"
-            routerLinkActive="active"
-          >
-            Reminders
-          </a>
-          <a class="nav-link" routerLink="/crm/tasks" routerLinkActive="active">
-            Tasks
-          </a>
+      <ng-container *ngIf="user_name">
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navButtons"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navButtons">
+          <div class="navbar-nav">
+            <a
+              class="nav-link"
+              routerLink="/crm/home"
+              routerLinkActive="active"
+            >
+              Home
+            </a>
+            <a
+              class="nav-link"
+              routerLink="/crm/companies"
+              routerLinkActive="active"
+            >
+              Companies
+            </a>
+            <a
+              class="nav-link"
+              routerLink="/crm/people"
+              routerLinkActive="active"
+            >
+              People
+            </a>
+            <a
+              class="nav-link"
+              routerLink="/crm/reminders"
+              routerLinkActive="active"
+            >
+              Reminders
+            </a>
+            <a
+              class="nav-link"
+              routerLink="/crm/tasks"
+              routerLinkActive="active"
+            >
+              Tasks
+            </a>
+          </div>
         </div>
-      </div>
-      <span *ngIf="showLogout" class="navbar-text clickable" (click)="logout()">
-        Logout
-        <i class="bi bi-box-arrow-right"></i>
-      </span>
+        <div class="navbar-text dropdown">
+          <a
+            role="button"
+            class="nav-link dropdown-toggle"
+            data-bs-toggle="dropdown"
+          >
+            <i class="bi bi-person-circle"></i>
+            {{ user_name }}
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+            <li>
+              <a class="dropdown-item" href="/crm/account">
+                Account Settings
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item clickable" (click)="logout()">
+                Logout
+                <i class="bi bi-box-arrow-right"></i>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </ng-container>
     </div>
   </nav>
 
