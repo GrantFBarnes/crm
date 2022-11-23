@@ -243,7 +243,7 @@ function getTableRows(user_id, table) {
   });
 }
 
-function getTableTopRows(user_id, table) {
+function getTableTopRows(user_id, table, column) {
   return new Promise((resolve) => {
     if (!idIsValid(user_id)) {
       resolve({ statusCode: 500, data: "user id not valid" });
@@ -255,23 +255,23 @@ function getTableTopRows(user_id, table) {
       return;
     }
 
-    if (!table_columns[table].includes("view_count")) {
-      resolve({ statusCode: 500, data: "table has no view count" });
+    if (!table_columns[table].includes(column)) {
+      resolve({ statusCode: 500, data: "column not valid" });
       return;
     }
 
     execute(`
       SELECT * FROM ${table}
       WHERE user_id = '${user_id}'
-      ORDER BY view_count DESC
-      LIMIT 10;
+      ORDER BY ${column} DESC
+      LIMIT 5;
         `)
       .then((result) => {
         resolve({ statusCode: 200, data: result });
         return;
       })
       .catch(() => {
-        resolve({ statusCode: 400, data: "failed to get table top rows" });
+        resolve({ statusCode: 400, data: "failed to get top rows" });
         return;
       });
   });

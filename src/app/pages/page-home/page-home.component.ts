@@ -24,11 +24,16 @@ export class PageHomeComponent implements OnInit {
   tab: string = '';
 
   tasks: { [completion: string]: TableTask[] } = {};
+
   top_companies: TableCompany[] = [];
+  recent_companies: TableCompany[] = [];
+
   top_people: TablePerson[] = [];
+  recent_people: TablePerson[] = [];
 
   top_list: any[] = [];
-  top_list_table: string = '';
+  recent_list: any[] = [];
+  tab_table: string = '';
 
   constructor(private httpService: HttpService) {}
 
@@ -49,17 +54,20 @@ export class PageHomeComponent implements OnInit {
     switch (tab) {
       case 'Companies':
         this.top_list = JSON.parse(JSON.stringify(this.top_companies));
-        this.top_list_table = 'company';
+        this.recent_list = JSON.parse(JSON.stringify(this.recent_companies));
+        this.tab_table = 'company';
         break;
 
       case 'People':
         this.top_list = JSON.parse(JSON.stringify(this.top_people));
-        this.top_list_table = 'person';
+        this.recent_list = JSON.parse(JSON.stringify(this.recent_people));
+        this.tab_table = 'person';
         break;
 
       default:
         this.top_list = [];
-        this.top_list_table = '';
+        this.recent_list = [];
+        this.tab_table = '';
         break;
     }
   }
@@ -119,18 +127,32 @@ export class PageHomeComponent implements OnInit {
 
   getCompanies(): void {
     this.top_companies = [];
+    this.recent_companies = [];
     this.httpService
-      .get('/api/crm/table/company/top')
-      .subscribe((data: any) => {
-        this.top_companies = data.sort(sort.sortByViewCount);
+      .get('/api/crm/table/company/top/view_count')
+      .subscribe((count_data: any) => {
+        this.top_companies = count_data.sort(sort.sortByViewCount);
+        this.httpService
+          .get('/api/crm/table/company/top/date_modified')
+          .subscribe((date_data: any) => {
+            this.recent_companies = date_data.sort(sort.sortByDateModified);
+          });
       });
   }
 
   getPeople(): void {
     this.top_people = [];
-    this.httpService.get('/api/crm/table/person/top').subscribe((data: any) => {
-      this.top_people = data.sort(sort.sortByViewCount);
-    });
+    this.recent_people = [];
+    this.httpService
+      .get('/api/crm/table/person/top/view_count')
+      .subscribe((count_data: any) => {
+        this.top_people = count_data.sort(sort.sortByViewCount);
+        this.httpService
+          .get('/api/crm/table/person/top/date_modified')
+          .subscribe((date_data: any) => {
+            this.recent_people = date_data.sort(sort.sortByDateModified);
+          });
+      });
   }
 
   getDateString(iso: string): string {

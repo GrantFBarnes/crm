@@ -20,6 +20,14 @@ export function sortByViewCount(a: any, b: any): number {
   return 0;
 }
 
+export function sortByDateModified(a: any, b: any): number {
+  const a_val = a.date_modified;
+  const b_val = b.date_modified;
+  if (a_val < b_val) return 1;
+  if (a_val > b_val) return -1;
+  return 0;
+}
+
 export function sortByDate(a: any, b: any): number {
   const a_val = a.date;
   const b_val = b.date;

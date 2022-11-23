@@ -76,14 +76,26 @@
         </ng-container>
         <ng-container *ngIf="tab != 'Tasks'">
           <div class="card-body">
-            <h5 class="card-title">Most Viewed {{ tab }}</h5>
-            <ng-container *ngFor="let row of top_list">
-              <div class="wrap-text">
-                <a [href]="'/crm/' + top_list_table + '/' + row.id">
-                  {{ row.name || "(No Name)" }}
-                </a>
-              </div>
-            </ng-container>
+            <div class="mb-2">
+              <h5 class="card-title">Recent {{ tab }}</h5>
+              <ng-container *ngFor="let row of recent_list">
+                <div class="wrap-text">
+                  <a [href]="'/crm/' + tab_table + '/' + row.id">
+                    {{ row.name || "(No Name)" }}
+                  </a>
+                </div>
+              </ng-container>
+            </div>
+            <div class="mb-2">
+              <h5 class="card-title">Most Viewed {{ tab }}</h5>
+              <ng-container *ngFor="let row of top_list">
+                <div class="wrap-text">
+                  <a [href]="'/crm/' + tab_table + '/' + row.id">
+                    {{ row.name || "(No Name)" }}
+                  </a>
+                </div>
+              </ng-container>
+            </div>
           </div>
         </ng-container>
       </div>

@@ -120,13 +120,13 @@ router.get("/api/crm/table/:table", (request, response) => {
   }
 });
 
-// Get top view count rows from table
-router.get("/api/crm/table/:table/top", (request, response) => {
+// Get top rows from table by column
+router.get("/api/crm/table/:table/top/:column", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getTableTopRows(user_id, request.params.table)
+      main.getTableTopRows(user_id, request.params.table, request.params.column)
     );
   } else {
     rejectUnauthenticated(response, userCookieName);
