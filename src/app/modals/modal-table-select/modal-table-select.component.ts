@@ -24,12 +24,25 @@ export class ModalTableSelectComponent implements OnInit {
     this.getData();
   }
 
-  selectId(): void {
-    this.emitSelectId.emit(this.id);
+  closeModal(): void {
     this.id = '';
     document
       .getElementById('app-modal-table-select-' + this.table + '-close-button')
       ?.click();
+  }
+
+  selectId(): void {
+    this.emitSelectId.emit(this.id);
+    this.closeModal();
+  }
+
+  addNew(): void {
+    this.httpService
+      .post('/api/crm/table/' + this.table, {})
+      .subscribe((data: any) => {
+        this.id = data;
+        this.selectId();
+      });
   }
 
   getData(): void {

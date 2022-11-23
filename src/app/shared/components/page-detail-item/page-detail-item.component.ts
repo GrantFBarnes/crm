@@ -76,16 +76,16 @@ export class PageDetailItemComponent implements OnInit {
   validateValues(): void {
     switch (this.table) {
       case 'reminder':
+        if (!this.data_edit.date) {
+          this.data_edit.date = datetime.getTodayISO();
+        }
+
         this.data_edit.repeating = this.data_edit.repeating ? 1 : 0;
 
         if (!this.data_edit.repeating) {
           this.data_edit.repeat_count = 0;
           this.data_edit.repeat_interval = '';
         } else {
-          if (!this.data_edit.date) {
-            this.data_edit.date = datetime.getTodayISO();
-          }
-
           if (!this.data_edit.repeat_count) {
             this.data_edit.repeat_count = 1;
           }
