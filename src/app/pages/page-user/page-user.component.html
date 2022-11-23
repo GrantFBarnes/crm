@@ -1,0 +1,58 @@
+<app-loading *ngIf="loading"></app-loading>
+<div [ngClass]="loading ? 'container blur' : 'container'">
+  <div class="main-title">
+    <h1>User Settings</h1>
+    <h4>
+      <small class="text-muted">{{ name }}</small>
+    </h4>
+  </div>
+
+  <div class="row center">
+    <div class="col-12 mb-2">
+      <p>Change User Password</p>
+    </div>
+  </div>
+  <div class="row center">
+    <div class="col-12 mb-2">
+      <div class="input-group">
+        <span class="input-group-text">Current Password</span>
+        <input type="password" class="form-control" [(ngModel)]="password" />
+      </div>
+    </div>
+  </div>
+  <ng-container *ngIf="password">
+    <div class="row center">
+      <div class="col-md-6 mb-2">
+        <div class="input-group">
+          <span class="input-group-text">New Password</span>
+          <input
+            type="password"
+            class="form-control"
+            [(ngModel)]="new_password"
+          />
+        </div>
+      </div>
+      <ng-container *ngIf="new_password">
+        <div class="col-md-6 mb-2">
+          <div class="input-group">
+            <span class="input-group-text">New Password Again</span>
+            <input
+              type="password"
+              class="form-control"
+              [(ngModel)]="new_password_check"
+            />
+          </div>
+        </div>
+      </ng-container>
+    </div>
+    <ng-container *ngIf="new_password && new_password == new_password_check">
+      <div class="row center">
+        <div class="col-12 mb-2">
+          <button class="btn btn-primary" (click)="changePassword()">
+            Change Password
+          </button>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

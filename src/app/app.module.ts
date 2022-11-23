@@ -10,6 +10,7 @@ import { LoadingComponent } from './shared/components/loading/loading.component'
 
 import { PageHomeComponent } from './pages/page-home/page-home.component';
 import { PageLoginComponent } from './pages/page-login/page-login.component';
+import { PageUserComponent } from './pages/page-user/page-user.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { PageCompaniesComponent } from './pages/page-companies/page-companies.component';
 import { PageCompanyComponent } from './pages/page-company/page-company.component';
@@ -36,6 +37,7 @@ import { ModalTableSelectComponent } from './modals/modal-table-select/modal-tab
 
     PageHomeComponent,
     PageLoginComponent,
+    PageUserComponent,
     PageNotFoundComponent,
     PageCompaniesComponent,
     PageCompanyComponent,

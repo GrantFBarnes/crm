@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { PageHomeComponent } from './pages/page-home/page-home.component';
 import { PageLoginComponent } from './pages/page-login/page-login.component';
+import { PageUserComponent } from './pages/page-user/page-user.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { PageCompaniesComponent } from './pages/page-companies/page-companies.component';
 import { PageCompanyComponent } from './pages/page-company/page-company.component';
@@ -16,6 +17,7 @@ import { PageTaskComponent } from './pages/page-task/page-task.component';
 const routes: Routes = [
   { path: 'crm/home', component: PageHomeComponent },
   { path: 'crm/login', component: PageLoginComponent },
+  { path: 'crm/user', component: PageUserComponent },
   { path: 'crm/companies', component: PageCompaniesComponent },
   { path: 'crm/company/:id', component: PageCompanyComponent },
   { path: 'crm/people', component: PagePeopleComponent },

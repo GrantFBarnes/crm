@@ -91,6 +91,19 @@ router.get("/api/crm/user/authenticated", (request, response) => {
   }
 });
 
+// Set user password
+router.post("/api/crm/user/password", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.setUserPassword(user_id, request.body)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
 ////////////////////////////////////////////////////////////////////////////////
 // Generic Tables
 

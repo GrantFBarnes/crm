@@ -1,18 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-
 import { HttpService } from 'src/app/shared/services/http.service';
 
 @Component({
-  selector: 'app-page-login',
-  templateUrl: './page-login.component.html',
+  selector: 'app-page-user',
+  templateUrl: './page-user.component.html',
   providers: [HttpService],
-  styleUrls: ['./page-login.component.css'],
+  styleUrls: ['./page-user.component.css'],
 })
-export class PageLoginComponent implements OnInit {
+export class PageUserComponent implements OnInit {
   loading: boolean = true;
 
   name: string = '';
   password: string = '';
+  new_password: string = '';
+  new_password_check: string = '';
 
   constructor(private httpService: HttpService) {}
 
@@ -26,26 +27,30 @@ export class PageLoginComponent implements OnInit {
       }
     }
 
-    this.httpService.get('/api/crm/user/authenticated').subscribe({
-      next: () => {
-        window.location.href = '/crm/home';
+    this.httpService.get('/api/crm/user/name').subscribe({
+      next: (data: any) => {
+        this.name = data.name;
+        this.loading = false;
       },
       error: () => {
-        this.loading = false;
+        window.location.href = '/crm/login';
       },
     });
   }
 
-  submit(): void {
+  changePassword(): void {
+    if (!this.new_password) return;
+    if (this.new_password != this.new_password_check) return;
+
     this.loading = true;
-    const body = { name: this.name, password: this.password };
-    this.httpService.post('/api/crm/user/login', body).subscribe({
+    const body = { password: this.password, new_password: this.new_password };
+    this.httpService.post('/api/crm/user/password', body).subscribe({
       next: () => {
         window.location.href = '/crm/home';
       },
       error: () => {
         this.loading = false;
-        alert('Login Failed!');
+        alert('Password Change Failed!');
       },
     });
   }

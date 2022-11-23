@@ -129,14 +129,14 @@ function execute(command) {
 
 function getUserId(data) {
   return new Promise((resolve, reject) => {
-    if (!data || !data.username || !data.password) {
+    if (!data || !data.name || !data.password) {
       reject("data not valid");
       return;
     }
 
     execute(`
       SELECT id FROM user
-      WHERE name = '${data.username}'
+      WHERE name = '${data.name}'
         AND password = '${data.password}';
         `)
       .then((result) => {
@@ -175,6 +175,39 @@ function getUserName(user_id) {
       })
       .catch(() => {
         resolve({ statusCode: 400, data: "failed to get user name" });
+        return;
+      });
+  });
+}
+
+function setUserPassword(user_id, data) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!data || !data.password || !data.new_password) {
+      resolve({ statusCode: 500, data: "data not valid" });
+      return;
+    }
+
+    execute(`
+      UPDATE user
+      SET password = '${data.new_password}'
+      WHERE id = '${user_id}'
+        AND password = '${data.password}';
+        `)
+      .then((result) => {
+        if (result.changedRows) {
+          resolve({ statusCode: 200, data: result });
+          return;
+        }
+        resolve({ statusCode: 400, data: "failed to update user password" });
+        return;
+      })
+      .catch(() => {
+        resolve({ statusCode: 400, data: "failed to update user password" });
         return;
       });
   });
@@ -500,6 +533,7 @@ function updateTableRow(user_id, table, data) {
 
 module.exports.getUserId = getUserId;
 module.exports.getUserName = getUserName;
+module.exports.setUserPassword = setUserPassword;
 
 module.exports.getTableRows = getTableRows;
 module.exports.getTableTopRows = getTableTopRows;

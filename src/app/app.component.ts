@@ -9,7 +9,7 @@ import { HttpService } from 'src/app/shared/services/http.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  user_name: string = '';
+  name: string = '';
 
   constructor(private httpService: HttpService) {}
 
@@ -18,7 +18,7 @@ export class AppComponent {
 
     this.httpService.get('/api/crm/user/name').subscribe({
       next: (data: any) => {
-        this.user_name = data.name;
+        this.name = data.name;
         if (is_login_page) {
           window.location.href = '/crm/home';
         }
