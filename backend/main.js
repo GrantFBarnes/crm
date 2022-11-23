@@ -430,7 +430,7 @@ function createTableRow(user_id, table, data) {
 
         case "date_added":
         case "date_modified":
-          sql += `CURRENT_DATE(), `;
+          sql += `NOW(), `;
           break;
 
         case "completed":
@@ -498,7 +498,7 @@ function updateTableRow(user_id, table, data) {
           break;
 
         case "date_modified":
-          sql += `${column} = CURRENT_DATE(), `;
+          sql += `${column} = NOW(), `;
           break;
 
         case "completed":
