@@ -17,7 +17,7 @@ export function sortByViewCount(a: any, b: any): number {
   const b_val = b.view_count;
   if (a_val < b_val) return 1;
   if (a_val > b_val) return -1;
-  return 0;
+  return sortByName(a, b);
 }
 
 export function sortByDateModified(a: any, b: any): number {
@@ -25,7 +25,7 @@ export function sortByDateModified(a: any, b: any): number {
   const b_val = b.date_modified;
   if (a_val < b_val) return 1;
   if (a_val > b_val) return -1;
-  return 0;
+  return sortByName(a, b);
 }
 
 export function sortByDate(a: any, b: any): number {
@@ -33,7 +33,7 @@ export function sortByDate(a: any, b: any): number {
   const b_val = b.date;
   if (a_val < b_val) return -1;
   if (a_val > b_val) return 1;
-  return 0;
+  return sortByName(a, b);
 }
 
 export function sortByTime(a: any, b: any): number {
@@ -41,10 +41,11 @@ export function sortByTime(a: any, b: any): number {
   const b_val = b.time;
   if (a_val < b_val) return -1;
   if (a_val > b_val) return 1;
-  return 0;
+  return sortByName(a, b);
 }
 
 export function sortByName(a: any, b: any): number {
+  if (!a.name && !b.name) return 0;
   const a_val = a.name.toLocaleLowerCase();
   const b_val = b.name.toLocaleLowerCase();
   if (a_val < b_val) return -1;

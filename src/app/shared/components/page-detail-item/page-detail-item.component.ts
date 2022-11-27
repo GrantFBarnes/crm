@@ -128,7 +128,11 @@ export class PageDetailItemComponent implements OnInit {
       .put('/api/crm/table/' + this.table, this.data_edit)
       .subscribe(() => {
         this.data = JSON.parse(JSON.stringify(this.data_edit));
-        this.exitEditMode();
+        if (this.data.name) {
+          this.exitEditMode();
+        } else {
+          this.enterEditMode();
+        }
         this.loading = false;
       });
   }
@@ -151,9 +155,6 @@ export class PageDetailItemComponent implements OnInit {
       .subscribe((data: any) => {
         this.data = data;
         this.data_edit = JSON.parse(JSON.stringify(this.data));
-        if (!this.data.name) {
-          this.enterEditMode();
-        }
         this.loading = false;
       });
   }

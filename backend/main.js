@@ -264,7 +264,7 @@ function getTableTopRows(user_id, table, column) {
       SELECT * FROM ${table}
       WHERE user_id = '${user_id}'
       ORDER BY ${column} DESC
-      LIMIT 5;
+      LIMIT 10;
         `)
       .then((result) => {
         resolve({ statusCode: 200, data: result });

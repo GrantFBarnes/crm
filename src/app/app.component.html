@@ -12,62 +12,74 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navButtons">
-          <div class="navbar-nav">
-            <a
-              class="nav-link"
-              routerLink="/crm/home"
-              routerLinkActive="active"
-            >
-              Home
-            </a>
-            <a
-              class="nav-link"
-              routerLink="/crm/companies"
-              routerLinkActive="active"
-            >
-              Companies
-            </a>
-            <a
-              class="nav-link"
-              routerLink="/crm/people"
-              routerLinkActive="active"
-            >
-              People
-            </a>
-            <a
-              class="nav-link"
-              routerLink="/crm/reminders"
-              routerLinkActive="active"
-            >
-              Reminders
-            </a>
-            <a
-              class="nav-link"
-              routerLink="/crm/tasks"
-              routerLinkActive="active"
-            >
-              Tasks
-            </a>
-          </div>
-        </div>
-        <div class="navbar-text dropdown">
-          <a
-            role="button"
-            class="nav-link dropdown-toggle"
-            data-bs-toggle="dropdown"
-          >
-            <i class="bi bi-person-circle"></i>
-            {{ name }}
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
-            <li>
-              <a class="dropdown-item" href="/crm/user">User Settings</a>
-            </li>
-            <li>
-              <a class="dropdown-item clickable" (click)="logout()">
-                Logout
-                <i class="bi bi-box-arrow-right"></i>
+          <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/crm/home"
+                routerLinkActive="active"
+              >
+                Home
               </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/crm/companies"
+                routerLinkActive="active"
+              >
+                Companies
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/crm/people"
+                routerLinkActive="active"
+              >
+                People
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/crm/reminders"
+                routerLinkActive="active"
+              >
+                Reminders
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link"
+                routerLink="/crm/tasks"
+                routerLinkActive="active"
+              >
+                Tasks
+              </a>
+            </li>
+          </ul>
+          <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+              <a
+                role="button"
+                class="nav-link dropdown-toggle"
+                data-bs-toggle="dropdown"
+              >
+                <i class="bi bi-person-circle"></i>
+                {{ name }}
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
+                <li>
+                  <a class="dropdown-item" href="/crm/user">User Settings</a>
+                </li>
+                <li>
+                  <a class="dropdown-item clickable" (click)="logout()">
+                    Logout
+                    <i class="bi bi-box-arrow-right"></i>
+                  </a>
+                </li>
+              </ul>
             </li>
           </ul>
         </div>
@@ -79,12 +91,4 @@
 
   <br />
   <br />
-  <br />
-  <footer class="footer">
-    <div class="container-fluid text-muted">
-      <div class="row">
-        <div class="col-12"></div>
-      </div>
-    </div>
-  </footer>
 </div>

@@ -72,11 +72,26 @@ export class PageHomeComponent implements OnInit {
     }
   }
 
+  removeTaskFromTasks(task: TableTask): void {
+    for (let key in this.tasks) {
+      this.tasks[key] = this.tasks[key].filter((t: TableTask) => {
+        return t.id !== task.id;
+      });
+    }
+  }
+
+  addTaskToTasks(task: TableTask): void {
+    const key = task.completed ? 'Completed' : 'Not Completed';
+    if (!this.tasks[key]) this.tasks[key] = [];
+    this.tasks[key].push(task);
+  }
+
   toggleCompleted(task: any): void {
     this.loading = true;
     task.completed = task.completed ? 1 : 0;
     this.httpService.put('/api/crm/table/task', task).subscribe(() => {
-      this.getTasks();
+      this.removeTaskFromTasks(task);
+      this.addTaskToTasks(task);
       this.loading = false;
     });
   }
@@ -112,9 +127,7 @@ export class PageHomeComponent implements OnInit {
     this.tasks = {};
     this.httpService.get('/api/crm/table/task').subscribe((data: any) => {
       for (let i in data) {
-        const key = data[i].completed ? 'Completed' : 'Not Completed';
-        if (!this.tasks[key]) this.tasks[key] = [];
-        this.tasks[key].push(data[i]);
+        this.addTaskToTasks(data[i]);
       }
 
       for (let key in this.tasks) {
