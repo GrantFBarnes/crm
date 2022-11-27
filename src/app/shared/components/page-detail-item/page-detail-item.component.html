@@ -45,7 +45,51 @@
         </div>
       </div>
     </div>
+    <div class="row mb-2">
+      <div class="col-12">
+        <div class="input-group">
+          <span class="input-group-text">Details</span>
+          <textarea
+            rows="{{ data_edit.details.split('\n').length }}"
+            [ngClass]="
+              data_edit.details ? 'form-control' : 'form-control is-invalid'
+            "
+            (keyup)="checkPendingChanges()"
+            [(ngModel)]="data_edit.details"
+          ></textarea>
+        </div>
+      </div>
+    </div>
   </ng-container>
+  <ng-container *ngIf="!edit_mode">
+    <div class="row mb-2">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Details</h5>
+            <p class="wrap-text">{{ data.details }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <div class="row mb-2">
+    <div class="col-12">
+      <div class="form-check form-switch">
+        <input
+          type="checkbox"
+          class="form-check-input"
+          id="complete-switch"
+          (change)="toggleCompleted()"
+          [(ngModel)]="data_edit.completed"
+        />
+        <label class="form-check-label" for="complete-switch">
+          {{ data_edit.completed ? "" : "Not " }} Complete
+        </label>
+      </div>
+    </div>
+  </div>
 
   <ng-container *ngIf="table == 'reminder'">
     <ng-container *ngIf="!edit_mode">
@@ -55,16 +99,6 @@
             <div class="card-body">
               <h5 class="card-title">Date/Time</h5>
               <p class="wrap-text">{{ getDateTimeString() }}</p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row mb-2">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Details</h5>
-              <p class="wrap-text">{{ data.details }}</p>
             </div>
           </div>
         </div>
@@ -125,104 +159,173 @@
           <div class="col-12 mb-2">
             <div class="input-group">
               <span class="input-group-text">Repeat Reminder Every</span>
-              <input
-                type="number"
-                min="0"
-                max="127"
-                class="form-control"
-                (keyup)="checkPendingChanges()"
-                (change)="checkPendingChanges()"
-                [(ngModel)]="data_edit.repeat_count"
-              />
+              <ng-container *ngIf="data_edit.repeat_interval == 'week'">
+                <input
+                  type="number"
+                  min="0"
+                  max="127"
+                  class="form-control"
+                  (keyup)="checkPendingChanges()"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_gap"
+                />
+              </ng-container>
               <select
                 class="form-control"
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.repeat_interval"
               >
-                <option value="day">
-                  Day{{ data_edit.repeat_count > 1 ? "s" : "" }}
-                </option>
+                <option value="day">Day</option>
                 <option value="week">
-                  Week{{ data_edit.repeat_count > 1 ? "s" : "" }}
-                </option>
-                <option value="month">
-                  Month{{ data_edit.repeat_count > 1 ? "s" : "" }}
-                </option>
-                <option value="year">
-                  Year{{ data_edit.repeat_count > 1 ? "s" : "" }}
+                  Week{{ data_edit.repeat_weekly_gap > 1 ? "s" : "" }}
                 </option>
               </select>
             </div>
           </div>
         </div>
-      </ng-container>
-      <div class="row">
-        <div class="col-12 mb-2">
-          <div class="input-group">
-            <span class="input-group-text">Details</span>
-            <textarea
-              rows="{{ data_edit.details.split('\n').length }}"
-              [ngClass]="
-                data_edit.details ? 'form-control' : 'form-control is-invalid'
-              "
-              (keyup)="checkPendingChanges()"
-              [(ngModel)]="data_edit.details"
-            ></textarea>
-          </div>
-        </div>
-      </div>
-    </ng-container>
-  </ng-container>
-  <ng-container *ngIf="table == 'task'">
-    <div class="row">
-      <div class="col-12 mb-2">
-        <div class="form-check form-switch">
-          <input
-            type="checkbox"
-            class="form-check-input"
-            id="complete-switch"
-            (change)="toggleCompleted()"
-            [(ngModel)]="data_edit.completed"
-          />
-          <label class="form-check-label" for="complete-switch">
-            <ng-container *ngIf="data_edit.completed">
-              Task is Complete
-            </ng-container>
-            <ng-container *ngIf="!data_edit.completed">
-              Task is Not Complete
-            </ng-container>
-          </label>
-        </div>
-      </div>
-    </div>
-    <ng-container *ngIf="!edit_mode">
-      <div class="row mb-2">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-body">
-              <h5 class="card-title">Details</h5>
-              <p class="wrap-text">{{ data.details }}</p>
+        <ng-container *ngIf="data_edit.repeat_interval == 'week'">
+          <div class="row">
+            <div class="col-lg-2 mb-2">Days of the Week</div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-monday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_monday"
+                />
+                <label class="form-check-label" for="repeat-monday-switch">
+                  Monday
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-tuesday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_tuesday"
+                />
+                <label class="form-check-label" for="repeat-tuesday-switch">
+                  Tuesday
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-wednesday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_wednesday"
+                />
+                <label class="form-check-label" for="repeat-wednesday-switch">
+                  Wednesday
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-thursday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_thursday"
+                />
+                <label class="form-check-label" for="repeat-thursday-switch">
+                  Thursday
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-friday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_friday"
+                />
+                <label class="form-check-label" for="repeat-friday-switch">
+                  Friday
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </ng-container>
-    <ng-container *ngIf="edit_mode">
-      <div class="row">
-        <div class="col-12 mb-2">
-          <div class="input-group">
-            <span class="input-group-text">Details</span>
-            <textarea
-              rows="{{ data_edit.details.split('\n').length }}"
-              [ngClass]="
-                data_edit.details ? 'form-control' : 'form-control is-invalid'
-              "
-              (keyup)="checkPendingChanges()"
-              [(ngModel)]="data_edit.details"
-            ></textarea>
+        </ng-container>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <div class="form-check form-switch mt-2">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="repeat-end-switch"
+                (change)="checkPendingChanges()"
+                [(ngModel)]="data_edit.repeat_end"
+              />
+              <label class="form-check-label" for="repeat-end-switch">
+                <ng-container *ngIf="data_edit.repeat_end">
+                  Repeating Will End
+                </ng-container>
+                <ng-container *ngIf="!data_edit.repeat_end">
+                  Will Repeat Forever
+                </ng-container>
+              </label>
+            </div>
           </div>
+          <ng-container *ngIf="data_edit.repeat_end">
+            <div class="col-md-6 col-lg-4 mb-2">
+              <div class="input-group">
+                <span class="input-group-text">Repeat Until</span>
+                <select
+                  class="form-control"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_end_type"
+                >
+                  <option value="date">Specified Date</option>
+                  <option value="occurrences">Number of Occurrences</option>
+                </select>
+              </div>
+            </div>
+            <ng-container *ngIf="data_edit.repeat_end_type == 'date'">
+              <div class="col-md-6 col-lg-4 mb-2">
+                <div class="input-group">
+                  <span class="input-group-text">End Date</span>
+                  <input
+                    type="date"
+                    class="form-control"
+                    (keyup)="checkPendingChanges()"
+                    (change)="checkPendingChanges()"
+                    [(ngModel)]="data_edit.repeat_end_date"
+                  />
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="data_edit.repeat_end_type == 'occurrences'">
+              <div class="col-md-6 col-lg-4 mb-2">
+                <div class="input-group">
+                  <span class="input-group-text">Repeat</span>
+                  <input
+                    type="number"
+                    min="0"
+                    max="127"
+                    class="form-control"
+                    (keyup)="checkPendingChanges()"
+                    (change)="checkPendingChanges()"
+                    [(ngModel)]="data_edit.repeat_end_occurrences"
+                  />
+                  <span class="input-group-text">Times</span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
         </div>
-      </div>
+      </ng-container>
     </ng-container>
   </ng-container>
 

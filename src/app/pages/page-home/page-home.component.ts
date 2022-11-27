@@ -19,7 +19,7 @@ import * as sort from 'src/app/shared/methods/sort';
 export class PageHomeComponent implements OnInit {
   loading: boolean = true;
 
-  reminders: { [date: string]: TableReminder[] } = {};
+  reminders: { [date: string]: { [completion: string]: TableReminder[] } } = {};
 
   tab: string = '';
 
@@ -48,6 +48,20 @@ export class PageHomeComponent implements OnInit {
     });
   }
 
+  getAccordionHeaderClass(date: string): string {
+    let classStr = 'accordion-button';
+    const dateStr = this.getDateString(date);
+    if (!dateStr.includes('Today')) classStr += ' collapsed';
+    return classStr;
+  }
+
+  getAccordionBodyClass(date: string): string {
+    let classStr = 'accordion-collapse collapse';
+    const dateStr = this.getDateString(date);
+    if (dateStr.includes('Today')) classStr += ' show';
+    return classStr;
+  }
+
   setTab(tab: string): void {
     this.tab = tab;
 
@@ -72,26 +86,15 @@ export class PageHomeComponent implements OnInit {
     }
   }
 
-  removeTaskFromTasks(task: TableTask): void {
-    for (let key in this.tasks) {
-      this.tasks[key] = this.tasks[key].filter((t: TableTask) => {
-        return t.id !== task.id;
-      });
-    }
-  }
-
-  addTaskToTasks(task: TableTask): void {
-    const key = task.completed ? 'Completed' : 'Not Completed';
-    if (!this.tasks[key]) this.tasks[key] = [];
-    this.tasks[key].push(task);
-  }
-
-  toggleCompleted(task: any): void {
+  toggleCompleted(table: string, row: any): void {
     this.loading = true;
-    task.completed = task.completed ? 1 : 0;
-    this.httpService.put('/api/crm/table/task', task).subscribe(() => {
-      this.removeTaskFromTasks(task);
-      this.addTaskToTasks(task);
+    row.completed = row.completed ? 1 : 0;
+    this.httpService.put('/api/crm/table/' + table, row).subscribe(() => {
+      if (table == 'reminder') {
+        this.getReminders();
+      } else if (table == 'task') {
+        this.getTasks();
+      }
       this.loading = false;
     });
   }
@@ -108,17 +111,25 @@ export class PageHomeComponent implements OnInit {
     this.reminders = {};
     this.httpService.get('/api/crm/table/reminder').subscribe((data: any) => {
       for (let i in data) {
-        const date = datetime.getRepeatingISO(
-          data[i].date,
-          data[i].repeat_interval,
-          data[i].repeat_count
-        );
-        if (!this.reminders[date]) this.reminders[date] = [];
-        this.reminders[date].push(data[i]);
+        const date = data[i].date;
+        if (!this.reminders[date]) {
+          this.reminders[date] = {};
+        }
+
+        const completion = data[i].completed ? 'Completed' : 'Not Completed';
+        if (!this.reminders[date][completion]) {
+          this.reminders[date][completion] = [];
+        }
+
+        this.reminders[date][completion].push(data[i]);
       }
 
       for (let date in this.reminders) {
-        this.reminders[date] = this.reminders[date].sort(sort.sortByTime);
+        for (let completion in this.reminders[date]) {
+          this.reminders[date][completion] = this.reminders[date][
+            completion
+          ].sort(sort.sortByTime);
+        }
       }
     });
   }
@@ -127,7 +138,9 @@ export class PageHomeComponent implements OnInit {
     this.tasks = {};
     this.httpService.get('/api/crm/table/task').subscribe((data: any) => {
       for (let i in data) {
-        this.addTaskToTasks(data[i]);
+        const completion = data[i].completed ? 'Completed' : 'Not Completed';
+        if (!this.tasks[completion]) this.tasks[completion] = [];
+        this.tasks[completion].push(data[i]);
       }
 
       for (let key in this.tasks) {

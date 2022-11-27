@@ -58,66 +58,111 @@ export class PageDetailItemComponent implements OnInit {
 
     if (this.data.time) {
       if (result) result += ', ';
-      result += this.data.time;
+      result += datetime.get12HourTime(this.data.time);
     }
 
     if (this.data.repeating) {
-      if (result) result += ' - ';
+      if (result) result += '\n';
       result += this.title + ' will repeat every ';
-      result += this.data.repeat_count + ' ' + this.data.repeat_interval;
-      if (this.data.repeat_count > 1) {
-        result += 's';
+      if (this.data.repeat_interval == 'day') {
+        result += 'day';
+      } else {
+        result += this.data.repeat_weekly_gap + ' ' + this.data.repeat_interval;
+        if (this.data.repeat_weekly_gap > 1) {
+          result += 's';
+        }
+        result += ' on ';
+        if (this.data.repeat_weekly_monday) result += 'Monday, ';
+        if (this.data.repeat_weekly_tuesday) result += 'Tuesday, ';
+        if (this.data.repeat_weekly_wednesday) result += 'Wednesday, ';
+        if (this.data.repeat_weekly_thursday) result += 'Thursday, ';
+        if (this.data.repeat_weekly_friday) result += 'Friday, ';
+        result = result.substring(0, result.length - 2);
+      }
+
+      if (!this.data.repeat_end) {
+        result += ' forever';
+      } else {
+        if (result) result += '\nUntil ';
+        if (this.data.repeat_end_date) {
+          result += this.data.repeat_end_date;
+        } else if (this.data.repeat_end_occurrences) {
+          result += this.data.repeat_end_occurrences + ' occurrences';
+        }
       }
     }
 
     return result;
   }
 
-  validateValues(): void {
-    switch (this.table) {
-      case 'reminder':
-        if (!this.data_edit.date) {
-          this.data_edit.date = datetime.getTodayISO();
+  setDefaults(): void {
+    for (let f in this.data_edit) {
+      if (typeof this.data_edit[f] == 'boolean') {
+        this.data_edit[f] = this.data_edit[f] ? 1 : 0;
+      }
+    }
+
+    if (this.table == 'reminder') {
+      if (!this.data_edit.date) {
+        this.data_edit.date = datetime.getTodayISO();
+      }
+
+      if (this.data_edit.repeating) {
+        if (!this.data_edit.repeat_interval) {
+          this.data_edit.repeat_interval = 'day';
         }
 
-        this.data_edit.repeating = this.data_edit.repeating ? 1 : 0;
-
-        if (!this.data_edit.repeating) {
-          this.data_edit.repeat_count = 0;
-          this.data_edit.repeat_interval = '';
-        } else {
-          if (!this.data_edit.repeat_count) {
-            this.data_edit.repeat_count = 1;
+        if (this.data_edit.repeat_interval == 'week') {
+          if (!this.data_edit.repeat_weekly_gap) {
+            this.data_edit.repeat_weekly_gap = 1;
           }
 
-          if (!this.data_edit.repeat_interval) {
-            this.data_edit.repeat_interval = 'week';
+          if (this.data_edit.repeat_weekly_gap < 1) {
+            this.data_edit.repeat_weekly_gap = 1;
+          } else if (this.data_edit.repeat_weekly_gap > 127) {
+            this.data_edit.repeat_weekly_gap = 127;
           }
 
-          if (this.data_edit.repeat_count < 1) {
-            this.data_edit.repeat_count = 1;
-          } else if (this.data_edit.repeat_count > 127) {
-            this.data_edit.repeat_count = 127;
+          if (
+            !this.data_edit.repeat_weekly_monday &&
+            !this.data_edit.repeat_weekly_tuesday &&
+            !this.data_edit.repeat_weekly_wednesday &&
+            !this.data_edit.repeat_weekly_thursday &&
+            !this.data_edit.repeat_weekly_friday
+          ) {
+            this.data_edit.repeat_weekly_monday = 1;
           }
         }
-        break;
 
-      case 'task':
-        this.data_edit.completed = this.data_edit.completed ? 1 : 0;
-        break;
+        if (this.data_edit.repeat_end) {
+          if (!this.data_edit.repeat_end_type) {
+            this.data_edit.repeat_end_type = 'date';
+          }
 
-      default:
-        break;
+          if (this.data_edit.repeat_end_type == 'date') {
+            if (!this.data_edit.repeat_end_date) {
+              this.data_edit.repeat_end_date = datetime.getNextMonthISO();
+            }
+          } else if (this.data_edit.repeat_end_type == 'occurrences') {
+            if (!this.data_edit.repeat_end_occurrences) {
+              this.data_edit.repeat_end_occurrences = 10;
+            }
+          }
+        }
+      }
     }
   }
 
   toggleCompleted(): void {
-    this.validateValues();
-    this.saveData();
+    if (this.edit_mode) {
+      this.checkPendingChanges();
+    } else {
+      this.saveData();
+    }
   }
 
   checkPendingChanges(): void {
-    this.validateValues();
+    this.setDefaults();
     this.pending_changes =
       JSON.stringify(this.data) != JSON.stringify(this.data_edit);
   }
@@ -155,6 +200,9 @@ export class PageDetailItemComponent implements OnInit {
       .subscribe((data: any) => {
         this.data = data;
         this.data_edit = JSON.parse(JSON.stringify(this.data));
+        if (!this.data.name) {
+          this.enterEditMode();
+        }
         this.loading = false;
       });
   }

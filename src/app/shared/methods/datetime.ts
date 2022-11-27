@@ -71,49 +71,20 @@ export function getTodayDate(): Date {
   return new Date(today.getFullYear(), today.getMonth(), today.getDate());
 }
 
-export function getTodayISO(): string {
-  return getISOFromDate(getTodayDate());
+export function addMonthToDate(date: Date): Date {
+  date.setMonth(date.getMonth() + 1);
+  return date;
 }
 
-export function getRepeatingISO(
-  iso: string,
-  repeat_interval: string,
-  repeat_count: number
-): string {
-  if (!iso_date_regex.test(iso)) return iso;
+export function addDayToDate(date: Date): Date {
+  date.setDate(date.getDate() + 1);
+  return date;
+}
 
-  const today = getTodayDate();
+export function getNextMonthISO(): string {
+  return getISOFromDate(addMonthToDate(getTodayDate()));
+}
 
-  let date = getDateFromISO(iso);
-  if (!date) return iso;
-
-  switch (repeat_interval) {
-    case 'day':
-      while (date < today) {
-        date.setDate(date.getDate() + repeat_count);
-      }
-      break;
-
-    case 'week':
-      while (date < today) {
-        date.setDate(date.getDate() + repeat_count * 7);
-      }
-      break;
-
-    case 'month':
-      while (date < today) {
-        date.setMonth(date.getMonth() + repeat_count);
-      }
-      break;
-
-    case 'year':
-      while (date < today) {
-        date.setFullYear(date.getFullYear() + repeat_count);
-      }
-      break;
-
-    default:
-      break;
-  }
-  return getISOFromDate(date);
+export function getTodayISO(): string {
+  return getISOFromDate(getTodayDate());
 }

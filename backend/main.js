@@ -24,11 +24,21 @@ const table_columns = {
   reminder: [
     "name",
     "details",
+    "completed",
     "date",
     "time",
     "repeating",
-    "repeat_count",
     "repeat_interval",
+    "repeat_weekly_gap",
+    "repeat_weekly_monday",
+    "repeat_weekly_tuesday",
+    "repeat_weekly_wednesday",
+    "repeat_weekly_thursday",
+    "repeat_weekly_friday",
+    "repeat_end",
+    "repeat_end_type",
+    "repeat_end_date",
+    "repeat_end_occurrences",
   ],
   task: ["name", "details", "completed"],
 
@@ -435,11 +445,18 @@ function createTableRow(user_id, table, data) {
 
         case "completed":
         case "repeating":
+        case "repeat_weekly_monday":
+        case "repeat_weekly_tuesday":
+        case "repeat_weekly_wednesday":
+        case "repeat_weekly_thursday":
+        case "repeat_weekly_friday":
+        case "repeat_end":
         case "view_count":
           sql += "0, ";
           break;
 
-        case "repeat_count":
+        case "repeat_weekly_gap":
+        case "repeat_end_occurrences":
           sql += "NULL, ";
           break;
 
@@ -503,7 +520,19 @@ function updateTableRow(user_id, table, data) {
 
         case "completed":
         case "repeating":
-        case "repeat_count":
+        case "repeat_weekly_monday":
+        case "repeat_weekly_tuesday":
+        case "repeat_weekly_wednesday":
+        case "repeat_weekly_thursday":
+        case "repeat_weekly_friday":
+        case "repeat_end":
+          sql += `${column} = ${data[column] ? 1 : 0}, `;
+          break;
+
+        case "completed":
+        case "repeating":
+        case "repeat_weekly_gap":
+        case "repeat_end_occurrences":
         case "view_count":
           sql += `${column} = ${data[column]}, `;
           break;
