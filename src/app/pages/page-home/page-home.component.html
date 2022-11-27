@@ -11,46 +11,42 @@
           <h5 class="card-title">Reminders</h5>
           <div class="accordion">
             <ng-container
-              *ngFor="let date of reminders | keyvalue: sortByKeyAsc"
+              *ngFor="let item of reminders | keyvalue: sortByKeyAsc"
             >
               <div class="accordion-item">
                 <h2 class="accordion-header">
                   <button
                     type="button"
-                    [ngClass]="getAccordionHeaderClass(date.key)"
+                    [ngClass]="getAccordionHeaderClass(item.key)"
                     data-bs-toggle="collapse"
-                    [attr.data-bs-target]="'#reminder-date-' + date.key"
+                    [attr.data-bs-target]="'#reminder-accordion-' + item.key"
                   >
-                    {{ getDateString(date.key) }}
+                    {{ getDateString(item.key) }}
                   </button>
                 </h2>
                 <div
-                  [id]="'reminder-date-' + date.key"
-                  [ngClass]="getAccordionBodyClass(date.key)"
+                  [id]="'reminder-accordion-' + item.key"
+                  [ngClass]="getAccordionBodyClass(item.key)"
                 >
                   <div class="accordion-body">
-                    <ng-container
-                      *ngFor="let item of date.value | keyvalue: sortByKeyDesc"
-                    >
-                      <h6 class="card-subtitle mt-2 mb-2 text-muted">
-                        {{ item.key }}
-                      </h6>
-                      <ng-container *ngFor="let row of item.value">
-                        <div class="form-check form-switch">
-                          <input
-                            type="checkbox"
-                            class="form-check-input"
-                            (change)="toggleCompleted('reminder', row)"
-                            [(ngModel)]="row.completed"
-                          />
-                          <div class="wrap-text">
-                            {{ getTimeString(row.time) }}
-                            <a [href]="'/crm/reminder/' + row.id">
-                              {{ row.name || "(No Name)" }}
-                            </a>
-                          </div>
-                        </div>
-                      </ng-container>
+                    <ng-container *ngFor="let row of item.value">
+                      <div class="wrap-text">
+                        <span
+                          *ngIf="row.repeating"
+                          class="clickable"
+                          title="Move to next repeat date"
+                          (click)="setReminderRepeatDate(row)"
+                        >
+                          <i class="bi bi-calendar-check"></i>
+                        </span>
+                        <span *ngIf="!row.repeating">
+                          <i class="bi bi-calendar-fill"></i>
+                        </span>
+                        {{ getTimeString(row.time) }}
+                        <a [href]="'/crm/reminder/' + row.id">
+                          {{ row.name || "(No Name)" }}
+                        </a>
+                      </div>
                     </ng-container>
                   </div>
                 </div>
@@ -98,7 +94,7 @@
                   <input
                     type="checkbox"
                     class="form-check-input"
-                    (change)="toggleCompleted('task', row)"
+                    (change)="toggleTaskCompleted(row)"
                     [(ngModel)]="row.completed"
                   />
                   <a [href]="'/crm/task/' + row.id">

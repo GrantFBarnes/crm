@@ -74,23 +74,6 @@
     </div>
   </ng-container>
 
-  <div class="row mb-2">
-    <div class="col-12">
-      <div class="form-check form-switch">
-        <input
-          type="checkbox"
-          class="form-check-input"
-          id="complete-switch"
-          (change)="toggleCompleted()"
-          [(ngModel)]="data_edit.completed"
-        />
-        <label class="form-check-label" for="complete-switch">
-          {{ data_edit.completed ? "" : "Not " }} Complete
-        </label>
-      </div>
-    </div>
-  </div>
-
   <ng-container *ngIf="table == 'reminder'">
     <ng-container *ngIf="!edit_mode">
       <div class="row mb-2">
@@ -258,75 +241,26 @@
             </div>
           </div>
         </ng-container>
-        <div class="row">
-          <div class="col-md-6 col-lg-4 mb-2">
-            <div class="form-check form-switch mt-2">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                id="repeat-end-switch"
-                (change)="checkPendingChanges()"
-                [(ngModel)]="data_edit.repeat_end"
-              />
-              <label class="form-check-label" for="repeat-end-switch">
-                <ng-container *ngIf="data_edit.repeat_end">
-                  Repeating Will End
-                </ng-container>
-                <ng-container *ngIf="!data_edit.repeat_end">
-                  Will Repeat Forever
-                </ng-container>
-              </label>
-            </div>
-          </div>
-          <ng-container *ngIf="data_edit.repeat_end">
-            <div class="col-md-6 col-lg-4 mb-2">
-              <div class="input-group">
-                <span class="input-group-text">Repeat Until</span>
-                <select
-                  class="form-control"
-                  (change)="checkPendingChanges()"
-                  [(ngModel)]="data_edit.repeat_end_type"
-                >
-                  <option value="date">Specified Date</option>
-                  <option value="occurrences">Number of Occurrences</option>
-                </select>
-              </div>
-            </div>
-            <ng-container *ngIf="data_edit.repeat_end_type == 'date'">
-              <div class="col-md-6 col-lg-4 mb-2">
-                <div class="input-group">
-                  <span class="input-group-text">End Date</span>
-                  <input
-                    type="date"
-                    class="form-control"
-                    (keyup)="checkPendingChanges()"
-                    (change)="checkPendingChanges()"
-                    [(ngModel)]="data_edit.repeat_end_date"
-                  />
-                </div>
-              </div>
-            </ng-container>
-            <ng-container *ngIf="data_edit.repeat_end_type == 'occurrences'">
-              <div class="col-md-6 col-lg-4 mb-2">
-                <div class="input-group">
-                  <span class="input-group-text">Repeat</span>
-                  <input
-                    type="number"
-                    min="0"
-                    max="127"
-                    class="form-control"
-                    (keyup)="checkPendingChanges()"
-                    (change)="checkPendingChanges()"
-                    [(ngModel)]="data_edit.repeat_end_occurrences"
-                  />
-                  <span class="input-group-text">Times</span>
-                </div>
-              </div>
-            </ng-container>
-          </ng-container>
-        </div>
       </ng-container>
     </ng-container>
+  </ng-container>
+  <ng-container *ngIf="table == 'task'">
+    <div class="row mb-2">
+      <div class="col-12">
+        <div class="form-check form-switch">
+          <input
+            type="checkbox"
+            class="form-check-input"
+            id="complete-switch"
+            (change)="toggleTaskCompleted()"
+            [(ngModel)]="data_edit.completed"
+          />
+          <label class="form-check-label" for="complete-switch">
+            {{ data_edit.completed ? "" : "Not " }} Complete
+          </label>
+        </div>
+      </div>
+    </div>
   </ng-container>
 
   <div class="row">

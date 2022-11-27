@@ -26,7 +26,7 @@ export class PageLoginComponent implements OnInit {
       }
     }
 
-    this.httpService.get('/api/crm/user/authenticated').subscribe({
+    this.httpService.get('/api/crm/user/name').subscribe({
       next: () => {
         window.location.href = '/crm/home';
       },

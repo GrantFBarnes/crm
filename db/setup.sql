@@ -46,7 +46,6 @@ CREATE TABLE reminder (
 
     name VARCHAR(255) DEFAULT "",
     details VARCHAR(10000) DEFAULT "",
-    completed TINYINT(1) DEFAULT 0,
     date CHAR(10) DEFAULT "",
     time CHAR(5) DEFAULT "",
     repeating TINYINT(1) DEFAULT 0,
@@ -57,10 +56,6 @@ CREATE TABLE reminder (
     repeat_weekly_wednesday TINYINT(1) DEFAULT 0,
     repeat_weekly_thursday TINYINT(1) DEFAULT 0,
     repeat_weekly_friday TINYINT(1) DEFAULT 0,
-    repeat_end TINYINT(1) DEFAULT 0,
-    repeat_end_type VARCHAR(50) DEFAULT "",
-    repeat_end_date CHAR(10) DEFAULT "",
-    repeat_end_occurrences INT DEFAULT NULL,
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,

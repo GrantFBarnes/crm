@@ -1,3 +1,5 @@
+import { TableReminder } from 'src/app/shared/interfaces/table-reminder';
+
 const iso_date_regex = /^\d{4}-([0]\d|1[0-2])-([0-2]\d|3[01])$/;
 const time_24_regex = /^([01]\d|[2][0-3]):[0-5]\d$/;
 const time_12_regex = /^([0][1-9]|[1][0-2]):[0-5]\d [AP]M$/;
@@ -43,13 +45,36 @@ export function get24HourTime(time: string): string {
 ////////////////////////////////////////////////////////////////////////////////
 // Date Functions
 
-export function getDateFromISO(iso: string): Date | null {
+function getDateFromISO(iso: string): Date | null {
   if (!iso_date_regex.test(iso)) return null;
   return new Date(
     parseInt(iso.substring(0, 4)),
     parseInt(iso.substring(5, 7)) - 1,
     parseInt(iso.substring(8))
   );
+}
+
+function getISOFromDate(date: Date): string {
+  return date.toISOString().substring(0, 10);
+}
+
+function getTodayDate(): Date {
+  const today = new Date();
+  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
+}
+
+function dateIsWeekend(date: Date): boolean {
+  const day = date.getDay();
+  return day === 0 || day === 6;
+}
+
+function addDayToDate(date: Date): Date {
+  date.setDate(date.getDate() + 1);
+  return date;
+}
+
+export function getTodayISO(): string {
+  return getISOFromDate(getTodayDate());
 }
 
 export function getStringFromISO(iso: string): string {
@@ -62,29 +87,44 @@ export function getStringFromISO(iso: string): string {
   return date.toDateString();
 }
 
-export function getISOFromDate(date: Date): string {
-  return date.toISOString().substring(0, 10);
-}
+export function getReminderRepeatISO(reminder: TableReminder): string {
+  if (!reminder.repeating) return reminder.date;
+  if (!iso_date_regex.test(reminder.date)) return reminder.date;
 
-export function getTodayDate(): Date {
-  const today = new Date();
-  return new Date(today.getFullYear(), today.getMonth(), today.getDate());
-}
+  let date = getDateFromISO(reminder.date);
+  if (!date) return reminder.date;
 
-export function addMonthToDate(date: Date): Date {
-  date.setMonth(date.getMonth() + 1);
-  return date;
-}
+  const today = getTodayDate();
 
-export function addDayToDate(date: Date): Date {
-  date.setDate(date.getDate() + 1);
-  return date;
-}
+  if (reminder.repeat_interval == 'day') {
+    do {
+      date = addDayToDate(date);
+    } while (date < today || dateIsWeekend(date));
+  } else if (reminder.repeat_interval == 'week') {
+    const valid_days = new Set();
+    if (reminder.repeat_weekly_monday) valid_days.add(1);
+    if (reminder.repeat_weekly_tuesday) valid_days.add(2);
+    if (reminder.repeat_weekly_wednesday) valid_days.add(3);
+    if (reminder.repeat_weekly_thursday) valid_days.add(4);
+    if (reminder.repeat_weekly_friday) valid_days.add(5);
+    if (valid_days.size == 0) return reminder.date;
 
-export function getNextMonthISO(): string {
-  return getISOFromDate(addMonthToDate(getTodayDate()));
-}
+    do {
+      date = addDayToDate(date);
 
-export function getTodayISO(): string {
-  return getISOFromDate(getTodayDate());
+      // if saturday (end of week)
+      if (date.getDay() === 6) {
+        // set date back to monday
+        date.setDate(date.getDate() - 5);
+        // forward to the week with the specified gap
+        date.setDate(date.getDate() + 7 * reminder.repeat_weekly_gap);
+      }
+    } while (
+      date < today ||
+      dateIsWeekend(date) ||
+      !valid_days.has(date.getDay())
+    );
+  }
+
+  return getISOFromDate(date);
 }

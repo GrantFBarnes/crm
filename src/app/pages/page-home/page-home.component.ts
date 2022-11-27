@@ -19,7 +19,7 @@ import * as sort from 'src/app/shared/methods/sort';
 export class PageHomeComponent implements OnInit {
   loading: boolean = true;
 
-  reminders: { [date: string]: { [completion: string]: TableReminder[] } } = {};
+  reminders: { [date: string]: TableReminder[] } = {};
 
   tab: string = '';
 
@@ -86,15 +86,20 @@ export class PageHomeComponent implements OnInit {
     }
   }
 
-  toggleCompleted(table: string, row: any): void {
+  setReminderRepeatDate(row: any): void {
+    this.loading = true;
+    row.date = datetime.getReminderRepeatISO(row);
+    this.httpService.put('/api/crm/table/reminder', row).subscribe(() => {
+      this.getReminders();
+      this.loading = false;
+    });
+  }
+
+  toggleTaskCompleted(row: any): void {
     this.loading = true;
     row.completed = row.completed ? 1 : 0;
-    this.httpService.put('/api/crm/table/' + table, row).subscribe(() => {
-      if (table == 'reminder') {
-        this.getReminders();
-      } else if (table == 'task') {
-        this.getTasks();
-      }
+    this.httpService.put('/api/crm/table/task', row).subscribe(() => {
+      this.getTasks();
       this.loading = false;
     });
   }
@@ -112,24 +117,12 @@ export class PageHomeComponent implements OnInit {
     this.httpService.get('/api/crm/table/reminder').subscribe((data: any) => {
       for (let i in data) {
         const date = data[i].date;
-        if (!this.reminders[date]) {
-          this.reminders[date] = {};
-        }
-
-        const completion = data[i].completed ? 'Completed' : 'Not Completed';
-        if (!this.reminders[date][completion]) {
-          this.reminders[date][completion] = [];
-        }
-
-        this.reminders[date][completion].push(data[i]);
+        if (!this.reminders[date]) this.reminders[date] = [];
+        this.reminders[date].push(data[i]);
       }
 
       for (let date in this.reminders) {
-        for (let completion in this.reminders[date]) {
-          this.reminders[date][completion] = this.reminders[date][
-            completion
-          ].sort(sort.sortByTime);
-        }
+        this.reminders[date] = this.reminders[date].sort(sort.sortByTime);
       }
     });
   }

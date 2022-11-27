@@ -79,17 +79,6 @@ export class PageDetailItemComponent implements OnInit {
         if (this.data.repeat_weekly_friday) result += 'Friday, ';
         result = result.substring(0, result.length - 2);
       }
-
-      if (!this.data.repeat_end) {
-        result += ' forever';
-      } else {
-        if (result) result += '\nUntil ';
-        if (this.data.repeat_end_date) {
-          result += this.data.repeat_end_date;
-        } else if (this.data.repeat_end_occurrences) {
-          result += this.data.repeat_end_occurrences + ' occurrences';
-        }
-      }
     }
 
     return result;
@@ -133,27 +122,11 @@ export class PageDetailItemComponent implements OnInit {
             this.data_edit.repeat_weekly_monday = 1;
           }
         }
-
-        if (this.data_edit.repeat_end) {
-          if (!this.data_edit.repeat_end_type) {
-            this.data_edit.repeat_end_type = 'date';
-          }
-
-          if (this.data_edit.repeat_end_type == 'date') {
-            if (!this.data_edit.repeat_end_date) {
-              this.data_edit.repeat_end_date = datetime.getNextMonthISO();
-            }
-          } else if (this.data_edit.repeat_end_type == 'occurrences') {
-            if (!this.data_edit.repeat_end_occurrences) {
-              this.data_edit.repeat_end_occurrences = 10;
-            }
-          }
-        }
       }
     }
   }
 
-  toggleCompleted(): void {
+  toggleTaskCompleted(): void {
     if (this.edit_mode) {
       this.checkPendingChanges();
     } else {
