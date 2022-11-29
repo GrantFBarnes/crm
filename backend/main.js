@@ -117,6 +117,15 @@ function dataIsValid(table, data) {
   return true;
 }
 
+function getSqlValue(value) {
+  if (typeof value === "string") {
+    while (value.includes("'")) value = value.replace("'", "");
+    while (value.includes('"')) value = value.replace('"', "");
+    value = value.trim();
+  }
+  return value;
+}
+
 function execute(command) {
   return new Promise((resolve, reject) => {
     connection.query(command, (err, res) => {
@@ -527,7 +536,7 @@ function updateTableRow(user_id, table, data) {
           break;
 
         default:
-          sql += `${column} = '${data[column]}', `;
+          sql += `${column} = '${getSqlValue(data[column])}', `;
           break;
       }
     }
