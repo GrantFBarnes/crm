@@ -175,6 +175,12 @@
                   type="checkbox"
                   class="form-check-input"
                   id="repeat-monday-switch"
+                  [disabled]="
+                    !data_edit.repeat_weekly_tuesday &&
+                    !data_edit.repeat_weekly_wednesday &&
+                    !data_edit.repeat_weekly_thursday &&
+                    !data_edit.repeat_weekly_friday
+                  "
                   (change)="checkPendingChanges()"
                   [(ngModel)]="data_edit.repeat_weekly_monday"
                 />
