@@ -1,5 +1,7 @@
 DROP DATABASE IF EXISTS crm;
-CREATE DATABASE crm;
+CREATE DATABASE crm
+  CHARACTER SET = 'utf8mb4'
+  COLLATE = 'utf8mb4_unicode_ci';
 USE crm;
 
 CREATE TABLE user (
