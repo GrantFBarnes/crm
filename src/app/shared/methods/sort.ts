@@ -1,5 +1,4 @@
 import { KeyValue } from '@angular/common';
-import { TableColumn } from '../interfaces/table-column';
 
 export function sortByKey(
   a: KeyValue<any, any>,
@@ -53,18 +52,14 @@ export function sortByName(a: any, b: any): number {
   return 0;
 }
 
-export function sortByColumns(columns: TableColumn[]): Function {
-  return function (a: any, b: any) {
-    let a_val = '';
-    let b_val = '';
-    for (let i in columns) {
-      a_val += a[columns[i].field];
-      b_val += b[columns[i].field];
-    }
-    a_val = a_val.toLocaleLowerCase();
-    b_val = b_val.toLocaleLowerCase();
-    if (a_val < b_val) return -1;
-    if (a_val > b_val) return 1;
-    return 0;
-  };
+export function sortBySortName(a: any, b: any): number {
+  const name_sort = sortByName(a, b);
+  if (name_sort != 0) return name_sort;
+
+  if (!a.sort_name && !b.sort_name) return 0;
+  const a_val = a.sort_name.toLocaleLowerCase();
+  const b_val = b.sort_name.toLocaleLowerCase();
+  if (a_val < b_val) return -1;
+  if (a_val > b_val) return 1;
+  return 0;
 }

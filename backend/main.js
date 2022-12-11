@@ -313,11 +313,26 @@ function getTableRowsWithForeignKey(user_id, table, fk_name, fk_id) {
       return;
     }
 
-    execute(`
+    let sql = `
       SELECT * FROM ${table}
       WHERE user_id = '${user_id}'
         AND ${fk_name} = '${fk_id}';
-        `)
+    `;
+
+    if (table.includes("link")) {
+      const fk_table = fk_name.replace("_id", "");
+      const link_table = table.replace("_" + fk_table, "").replace("link_", "");
+      const link_name = link_table + "_id";
+      sql = `
+        SELECT t1.*, t2.name AS sort_name FROM ${table} AS t1
+        INNER JOIN ${link_table} AS t2 ON t1.${link_name} = t2.id
+        WHERE t1.user_id = '${user_id}'
+          AND t2.user_id = '${user_id}'
+          AND t1.${fk_name} = '${fk_id}';
+      `;
+    }
+
+    execute(sql)
       .then((result) => {
         resolve({ statusCode: 200, data: result });
         return;

@@ -46,7 +46,7 @@ export class CardListTableComponent implements OnInit {
       this.parent_id;
 
     this.httpService.get(api).subscribe((data: any) => {
-      this.data = data.sort(sort.sortByColumns(this.columns));
+      this.data = data.sort(sort.sortBySortName);
       this.loading = false;
     });
   }
