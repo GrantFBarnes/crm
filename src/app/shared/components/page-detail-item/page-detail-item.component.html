@@ -270,7 +270,7 @@
   </ng-container>
 
   <div class="row">
-    <div class="col-md-6 mb-2">
+    <div class="col-lg-4 mb-2">
       <app-card-list-table
         [title]="'Company'"
         [table]="'link_company_' + table"
@@ -280,7 +280,7 @@
         [columns]="company_columns"
       ></app-card-list-table>
     </div>
-    <div class="col-md-6 mb-2">
+    <div class="col-lg-4 mb-2">
       <app-card-list-table
         [title]="'Person'"
         [table]="'link_person_' + table"
@@ -288,6 +288,16 @@
         [parent_id]="data.id"
         [link_table]="'person'"
         [columns]="person_columns"
+      ></app-card-list-table>
+    </div>
+    <div class="col-lg-4 mb-2">
+      <app-card-list-table
+        [title]="'List'"
+        [table]="'link_list_' + table"
+        [parent_field]="table + '_id'"
+        [parent_id]="data.id"
+        [link_table]="'list'"
+        [columns]="list_columns"
       ></app-card-list-table>
     </div>
   </div>

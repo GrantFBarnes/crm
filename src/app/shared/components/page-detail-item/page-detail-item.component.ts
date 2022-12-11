@@ -23,6 +23,7 @@ export class PageDetailItemComponent implements OnInit {
   data_edit: any = JSON.parse(JSON.stringify(this.data));
   pending_changes: boolean = false;
 
+  list_columns: TableColumn[] = [{ field: 'list_id', title: 'List' }];
   company_columns: TableColumn[] = [{ field: 'company_id', title: 'Company' }];
   person_columns: TableColumn[] = [{ field: 'person_id', title: 'Person' }];
 

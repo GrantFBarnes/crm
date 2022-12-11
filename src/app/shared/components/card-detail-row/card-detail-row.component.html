@@ -51,6 +51,22 @@
         </div>
       </ng-container>
       <ng-container *ngSwitchCase="'time'"></ng-container>
+      <ng-container *ngSwitchCase="'list_id'">
+        <ng-container *ngIf="link_table == 'list'">
+          <div class="row mb-2">
+            <div class="col-12">
+              <div class="input-group">
+                <span class="input-group-text">{{ column.title }}</span>
+                <div class="ms-2 mt-2">
+                  <a [href]="'/crm/' + link_table + '/' + link_data.id">
+                    {{ link_data.name || "(No Name)" }}
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </ng-container>
       <ng-container *ngSwitchCase="'company_id'">
         <ng-container *ngIf="link_table == 'company'">
           <div class="row mb-2">

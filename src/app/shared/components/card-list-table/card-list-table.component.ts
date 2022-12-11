@@ -108,6 +108,7 @@ export class CardListTableComponent implements OnInit {
 
       case 'Log':
       case 'Note':
+      case 'List':
       case 'Reminder':
       case 'Task':
         return this.title + 's';

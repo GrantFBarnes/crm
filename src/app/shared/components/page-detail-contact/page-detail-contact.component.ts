@@ -27,6 +27,7 @@ export class PageDetailContactComponent implements OnInit {
     { field: 'date', title: 'Date' },
     { field: 'time', title: 'Time' },
   ];
+  list_columns: TableColumn[] = [{ field: 'list_id', title: 'List' }];
   job_columns: TableColumn[] = [
     { field: 'name', title: 'Job Position' },
     { field: 'company_id', title: 'Company' },
