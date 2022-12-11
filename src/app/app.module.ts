@@ -12,6 +12,8 @@ import { PageHomeComponent } from './pages/page-home/page-home.component';
 import { PageLoginComponent } from './pages/page-login/page-login.component';
 import { PageUserComponent } from './pages/page-user/page-user.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
+import { PageListsComponent } from './pages/page-lists/page-lists.component';
+import { PageListComponent } from './pages/page-list/page-list.component';
 import { PageCompaniesComponent } from './pages/page-companies/page-companies.component';
 import { PageCompanyComponent } from './pages/page-company/page-company.component';
 import { PagePeopleComponent } from './pages/page-people/page-people.component';
@@ -39,6 +41,8 @@ import { ModalTableSelectComponent } from './modals/modal-table-select/modal-tab
     PageLoginComponent,
     PageUserComponent,
     PageNotFoundComponent,
+    PageListsComponent,
+    PageListComponent,
     PageCompaniesComponent,
     PageCompanyComponent,
     PagePeopleComponent,

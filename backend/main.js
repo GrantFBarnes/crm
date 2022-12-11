@@ -12,6 +12,7 @@ const id_regex =
   /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 
 const table_fks = new Set([
+  "list_id",
   "company_id",
   "person_id",
   "reminder_id",
@@ -19,6 +20,7 @@ const table_fks = new Set([
 ]);
 
 const table_columns = {
+  list: ["name"],
   company: ["name", "view_count"],
   person: ["name", "view_count"],
   reminder: [
@@ -48,6 +50,10 @@ const table_columns = {
   log_company: ["details", "date", "time"],
   log_person: ["details", "date", "time"],
 
+  link_list_company: [],
+  link_list_person: [],
+  link_list_reminder: [],
+  link_list_task: [],
   link_company_person: ["name"],
   link_company_reminder: [],
   link_person_reminder: [],
@@ -56,6 +62,9 @@ const table_columns = {
 };
 
 for (let table in table_columns) {
+  if (table.includes("_list")) {
+    table_columns[table].unshift("list_id");
+  }
   if (table.includes("_company")) {
     table_columns[table].unshift("company_id");
   }
@@ -446,6 +455,7 @@ function createTableRow(user_id, table, data) {
           sql += `'${user_id}', `;
           break;
 
+        case "list_id":
         case "company_id":
         case "person_id":
         case "reminder_id":
@@ -524,6 +534,7 @@ function updateTableRow(user_id, table, data) {
       switch (column) {
         case "id":
         case "user_id":
+        case "list_id":
         case "company_id":
         case "person_id":
         case "reminder_id":

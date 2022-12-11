@@ -16,6 +16,18 @@ CREATE TABLE user (
     CONSTRAINT name_unique UNIQUE (name)
 );
 
+CREATE TABLE list (
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+
+    name VARCHAR(255) DEFAULT "",
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE
+);
+
 CREATE TABLE company (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
@@ -225,6 +237,62 @@ CREATE TABLE log_person (
     PRIMARY KEY (id),
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+CREATE TABLE link_list_company
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    list_id CHAR(36) NOT NULL,
+    company_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (list_id) REFERENCES list(id) ON DELETE CASCADE,
+    FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE
+);
+
+CREATE TABLE link_list_person
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    list_id CHAR(36) NOT NULL,
+    person_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (list_id) REFERENCES list(id) ON DELETE CASCADE,
+    FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
+);
+
+CREATE TABLE link_list_reminder
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    list_id CHAR(36) NOT NULL,
+    reminder_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (list_id) REFERENCES list(id) ON DELETE CASCADE,
+    FOREIGN KEY (reminder_id) REFERENCES reminder(id) ON DELETE CASCADE
+);
+
+CREATE TABLE link_list_task
+    id CHAR(36) NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    list_id CHAR(36) NOT NULL,
+    task_id CHAR(36) NOT NULL,
+
+    date_added DATETIME NOT NULL,
+    date_modified DATETIME NOT NULL,
+    PRIMARY KEY (id),
+    FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (list_id) REFERENCES list(id) ON DELETE CASCADE,
+    FOREIGN KEY (task_id) REFERENCES task(id) ON DELETE CASCADE
 );
 
 CREATE TABLE link_company_person (
