@@ -2,7 +2,7 @@
 <div [ngClass]="loading ? 'card blur' : 'card'">
   <div class="card-body">
     <h5 class="card-title">
-      {{ title }}
+      {{ getTitleDisplay() }}
       <div style="float: right">
         <ng-container *ngIf="data.length">
           <ng-container *ngIf="!edit_mode">

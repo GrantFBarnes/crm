@@ -94,4 +94,26 @@ export class CardListTableComponent implements OnInit {
   addLink(id: string): void {
     this.addRow({ [this.link_table + '_id']: id });
   }
+
+  getTitleDisplay(): string {
+    switch (this.title) {
+      case 'Company':
+        return 'Companies';
+
+      case 'Person':
+        return 'People';
+
+      case 'Job':
+        return this.link_table == 'person' ? 'Employees' : 'Company';
+
+      case 'Log':
+      case 'Note':
+      case 'Reminder':
+      case 'Task':
+        return this.title + 's';
+
+      default:
+        return this.title;
+    }
+  }
 }
