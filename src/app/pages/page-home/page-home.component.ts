@@ -87,18 +87,12 @@ export class PageHomeComponent implements OnInit {
   }
 
   setReminderRepeatDate(row: any): void {
-    if (
-      window.confirm(
-        'Are you sure you want to move this reminder to its next occurance?'
-      )
-    ) {
-      this.loading = true;
-      row.date = datetime.getReminderRepeatISO(row);
-      this.httpService.put('/api/crm/table/reminder', row).subscribe(() => {
-        this.getReminders();
-        this.loading = false;
-      });
-    }
+    this.loading = true;
+    row.date = datetime.getReminderRepeatISO(row);
+    this.httpService.put('/api/crm/table/reminder', row).subscribe(() => {
+      this.getReminders();
+      this.loading = false;
+    });
   }
 
   toggleTaskCompleted(row: any): void {
