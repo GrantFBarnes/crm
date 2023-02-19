@@ -1,5 +1,5 @@
 <app-loading *ngIf="loading"></app-loading>
-<div [ngClass]="loading ? 'container blur' : 'container'">
+<div [ngClass]="loading ? 'container blur' : 'container-fluid'">
   <div class="main-title">
     <h1>Customer Relationship Manager</h1>
   </div>
@@ -11,7 +11,7 @@
           <h5 class="card-title">Reminders</h5>
           <div class="accordion">
             <ng-container
-              *ngFor="let item of reminders | keyvalue: sortByKeyAsc"
+              *ngFor="let item of reminders | keyvalue : sortByKeyAsc"
             >
               <div class="accordion-item">
                 <h2 class="accordion-header">
@@ -87,7 +87,7 @@
         <ng-container *ngIf="tab == 'Tasks'">
           <div class="card-body">
             <h5 class="card-title">{{ tab }}</h5>
-            <ng-container *ngFor="let item of tasks | keyvalue: sortByKeyDesc">
+            <ng-container *ngFor="let item of tasks | keyvalue : sortByKeyDesc">
               <h6 class="card-subtitle mt-4 mb-2 text-muted">{{ item.key }}</h6>
               <ng-container *ngFor="let row of item.value">
                 <div class="form-check form-switch">
