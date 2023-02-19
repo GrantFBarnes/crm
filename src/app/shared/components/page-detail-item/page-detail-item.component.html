@@ -158,6 +158,7 @@
                 (change)="checkPendingChanges()"
                 [(ngModel)]="data_edit.repeat_interval"
               >
+                <option value="work_day">Work Day</option>
                 <option value="day">Day</option>
                 <option value="week">
                   Week{{ data_edit.repeat_weekly_gap > 1 ? "s" : "" }}
@@ -179,7 +180,9 @@
                     !data_edit.repeat_weekly_tuesday &&
                     !data_edit.repeat_weekly_wednesday &&
                     !data_edit.repeat_weekly_thursday &&
-                    !data_edit.repeat_weekly_friday
+                    !data_edit.repeat_weekly_friday &&
+                    !data_edit.repeat_weekly_saturday &&
+                    !data_edit.repeat_weekly_sunday
                   "
                   (change)="checkPendingChanges()"
                   [(ngModel)]="data_edit.repeat_weekly_monday"
@@ -242,6 +245,37 @@
                 />
                 <label class="form-check-label" for="repeat-friday-switch">
                   Friday
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-2 mb-2">Weekend</div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-saturday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_saturday"
+                />
+                <label class="form-check-label" for="repeat-saturday-switch">
+                  Saturday
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-2 mb-2">
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  id="repeat-sunday-switch"
+                  (change)="checkPendingChanges()"
+                  [(ngModel)]="data_edit.repeat_weekly_sunday"
+                />
+                <label class="form-check-label" for="repeat-sunday-switch">
+                  Sunday
                 </label>
               </div>
             </div>

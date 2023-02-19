@@ -36,6 +36,8 @@ const table_columns = {
     "repeat_weekly_wednesday",
     "repeat_weekly_thursday",
     "repeat_weekly_friday",
+    "repeat_weekly_saturday",
+    "repeat_weekly_sunday",
   ],
   task: ["name", "details", "completed"],
 
@@ -479,6 +481,8 @@ function createTableRow(user_id, table, data) {
         case "repeat_weekly_wednesday":
         case "repeat_weekly_thursday":
         case "repeat_weekly_friday":
+        case "repeat_weekly_saturday":
+        case "repeat_weekly_sunday":
         case "view_count":
           sql += "0, ";
           break;
@@ -553,6 +557,8 @@ function updateTableRow(user_id, table, data) {
         case "repeat_weekly_wednesday":
         case "repeat_weekly_thursday":
         case "repeat_weekly_friday":
+        case "repeat_weekly_saturday":
+        case "repeat_weekly_sunday":
           sql += `${column} = ${data[column] ? 1 : 0}, `;
           break;
 

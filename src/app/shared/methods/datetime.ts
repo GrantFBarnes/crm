@@ -96,34 +96,34 @@ export function getReminderRepeatISO(reminder: TableReminder): string {
 
   const today = getTodayDate();
 
-  if (reminder.repeat_interval == 'day') {
+  if (reminder.repeat_interval == 'work_day') {
     do {
       date = addDayToDate(date);
     } while (date < today || dateIsWeekend(date));
+  } else if (reminder.repeat_interval == 'day') {
+    do {
+      date = addDayToDate(date);
+    } while (date < today);
   } else if (reminder.repeat_interval == 'week') {
     const valid_days = new Set();
+    if (reminder.repeat_weekly_sunday) valid_days.add(0);
     if (reminder.repeat_weekly_monday) valid_days.add(1);
     if (reminder.repeat_weekly_tuesday) valid_days.add(2);
     if (reminder.repeat_weekly_wednesday) valid_days.add(3);
     if (reminder.repeat_weekly_thursday) valid_days.add(4);
     if (reminder.repeat_weekly_friday) valid_days.add(5);
+    if (reminder.repeat_weekly_saturday) valid_days.add(6);
     if (valid_days.size == 0) return reminder.date;
 
     do {
       date = addDayToDate(date);
 
-      // if saturday (end of week)
-      if (date.getDay() === 6) {
-        // set date back to monday
-        date.setDate(date.getDate() - 5);
+      // if sunday (start of week)
+      if (date.getDay() === 0) {
         // forward to the week with the specified gap
-        date.setDate(date.getDate() + 7 * reminder.repeat_weekly_gap);
+        date.setDate(date.getDate() + 7 * (reminder.repeat_weekly_gap - 1));
       }
-    } while (
-      date < today ||
-      dateIsWeekend(date) ||
-      !valid_days.has(date.getDay())
-    );
+    } while (date < today || !valid_days.has(date.getDay()));
   }
 
   return getISOFromDate(date);

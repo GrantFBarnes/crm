@@ -65,7 +65,9 @@ export class PageDetailItemComponent implements OnInit {
     if (this.data.repeating) {
       if (result) result += '\n';
       result += this.title + ' will repeat every ';
-      if (this.data.repeat_interval == 'day') {
+      if (this.data.repeat_interval == 'work_day') {
+        result += 'work day';
+      } else if (this.data.repeat_interval == 'day') {
         result += 'day';
       } else {
         result += this.data.repeat_weekly_gap + ' ' + this.data.repeat_interval;
@@ -78,6 +80,8 @@ export class PageDetailItemComponent implements OnInit {
         if (this.data.repeat_weekly_wednesday) result += 'Wednesday, ';
         if (this.data.repeat_weekly_thursday) result += 'Thursday, ';
         if (this.data.repeat_weekly_friday) result += 'Friday, ';
+        if (this.data.repeat_weekly_saturday) result += 'Saturday, ';
+        if (this.data.repeat_weekly_sunday) result += 'Sunday, ';
         result = result.substring(0, result.length - 2);
       }
     }
@@ -99,7 +103,7 @@ export class PageDetailItemComponent implements OnInit {
 
       if (this.data_edit.repeating) {
         if (!this.data_edit.repeat_interval) {
-          this.data_edit.repeat_interval = 'day';
+          this.data_edit.repeat_interval = 'work_day';
         }
 
         if (this.data_edit.repeat_interval == 'week') {
@@ -118,7 +122,9 @@ export class PageDetailItemComponent implements OnInit {
             !this.data_edit.repeat_weekly_tuesday &&
             !this.data_edit.repeat_weekly_wednesday &&
             !this.data_edit.repeat_weekly_thursday &&
-            !this.data_edit.repeat_weekly_friday
+            !this.data_edit.repeat_weekly_friday &&
+            !this.data_edit.repeat_weekly_saturday &&
+            !this.data_edit.repeat_weekly_sunday
           ) {
             this.data_edit.repeat_weekly_monday = 1;
           }

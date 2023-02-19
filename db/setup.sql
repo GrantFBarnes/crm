@@ -70,6 +70,8 @@ CREATE TABLE reminder (
     repeat_weekly_wednesday TINYINT(1) DEFAULT 0,
     repeat_weekly_thursday TINYINT(1) DEFAULT 0,
     repeat_weekly_friday TINYINT(1) DEFAULT 0,
+    repeat_weekly_saturday TINYINT(1) DEFAULT 0,
+    repeat_weekly_sunday TINYINT(1) DEFAULT 0,
 
     date_added DATETIME NOT NULL,
     date_modified DATETIME NOT NULL,

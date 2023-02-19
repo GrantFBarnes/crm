@@ -14,6 +14,8 @@ export interface TableReminder {
   repeat_weekly_wednesday: boolean;
   repeat_weekly_thursday: boolean;
   repeat_weekly_friday: boolean;
+  repeat_weekly_saturday: boolean;
+  repeat_weekly_sunday: boolean;
 
   date_added: Date;
   date_modified: Date;
