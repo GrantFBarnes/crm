@@ -76,16 +76,19 @@
                 data-bs-toggle="dropdown"
               >
                 <i class="bi bi-person-circle"></i>
-                {{ name }}
+                &nbsp; {{ name }}
               </a>
               <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark">
                 <li>
-                  <a class="dropdown-item" href="/crm/user">User Settings</a>
+                  <a class="dropdown-item" href="/crm/user">
+                    <i class="bi bi-gear"></i>
+                    &nbsp; User Settings
+                  </a>
                 </li>
                 <li>
                   <a class="dropdown-item clickable" (click)="logout()">
-                    Logout
                     <i class="bi bi-box-arrow-right"></i>
+                    &nbsp; Logout
                   </a>
                 </li>
               </ul>
