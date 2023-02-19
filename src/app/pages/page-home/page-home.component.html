@@ -8,7 +8,18 @@
     <div class="col-md-6 mb-2">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">Reminders</h5>
+          <h5 class="card-title">
+            <div class="row">
+              <div class="col-8">Reminders</div>
+              <div class="col-4 right">
+                <i
+                  class="bi bi-download clickable"
+                  title="Download Excel - Reminders"
+                  (click)="downloadExcel('reminder')"
+                ></i>
+              </div>
+            </div>
+          </h5>
           <div class="accordion">
             <ng-container
               *ngFor="let item of reminders | keyvalue : sortByKeyAsc"
@@ -86,7 +97,18 @@
         </ul>
         <ng-container *ngIf="tab == 'Tasks'">
           <div class="card-body">
-            <h5 class="card-title">{{ tab }}</h5>
+            <h5 class="card-title">
+              <div class="row">
+                <div class="col-8">Tasks</div>
+                <div class="col-4 right">
+                  <i
+                    class="bi bi-download clickable"
+                    title="Download Excel - Tasks"
+                    (click)="downloadExcel('task')"
+                  ></i>
+                </div>
+              </div>
+            </h5>
             <ng-container *ngFor="let item of tasks | keyvalue : sortByKeyDesc">
               <h6 class="card-subtitle mt-4 mb-2 text-muted">{{ item.key }}</h6>
               <ng-container *ngFor="let row of item.value">

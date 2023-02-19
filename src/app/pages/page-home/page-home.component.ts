@@ -86,6 +86,47 @@ export class PageHomeComponent implements OnInit {
     }
   }
 
+  downloadFile(type: string, file_name: string, content: any): void {
+    let typeKey = '';
+    switch (type) {
+      case 'excel':
+        typeKey =
+          'data:application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;base64,';
+        break;
+
+      case 'csv':
+        typeKey = 'data:text/csv;charset=utf-8,';
+        break;
+
+      case 'text':
+        typeKey = 'data:text/json;charset=utf-8,';
+        break;
+
+      case 'pdf':
+        typeKey = 'data:application/pdf;base64,';
+        break;
+
+      default:
+        return;
+    }
+
+    const element = document.createElement('a');
+    element.setAttribute('href', typeKey + encodeURIComponent(content));
+    element.setAttribute('download', file_name);
+    element.style.display = 'none';
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  }
+
+  downloadExcel(table: string): void {
+    this.httpService.get('/api/crm/excel/' + table).subscribe((data: any) => {
+      const date_str = new Date().toISOString().substring(0, 10);
+      const file_name = 'crm_' + table + 's_' + date_str;
+      this.downloadFile('excel', file_name, data);
+    });
+  }
+
   setReminderRepeatDate(row: any): void {
     this.loading = true;
     row.date = datetime.getReminderRepeatISO(row);

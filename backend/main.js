@@ -1,3 +1,4 @@
+const excel4node = require("excel4node");
 const mysql = require("mysql");
 const { v4: uuidv4 } = require("uuid");
 
@@ -589,6 +590,159 @@ function updateTableRow(user_id, table, data) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// Excel Export
+
+function getExportData(user_id, table) {
+  return new Promise((resolve, reject) => {
+    if (!idIsValid(user_id)) {
+      reject("user id not valid");
+      return;
+    }
+
+    if (!tableIsValid(table)) {
+      reject("table not valid");
+      return;
+    }
+
+    let sql = "";
+    switch (table) {
+      case "reminder":
+        sql = `
+          SELECT * FROM reminder
+          WHERE user_id = '${user_id}'
+          ORDER BY date, time, name ASC;
+        `;
+        break;
+
+      case "task":
+        sql = `
+          SELECT * FROM task
+          WHERE user_id = '${user_id}'
+          ORDER BY completed, name ASC;
+        `;
+        break;
+
+      default:
+        reject("table not valid");
+        return;
+    }
+
+    execute(sql)
+      .then((result) => {
+        resolve(result);
+        return;
+      })
+      .catch(() => {
+        reject("failed to get export data");
+        return;
+      });
+  });
+}
+
+function normalizeValue(value) {
+  if (typeof value === "boolean") return value ? "Yes" : "No";
+  if (typeof value === "number") return value ? "Yes" : "No";
+  if (!value) return "-";
+  if (Array.isArray(value)) return value.toString();
+  if (typeof value !== "string") return JSON.stringify(value);
+  return value;
+}
+
+function populateCell(wb, sheet, value, row, col, center, color, row2, col2) {
+  value = normalizeValue(value);
+
+  if (row2 && col2) {
+    sheet.cell(row, col, row2, col2, true).string(value);
+  } else {
+    sheet.cell(row, col).string(value);
+  }
+
+  const styleJSON = {
+    alignment: {
+      horizontal: center ? "center" : "left",
+      vertical: "center",
+      wrapText: true,
+    },
+  };
+  if (color) {
+    styleJSON.fill = { type: "pattern", patternType: "solid", fgColor: color };
+  }
+  sheet.cell(row, col).style(wb.createStyle(styleJSON));
+}
+
+async function createExcelWorkbook(user_id, table) {
+  let wb = new excel4node.Workbook();
+
+  let page_name = "";
+  if (table === "reminder") page_name = "Reminders";
+  if (table === "task") page_name = "Tasks";
+
+  let sheet = wb.addWorksheet(page_name);
+
+  const header_color = "#eaeaea";
+  const name_col_width = 50;
+
+  if (table === "reminder") {
+    populateCell(wb, sheet, "Date", 1, 1, true, header_color);
+    sheet.column(1).setWidth(14);
+    populateCell(wb, sheet, "Time", 1, 2, true, header_color);
+    sheet.column(2).setWidth(8);
+    populateCell(wb, sheet, "Name", 1, 3, true, header_color);
+    sheet.column(3).setWidth(name_col_width);
+  } else if (table === "task") {
+    populateCell(wb, sheet, "Completed", 1, 1, true, header_color);
+    sheet.column(1).setWidth(12);
+    populateCell(wb, sheet, "Name", 1, 2, true, header_color);
+    sheet.column(2).setWidth(name_col_width);
+  }
+
+  try {
+    const data = await getExportData(user_id, table);
+    let row_count = 2;
+    for (let row of data) {
+      if (table === "reminder") {
+        populateCell(wb, sheet, row.date, row_count, 1, true);
+        populateCell(wb, sheet, row.time, row_count, 2, true);
+        populateCell(wb, sheet, row.name, row_count, 3);
+      } else if (table === "task") {
+        populateCell(wb, sheet, row.completed, row_count, 1, true);
+        populateCell(wb, sheet, row.name, row_count, 2);
+      }
+      const row_height = Math.ceil(row.name.length / name_col_width) * 16;
+      sheet.row(row_count).setHeight(row_height);
+      row_count++;
+    }
+  } catch (err) {}
+
+  // writeToBuffer is a promise, caller must wait
+  return wb.writeToBuffer();
+}
+
+function getExcelTable(user_id, table) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    if (!tableIsValid(table)) {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    if (table !== "reminder" && table !== "task") {
+      resolve({ statusCode: 500, data: "table not valid" });
+      return;
+    }
+
+    createExcelWorkbook(user_id, table).then((buffer) => {
+      resolve({ statusCode: 200, data: buffer.toString("base64") });
+      return;
+    });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 module.exports.getUserId = getUserId;
 module.exports.getUserName = getUserName;
@@ -601,3 +755,5 @@ module.exports.getTableRow = getTableRow;
 module.exports.deleteTableRow = deleteTableRow;
 module.exports.createTableRow = createTableRow;
 module.exports.updateTableRow = updateTableRow;
+
+module.exports.getExcelTable = getExcelTable;

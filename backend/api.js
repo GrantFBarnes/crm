@@ -204,6 +204,22 @@ router.put("/api/crm/table/:table", (request, response) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+// Excel Export
+
+// Get excel data for a table
+router.get("/api/crm/excel/:table", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(
+      response,
+      main.getExcelTable(user_id, request.params.table)
+    );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = router;
