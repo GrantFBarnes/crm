@@ -206,14 +206,24 @@ router.put("/api/crm/table/:table", (request, response) => {
 ////////////////////////////////////////////////////////////////////////////////
 // Excel Export
 
-// Get excel data for a table
-router.get("/api/crm/excel/:table", (request, response) => {
+// Get excel data for reminders by date
+router.get("/api/crm/excel/reminder/:date", (request, response) => {
   const user_id = authentication.getAuthentication(request, userCookieName);
   if (user_id) {
     returnPromiseResponse(
       response,
-      main.getExcelTable(user_id, request.params.table)
+      main.getExcelReminders(user_id, request.params.date)
     );
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+// Get excel data for tasks
+router.get("/api/crm/excel/task", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.getExcelTasks(user_id));
   } else {
     rejectUnauthenticated(response, userCookieName);
   }

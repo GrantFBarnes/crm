@@ -119,11 +119,17 @@ export class PageHomeComponent implements OnInit {
     document.body.removeChild(element);
   }
 
-  downloadExcel(table: string): void {
-    this.httpService.get('/api/crm/excel/' + table).subscribe((data: any) => {
-      const date_str = new Date().toISOString().substring(0, 10);
-      const file_name = 'crm_' + table + 's_' + date_str;
-      this.downloadFile('excel', file_name, data);
+  downloadExcelReminders(date: string): void {
+    this.httpService
+      .get('/api/crm/excel/reminder/' + date)
+      .subscribe((data: any) => {
+        this.downloadFile('excel', 'crm_reminders_' + date + '.xlsx', data);
+      });
+  }
+
+  downloadExcelTasks(): void {
+    this.httpService.get('/api/crm/excel/task').subscribe((data: any) => {
+      this.downloadFile('excel', 'crm_tasks.xlsx', data);
     });
   }
 

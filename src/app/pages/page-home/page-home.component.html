@@ -8,18 +8,7 @@
     <div class="col-md-6 mb-2">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">
-            <div class="row">
-              <div class="col-8">Reminders</div>
-              <div class="col-4 right">
-                <i
-                  class="bi bi-download clickable"
-                  title="Download Excel - Reminders"
-                  (click)="downloadExcel('reminder')"
-                ></i>
-              </div>
-            </div>
-          </h5>
+          <h5 class="card-title">Reminders</h5>
           <div class="accordion">
             <ng-container
               *ngFor="let item of reminders | keyvalue : sortByKeyAsc"
@@ -40,6 +29,15 @@
                   [ngClass]="getAccordionBodyClass(item.key)"
                 >
                   <div class="accordion-body">
+                    <div class="row">
+                      <div class="col-12 right">
+                        <i
+                          class="bi bi-download clickable"
+                          title="Download Excel - Reminders"
+                          (click)="downloadExcelReminders(item.key)"
+                        ></i>
+                      </div>
+                    </div>
                     <ng-container *ngFor="let row of item.value">
                       <div class="wrap-text">
                         <span
@@ -104,7 +102,7 @@
                   <i
                     class="bi bi-download clickable"
                     title="Download Excel - Tasks"
-                    (click)="downloadExcel('task')"
+                    (click)="downloadExcelTasks()"
                   ></i>
                 </div>
               </div>
