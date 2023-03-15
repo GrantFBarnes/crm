@@ -691,9 +691,9 @@ async function createExcelReminders(user_id, date) {
   const title = "Reminders - " + date;
   populateCell(wb, sheet, title, 1, 1, true, header_color, 1, 2);
 
-  const name_col_width = 50;
+  const name_col_width = 70;
   populateCell(wb, sheet, "Time", 2, 1, true, header_color);
-  sheet.column(1).setWidth(8);
+  sheet.column(1).setWidth(10);
   populateCell(wb, sheet, "Name", 2, 2, true, header_color);
   sheet.column(2).setWidth(name_col_width);
 
@@ -720,9 +720,9 @@ async function createExcelTasks(user_id) {
   const header_color = "#eaeaea";
   populateCell(wb, sheet, "Tasks", 1, 1, true, header_color, 1, 2);
 
-  const name_col_width = 50;
+  const name_col_width = 70;
   populateCell(wb, sheet, "Completed", 2, 1, true, header_color);
-  sheet.column(1).setWidth(12);
+  sheet.column(1).setWidth(10);
   populateCell(wb, sheet, "Name", 2, 2, true, header_color);
   sheet.column(2).setWidth(name_col_width);
 
