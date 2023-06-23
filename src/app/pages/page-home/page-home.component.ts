@@ -133,12 +133,14 @@ export class PageHomeComponent implements OnInit {
     });
   }
 
-  setReminderRepeatDate(row: any): void {
-    this.loading = true;
+  setReminderRepeatDate(row: any, refresh_reminders: boolean): void {
+    if (refresh_reminders) this.loading = true;
     row.date = datetime.getReminderRepeatISO(row);
     this.httpService.put('/api/crm/table/reminder', row).subscribe(() => {
-      this.getReminders();
-      this.loading = false;
+      if (refresh_reminders) {
+        this.getReminders();
+        this.loading = false;
+      }
     });
   }
 
@@ -171,7 +173,33 @@ export class PageHomeComponent implements OnInit {
       for (let date in this.reminders) {
         this.reminders[date] = this.reminders[date].sort(sort.sortByTime);
       }
+
+      this.setPastRemindersRepeatDate();
     });
+  }
+
+  setPastRemindersRepeatDate(): void {
+    let past_reminders: TableReminder[] = [];
+    const yesterday: Date = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    for (let d in this.reminders) {
+      if (new Date(d) < yesterday) {
+        for (let reminder of this.reminders[d]) {
+          if (reminder.repeating) {
+            past_reminders.push(reminder);
+          }
+        }
+      }
+    }
+
+    if (past_reminders.length) {
+      this.loading = true;
+      for (let reminder of past_reminders) {
+        this.setReminderRepeatDate(reminder, false);
+      }
+      this.getReminders();
+      this.loading = false;
+    }
   }
 
   getTasks(): void {
