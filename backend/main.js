@@ -776,6 +776,144 @@ function getExcelTasks(user_id) {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+// CSV Export
+
+function getCSVCellValue(value) {
+  if (!value) return ",";
+
+  while (value.indexOf('"') >= 0) {
+    value = value.replace('"', "");
+  }
+
+  if (value.indexOf("\n") >= 0 || value.indexOf(",") >= 0) {
+    value = `"${value}"`;
+  }
+
+  return value + ",";
+}
+
+function getCSVExportData(user_id) {
+  return new Promise((resolve, reject) => {
+    if (!idIsValid(user_id)) {
+      reject("user id not valid");
+      return;
+    }
+
+    execute(`
+        SELECT
+            p.id AS person_id,
+            p.name AS person_name,
+            pp.value AS person_phone,
+            ep.value AS person_email,
+            ap.city AS person_city,
+            ap.state AS person_state,
+            ap.zip AS person_zip,
+            c.name AS company_name,
+            pc.value AS company_phone
+        FROM person AS p
+            LEFT JOIN phone_person AS pp ON pp.person_id = p.id
+            LEFT JOIN email_person AS ep ON ep.person_id = p.id
+            LEFT JOIN address_person AS ap ON ap.person_id = p.id
+            LEFT JOIN link_company_person AS lcp ON lcp.person_id = p.id
+            LEFT JOIN company AS c ON c.id = lcp.company_id
+            LEFT JOIN phone_company AS pc ON pc.company_id = c.id
+        WHERE p.user_id = '${user_id}'
+        ORDER BY p.name;
+      `)
+      .then((result) => {
+        resolve(result);
+        return;
+      })
+      .catch(() => {
+        reject("failed to get CSV export data");
+        return;
+      });
+  });
+}
+
+async function createCSVExport(user_id) {
+  let csv = "";
+  csv += "Contact Full Name,";
+  csv += "Business Phone,";
+  csv += "E-mail Address,";
+  csv += "Mailing City,";
+  csv += "Mailing State,";
+  csv += "Mailing Postal Code,";
+  csv += "Account Name,";
+  csv += "Account Phone,";
+
+  try {
+    const data = await getCSVExportData(user_id);
+
+    let people = {};
+    for (let row of data) {
+      if (!people[row.person_id]) {
+        people[row.person_id] = [];
+      }
+      people[row.person_id].push(row);
+    }
+
+    for (let id in people) {
+      let person_name = new Set();
+      let person_phone = new Set();
+      let person_email = new Set();
+      let person_city = new Set();
+      let person_state = new Set();
+      let person_zip = new Set();
+      let company_name = new Set();
+      let company_phone = new Set();
+
+      const person = people[id];
+      for (let row of person) {
+        if (row.person_name) person_name.add(row.person_name.trim());
+        if (row.person_phone) person_phone.add(row.person_phone.trim());
+        if (row.person_email) person_email.add(row.person_email.trim());
+        if (row.person_city) person_city.add(row.person_city.trim());
+        if (row.person_state) person_state.add(row.person_state.trim());
+        if (row.person_zip) person_zip.add(row.person_zip.trim());
+        if (row.company_name) company_name.add(row.company_name.trim());
+        if (row.company_phone) company_phone.add(row.company_phone.trim());
+      }
+
+      person_name.delete("");
+      person_phone.delete("");
+      person_email.delete("");
+      person_city.delete("");
+      person_state.delete("");
+      person_zip.delete("");
+      company_name.delete("");
+      company_phone.delete("");
+
+      csv += "\n";
+      csv += getCSVCellValue([...person_name].join(","));
+      csv += getCSVCellValue([...person_phone].join(","));
+      csv += getCSVCellValue([...person_email].join(","));
+      csv += getCSVCellValue([...person_city].join(","));
+      csv += getCSVCellValue([...person_state].join(","));
+      csv += getCSVCellValue([...person_zip].join(","));
+      csv += getCSVCellValue([...company_name].join(","));
+      csv += getCSVCellValue([...company_phone].join(","));
+    }
+  } catch (err) {}
+
+  return csv;
+}
+
+function getCSVExport(user_id) {
+  return new Promise((resolve) => {
+    if (!idIsValid(user_id)) {
+      resolve({ statusCode: 500, data: "user id not valid" });
+      return;
+    }
+
+    createCSVExport(user_id).then((data) => {
+      resolve({ statusCode: 200, data: data });
+      return;
+    });
+  });
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 module.exports.getUserId = getUserId;
 module.exports.getUserName = getUserName;
@@ -791,3 +929,5 @@ module.exports.updateTableRow = updateTableRow;
 
 module.exports.getExcelReminders = getExcelReminders;
 module.exports.getExcelTasks = getExcelTasks;
+
+module.exports.getCSVExport = getCSVExport;

@@ -230,6 +230,19 @@ router.get("/api/crm/excel/task", (request, response) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
+// CSV Export
+
+// Get csv data for export
+router.get("/api/crm/csv/export", (request, response) => {
+  const user_id = authentication.getAuthentication(request, userCookieName);
+  if (user_id) {
+    returnPromiseResponse(response, main.getCSVExport(user_id));
+  } else {
+    rejectUnauthenticated(response, userCookieName);
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
 module.exports = router;

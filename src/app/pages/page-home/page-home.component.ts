@@ -133,6 +133,12 @@ export class PageHomeComponent implements OnInit {
     });
   }
 
+  downloadCSVExport(): void {
+    this.httpService.get('/api/crm/csv/export').subscribe((data: any) => {
+      this.downloadFile('csv', 'crm_export.csv', data);
+    });
+  }
+
   setReminderRepeatDate(row: any, refresh_reminders: boolean): void {
     if (refresh_reminders) this.loading = true;
     row.date = datetime.getReminderRepeatISO(row);
