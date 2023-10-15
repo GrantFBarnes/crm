@@ -241,7 +241,7 @@ CREATE TABLE log_person (
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
-CREATE TABLE link_list_company
+CREATE TABLE link_list_company (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     list_id CHAR(36) NOT NULL,
@@ -255,7 +255,7 @@ CREATE TABLE link_list_company
     FOREIGN KEY (company_id) REFERENCES company(id) ON DELETE CASCADE
 );
 
-CREATE TABLE link_list_person
+CREATE TABLE link_list_person (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     list_id CHAR(36) NOT NULL,
@@ -269,7 +269,7 @@ CREATE TABLE link_list_person
     FOREIGN KEY (person_id) REFERENCES person(id) ON DELETE CASCADE
 );
 
-CREATE TABLE link_list_reminder
+CREATE TABLE link_list_reminder (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     list_id CHAR(36) NOT NULL,
@@ -283,7 +283,7 @@ CREATE TABLE link_list_reminder
     FOREIGN KEY (reminder_id) REFERENCES reminder(id) ON DELETE CASCADE
 );
 
-CREATE TABLE link_list_task
+CREATE TABLE link_list_task (
     id CHAR(36) NOT NULL,
     user_id CHAR(36) NOT NULL,
     list_id CHAR(36) NOT NULL,
